@@ -1,0 +1,28 @@
+<%
+//========================================================================
+//Liste les paramètres d'une méthode
+%>
+<% let data = obj %>
+<%
+    //Classe les sous-paramètres
+        let parent = null
+        data.forEach((param, i) => {
+            let regex ;
+            if (!param) { return }
+            if (parent && parent.name && param.name) {
+                regex = new RegExp('^(?:' + parent.name + '(?:\\[\\])*)\\.(.+)$')
+                if (regex.test(param.name)) {
+                    param.name = RegExp.$1
+                    parent.subparams = parent.subparams || []
+                    parent.subparams.push(param)
+                    data[i] = null
+                }
+                else { parent = param }
+            }
+            else { parent = param }
+        })
+%>
+
+<table class="params">
+    <%= data.map(param => { return param ? this.partial("param.tmpl", param) : "" }).join("") %>
+</table>

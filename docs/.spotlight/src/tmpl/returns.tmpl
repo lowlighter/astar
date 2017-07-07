@@ -1,0 +1,15 @@
+<%
+//========================================================================
+//Affiche les valeurs de retour
+%>
+<% let data = obj || {} %>
+<tr>
+    <% /* (vide) */ %>
+        <td></td>
+    <% /* Types */ %>
+        <td><%= (data.type && data.type.names) ? this.partial("type.tmpl", (data.type.names||[]).filter(t => !/null/.test(t))) : "" %></td>
+    <% /* Description */ %>
+        <td><%= (data.description) ? description : "" %></td>
+    <% /* Propriétés */ %>
+        <td><%= (data.type && data.type.names && (data.type.names.indexOf("null") > 0)) ? "<label class='nullable'>Nullable</label>" : "" %></td>
+</tr>

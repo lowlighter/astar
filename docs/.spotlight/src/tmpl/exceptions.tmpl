@@ -1,0 +1,15 @@
+<%
+//========================================================================
+//Affiche les exceptions
+%>
+<% let data = obj || {} %>
+<tr>
+    <% /* (vide) */ %>
+        <td></td>
+    <% /* Types */ %>
+        <td><%= (data.type && data.type.names) ? this.partial("type.tmpl", data.type.names) : "" %></td>
+    <% /* Description */ %>
+        <td><%= (data.description) ? description : "" %></td>
+    <% /* (vide) */ %>
+        <td></td>
+</tr>

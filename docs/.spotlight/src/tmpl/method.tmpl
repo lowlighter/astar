@@ -1,0 +1,109 @@
+<%
+//========================================================================
+//Affiche les informations d'une méthode
+%>
+<% let data = obj %>
+<div class="members" id="member-<%= id.replace(/^\./, '') %>">
+    <header class="<%= kind %>">
+        <% /* Signature */ %>
+        <h2 class="<%= data.access || 'public' %>">
+            <%= data.name %>
+            <% if ((kind === "function")||(kind === "class")) { %> <span class="signature"><%= data.signature.replace("→", "⇨").replace(/, nullable/gi, "").replace(/opt(?=\)|,)/gi, "") %></span> <% } %>
+        </h2>
+
+        <% /* Sources */ %>
+        <% if (data.meta && this.outputSourceFiles) {%>
+            <div class="sources">
+                 <%= this.linkto(meta.shortpath, `${meta.shortpath} (line ${meta.lineno})`) %>
+            </div>
+        <% } %>
+
+        <% /* Propriétés : statique, abstrait, surcharge, accessibilité... */ %>
+        <div class="properties">
+            <%= /\(.*\)/.test(data.attribs) ? data.attribs.match(/\((.*)\)/)[1].split(",").map(a => a.trim()).map(a => /public|protected|private/.test(a) ? "" : `<label class="${a}">${a.charAt(0).toLocaleUpperCase()}${a.substr(1)}</label></label></label>`).join(" ") : "" %>
+            <% if (data.overrides) { %>
+                <label class="override"><%= this.linkto(data.overrides, `Overrides │ ${this.htmlsafe(data.overrides)}`) %></label>
+            <% } %>
+            <% if (data.augments && data.augments.length) { %>
+                <%= this.partial("augments.tmpl", data) %>
+            <% } %>
+            <% if (kind === "event") { %> <label class="event">Event</label> <% } %>
+            <label class="<%= data.access || 'public' %>"><%= data.access || 'public' %></label>
+        </div>
+    </header>
+
+    <% /* Héritage */ %>
+    <% if (data.augments && data.alias && data.alias.indexOf("module:") === 0) { %>
+        <%= this.partial("augments.tmpl", data) %>
+    <% } %>
+
+    <% /* Description */ %>
+    <% if (data.kind !== "module" && data.description) { %>
+        <p><%= data.description %></p>
+    <% } %>
+
+    <% /* Paramètres et valeurs de retours */ %>
+    <% if ((data.params && params.length)||(data.returns && returns.length)) { %>
+    <div class="card definition">
+        <ul>
+            <% /* Paramètres */ %>
+            <% if (data.params && params.length) { %>
+                <li>
+                    <h3>Arguments</h3>
+                    <%= this.partial("params.tmpl", params) %>
+                </li>
+            <% } %>
+
+            <% /* Valeurs de retours */ %>
+            <% if (data.returns && returns.length) { %>
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                        <% returns.forEach(r => { %> <%= this.partial("returns.tmpl", r) %> <% }) %>
+                    </table>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+    <br />
+    <% } %>
+
+    <% /*  Evénements et exceptions */ %>
+    <% if ((data.fires && fires.length)||(data.exceptions && exceptions.length)) { %>
+    <div class="card definition">
+        <ul>
+            <% /* Exceptions */ %>
+            <% if (data.exceptions && exceptions.length) { %>
+                <li>
+                    <h3 class="exceptions">Exceptions thrown</h3>
+                    <table class="exceptions">
+                        <% exceptions.forEach(e => { %> <%= this.partial("exceptions.tmpl", e) %> <% }) %>
+                    </table>
+                </li>
+            <% } %>
+            <% /* Evénements déclenchés */ %>
+            <% if (data.fires && fires.length) { %>
+                <li>
+                    <h3>Events fired</h3>
+                        <% fires.forEach(f => { %> <%= this.linkto(f, `
+                            <div class="event">
+                                <span>${(f.match(/^(.*?)#/)||[null, "Event"])[1]}</span>
+                                <span>${(f.match(/#event:(.*)$/)||f.match(/:(.*)$/))[1]}</span>
+                            </div>
+                        `) %> <% }) %>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+    <br />
+    <% } %>
+
+    <% /* Exemples */ %>
+    <% if (data.examples && examples.length) { %>
+        <%= this.partial("examples.tmpl", examples) %>
+        <br />
+    <% } %>
+
+    <% /* Détails */ %>
+        <%= this.partial("details.tmpl", data) %>
+</div>

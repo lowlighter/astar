@@ -1,0 +1,23 @@
+<%
+//========================================================================
+//Affiche les propriétés d'un objet
+%>
+<% let data = obj.subprops || obj.properties %>
+<%
+    //Classe les sous-propriétés
+        let parent = null
+        data.forEach((prop, i) => {
+            if (!prop) { return }
+            if ( parent && prop.name && prop.name.indexOf(parent.name + '.') === 0 ) {
+                prop.name = prop.name.substr(parent.name.length+1)
+                parent.subprops = parent.subprops || []
+                parent.subprops.push(prop)
+                data[i] = null
+            }
+            else { parent = prop }
+        })
+%>
+
+<table class="data">
+    <%= data.map(prop => { return prop ? this.partial("property.tmpl", prop) : "" }).join("") %>
+</table>

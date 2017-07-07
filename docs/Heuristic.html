@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>A*</title>
+
+    <link type="text/css" rel="stylesheet" href="css/atom-one-dark.css">
+    <link type="text/css" rel="stylesheet" href="css/styles.min.css">
+</head>
+
+<body>
+
+    <aside>
+        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li class="category">A* Pathfinding</li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li class="category">Used structures</li><li id="menu-Node"><a href="Node.html">Node</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li></ul>
+    </aside>
+
+    <main>
+        <header>
+            <h1>Heuristic</h1>
+        </header>
+        <section>
+            
+
+
+
+        
+        <div class="main-description">
+            
+        </div>
+
+        
+        
+        
+
+        
+        
+        
+
+        
+        
+        
+
+        
+        
+
+        
+
+        
+        
+        
+
+        
+        
+
+<div class="members" id="member-diagonal">
+    <header class="function">
+        
+        <h2 class="public">
+            diagonal
+             <span class="signature"><span class="signature">(a, b, options)</span><span class="type-signature"> &rarr; {Number}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 665)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Diagonal Heuristic.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            a
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node a
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            b
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node b
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            options
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Options
+            
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            multiplier
+            
+                <br />
+                <span class="default-value">Default : 1</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Base multiplier
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            diagonalMultiplier
+            
+                <br />
+                <span class="default-value">Default : 1.4</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Diagonal multiplier
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>Heuristic value</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-diagonalTorus">
+    <header class="function">
+        
+        <h2 class="public">
+            diagonalTorus
+             <span class="signature"><span class="signature">(a, b, options)</span><span class="type-signature"> &rarr; {Number}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 683)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Diagonal Heuristic (Torus version).</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            a
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node a
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            b
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node b
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            options
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Options
+            
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            multiplier
+            
+                <br />
+                <span class="default-value">Default : 1</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Base multiplier
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            diagonalMultiplier
+            
+                <br />
+                <span class="default-value">Default : 1.4</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Diagonal multiplier
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            x
+            
+                <br />
+                <span class="default-value">Default : 0</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Map size on X axis
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            y
+            
+                <br />
+                <span class="default-value">Default : 0</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Map size on Y axis
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>Heuristic value</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-euclidian">
+    <header class="function">
+        
+        <h2 class="public">
+            euclidian
+             <span class="signature"><span class="signature">(a, b, options)</span><span class="type-signature"> &rarr; {Number}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 700)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Euclidian Heuristic.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            a
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node a
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            b
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node b
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            options
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Options
+            
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            multiplier
+            
+                <br />
+                <span class="default-value">Default : 1</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Base multiplier
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>Heuristic value</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-euclidianTorus">
+    <header class="function">
+        
+        <h2 class="public">
+            euclidianTorus
+             <span class="signature"><span class="signature">(a, b, options)</span><span class="type-signature"> &rarr; {Number}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 717)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Euclidian Heuristic (Torus version).</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            a
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node a
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            b
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node b
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            options
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Options
+            
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            multiplier
+            
+                <br />
+                <span class="default-value">Default : 1</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Base multiplier
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            x
+            
+                <br />
+                <span class="default-value">Default : 0</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Map size on X axis
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            y
+            
+                <br />
+                <span class="default-value">Default : 0</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Map size on Y axis
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>Heuristic value</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-manhattan">
+    <header class="function">
+        
+        <h2 class="public">
+            manhattan
+             <span class="signature"><span class="signature">(a, b, options)</span><span class="type-signature"> &rarr; {Number}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 629)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Manahattan Heuristic.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            a
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node a
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            b
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node b
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            options
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Options
+            
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            multiplier
+            
+                <br />
+                <span class="default-value">Default : 1</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Base multiplier
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>Heuristic value</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-manhattanTorus">
+    <header class="function">
+        
+        <h2 class="public">
+            manhattanTorus
+             <span class="signature"><span class="signature">(a, b, options)</span><span class="type-signature"> &rarr; {Number}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 646)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Manahattan Heuristic (Torus version).</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            a
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node a
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            b
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node b
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            options
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Options
+            
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            multiplier
+            
+                <br />
+                <span class="default-value">Default : 1</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Base multiplier
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            x
+            
+                <br />
+                <span class="default-value">Default : 0</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Map size on X axis
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            y
+            
+                <br />
+                <span class="default-value">Default : 0</span>
+            
+        </td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>
+            Map size on Y axis
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+Number
+</td>
+    
+        <td>Heuristic value</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+
+
+
+        
+        
+        
+
+        
+        
+        
+
+
+        </section>
+        <footer>
+            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Jul 07 2017 14:57:38 GMT+0200 (Paris, Madrid (heure d’été))
+            <br />
+            Embellished by <a href="https://github.com/lowlighter/jsdoc-spotlight">Spotlight</a> theme
+        </footer>
+    </main>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/scripts.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

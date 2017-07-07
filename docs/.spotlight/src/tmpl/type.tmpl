@@ -1,0 +1,6 @@
+<%
+//========================================================================
+//Liste les types d'un paramètre, d'une valeur de retour ou d'une propriété
+%>
+<% let data = obj %>
+<%= data.map((name, i, a) => this.linkto(name, this.htmlsafe(name))).join("<br />") %>

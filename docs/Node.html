@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>A*</title>
+
+    <link type="text/css" rel="stylesheet" href="css/atom-one-dark.css">
+    <link type="text/css" rel="stylesheet" href="css/styles.min.css">
+</head>
+
+<body>
+
+    <aside>
+        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li class="category">A* Pathfinding</li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li class="category">Used structures</li><li id="menu-Node"><a href="Node.html">Node</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li></ul>
+    </aside>
+
+    <main>
+        <header>
+            <h1>Node</h1>
+        </header>
+        <section>
+            
+
+
+
+        
+        <div class="main-description">
+            <pre>Node element.These structure are reusable and can belong to multiple Graph.
+        </div>
+
+        
+        
+         
+
+<div class="members" id="member-Node">
+    <header class="class">
+        
+        <h2 class="public">
+            Node
+             <span class="signature"><span class="signature">(id, data)</span><span class="type-signature"></span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 401)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Create a new Node.Note that you have to keep consistency between types for nodes id.</pre><div class="alert info"><span class="bold">id</span> and <span class="bold">graph</span> are reserved names and won't be copied when giving a <span class="bold">data</span> argument.</div><div class="alert info">This page refers to <span class="bold">Lowlight.Astar.Node</span>.<br>Not to be confused with native class Node which may be defined in some browsers.</div></p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            id
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Node id
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            data
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            List of properties to be added to node
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+    <div class="card definition">
+        <ul>
+            
+            
+
+            
+            
+            <li>
+                <h3>Versions, authors and licenses</h3>
+                <table class="details">
+                    
+                    
+
+                    
+                    
+
+                    
+                    
+                        <tr>
+                            <td>Author</td>
+                            <td>Lecoq Simon</td>
+                        </tr>
+                    
+
+                    
+                    
+
+                    
+                    
+                </table>
+            </li>
+            
+
+            
+            
+            <li>
+                <h3>External resources</h3>
+                <table class="details">
+                    
+                    
+
+                    
+                    
+                        <tr>
+                            <td>See</td>
+                            <td><a href="Graph.html">Graph</a></td>
+                        </tr>
+                    
+                </table>
+            </li>
+            
+
+            
+            
+
+            
+            
+                <li>
+                    <h3>Requirements</h3>
+                    <table class="details">
+                        <tr>
+                            <td>Requirements</td>
+                            <td>Graph</td>
+                        </tr>
+                    </table>
+                </li>
+            
+
+
+        </ul>
+    </div>
+
+
+</div>
+ 
+
+        
+        
+        
+
+        
+        
+        
+
+        
+        
+
+        
+
+        
+        
+        
+
+        
+        
+
+<div class="members" id="member-graph">
+    <header class="member">
+        
+        <h2 class="public">
+            graph<span class="signature"><span class="type-signature"> : Map.&lt;<a href="Graph.html">Graph</a>, Map></span></span>
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 429)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="readonly">Readonly</label></label></label>
+            
+            
+            <label class="public">Public</label>
+        </div>
+    </header>
+
+    
+    
+    
+        <p>List of graphs where this node belongs.</p>
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-id">
+    <header class="member">
+        
+        <h2 class="public">
+            id<span class="signature"><span class="type-signature"> : Object</span></span>
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 423)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="readonly">Readonly</label></label></label>
+            
+            
+            <label class="public">Public</label>
+        </div>
+    </header>
+
+    
+    
+    
+        <p>Node id.</p>
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+
+
+
+        
+        
+        
+
+        
+        
+        
+
+
+        </section>
+        <footer>
+            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Jul 07 2017 14:57:38 GMT+0200 (Paris, Madrid (heure d’été))
+            <br />
+            Embellished by <a href="https://github.com/lowlighter/jsdoc-spotlight">Spotlight</a> theme
+        </footer>
+    </main>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/scripts.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

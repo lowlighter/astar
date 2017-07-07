@@ -1,0 +1,59 @@
+<%
+//========================================================================
+//Container principale des descriptions de classes et de modules
+%>
+<%
+    let isGlobalPage ;
+    docs.forEach((doc, i) => {
+%>
+<% if (typeof isGlobalPage === "undefined") { isGlobalPage = (doc.kind === "globalobj") } %>
+<% if (doc.kind === "mainpage" || (doc.kind === "package")) { %> <%= this.partial("mainpage.tmpl", doc) %> <% } else if (doc.kind === "source") { %>
+<%= this.partial("source.tmpl", doc) %> <% } else { %>
+        <% /* Description */ %>
+        <div class="main-description">
+            <%= (!doc.longname || doc.kind !== "module") ? doc.classdesc : (doc.kind === "module" && doc.modules) ? doc.modules.map(m => m.classdesc||"").join("<br />") : "" %>
+        </div>
+
+        <% /* Constructeur */ %>
+        <% if (doc.kind === "module" && doc.modules) { %>
+            <% if (doc.description) { %> <div class="description"><%= doc.description %></div> <% } %>
+            <% doc.modules.forEach((module) => { %> <%= this.partial("method.tmpl", module) %> <% }) %>
+        <% } else %>
+        <% if ((doc.kind === "class")&&(doc.params)) { %> <%= this.partial("method.tmpl", doc) %> <% } %>
+
+        <% /* Classes */ %>
+        <%  let classes = !isGlobalPage ? this.find({kind:"class", memberof:doc.longname})||[] : [] %>
+        <%= classes.map(m => `${this.linkto(m.longname, m.name)}<br />${m.summary||""}`).join("<br />") %>
+
+        <% /* Mixins */ %>
+        <%  let mixins = !isGlobalPage ? this.find({kind:"mixin", memberof:doc.longname})||[] : [] %>
+        <%= mixins.map(m => `${this.linkto(m.longname, m.name)}<br />${m.summary||""}`).join("<br />") %>
+
+        <% /* Propriétés */ %>
+        <%
+            let members = this.find({kind:"member", memberof:isGlobalPage ? {isUndefined: true} : doc.longname})||[]
+            if (isGlobalPage && members && members.length && members.forEach) { members = members.filter(m => { return m.longname && m.longname.indexOf("module:") !== 0 }) }
+        %>
+
+        <% /*= members.map(p => this.partial("members.tmpl", p)).join(" ") */ %>
+
+        <% /* Méthodes */ %>
+        <% let methods = this.find({kind:"function", memberof:isGlobalPage ? {isUndefined: true} : doc.longname})||[] %>
+        <% /*= methods.map(m => this.partial("method.tmpl", m)).join(" ") */ %>
+
+        <%
+            let elements = {}
+            members.map(p => { elements[p.name] = {tmpl:"members.tmpl", p} })
+            methods.map(p => { elements[p.name] = {tmpl:"method.tmpl", p} })
+        %>
+        <%= Object.keys(elements).sort().map(m => this.partial(elements[m].tmpl, elements[m].p)).join(" ") %>
+
+
+        <% /* Evénements */ %>
+        <% let events = this.find({kind:"event", memberof:isGlobalPage ? {isUndefined: true} : doc.longname})||[] %>
+        <%= events.map(e => this.partial("method.tmpl", e)).join(" ") %>
+
+        <% /* Définitions de types */ %>
+        <% let typedefs = this.find({kind:"typedef", memberof:isGlobalPage ? {isUndefined: true} : doc.longname})||[] %>
+        <%= typedefs.map(t => { return t.signature ? this.partial("method.tmpl", t) : this.partial("members.tmpl", t)}).join(" ") %>
+<% } }) %>

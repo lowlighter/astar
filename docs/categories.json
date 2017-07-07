@@ -1,0 +1,8 @@
+{
+    "astar" : {
+        "displayName" : "A* Pathfinding"
+    },
+    "structures" : {
+        "displayName" : "Used structures"
+    }
+}

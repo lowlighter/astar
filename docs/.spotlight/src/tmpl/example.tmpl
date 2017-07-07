@@ -1,0 +1,15 @@
+<%
+//========================================================================
+//Affiche un exemple
+%>
+<% let data = obj %>
+<div class="card examples">
+    <ul>
+        <% data.map(example => { %>
+        <li>
+            <% if (example.caption) { %> <h3><%= example.caption %></h3> <% } %>
+            <pre><code class="javascript"><%= data %></code></pre>
+        </li>
+        <% }) %>
+    </ul>
+</div>

@@ -1,0 +1,8 @@
+<%
+//========================================================================
+//Liste les héritages
+%>
+<% let data = obj %>
+<% if (data.augments && data.augments.length) { %>
+    <%= data.augments.map(a => `<label class="extends">Extends │ ${this.linkto(a, a)}</label>`).join(" ") %>
+<% } %>

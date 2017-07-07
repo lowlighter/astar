@@ -1,0 +1,26 @@
+<%
+//========================================================================
+//Affiche les informations d'une propriété
+%>
+<% let data = obj || {} %>
+<tr>
+    <% /* Nom et valeur par défaut */ %>
+        <td>
+            <%= data.name %>
+            <span class="default-value">
+                <% (typeof data.defaultvalue !== 'undefined') ? this.htmlsafe(data.defaultvalue) : "" %>
+            </span>
+        </td>
+    <% /* Types */ %>
+        <td><%= (data.type && data.type.names) ? this.partial("type.tmpl", data.type.names) : "" %></td>
+    <% /* Description */ %>
+        <td>
+            <%= data.description %>
+            <%= (data.subprops) ? this.partial("properties.templ", data) : "" %>
+        </td>
+    <% /* Propriétés */ %>
+        <td>
+            <%= (data.nullable) ? "<label class='nullable'>Nullable</label>" : "" %>
+            <%= (data.optional) ? "<label class='optional'>Optional</label>" : "" %>
+        </td>
+</tr>

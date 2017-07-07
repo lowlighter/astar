@@ -1,0 +1,28 @@
+<%
+//========================================================================
+//Affiche les informations d'un paramètre
+%>
+<% let data = obj || {} %>
+<tr>
+    <% /* Nom et valeur par défaut */ %>
+        <td>
+            <%= data.name %>
+            <% if (typeof data.defaultvalue !== 'undefined') { %>
+                <br />
+                <span class="default-value">Default : <%= this.htmlsafe(data.defaultvalue) %></span>
+            <% } %>
+        </td>
+    <% /* Types */ %>
+        <td><%= (data.type && data.type.names) ? this.partial("type.tmpl", data.type.names) : "" %></td>
+    <% /* Description */ %>
+        <td>
+            <%= data.description %>
+            <%= (data.subparams) ? this.partial("params.tmpl", data.subparams) : "" %>
+        </td>
+    <% /* Propriétés */ %>
+        <td>
+            <%= (data.variable) ? "<label class='repeatable'>Repeatable</label>" : "" %>
+            <%= (data.nullable) ? "<label class='nullable'>Nullable</label>" : "" %>
+            <%= (data.optional) ? "<label class='optional'>Optional</label>" : "" %>
+        </td>
+</tr>

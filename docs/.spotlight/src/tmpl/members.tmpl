@@ -1,0 +1,66 @@
+<%
+//========================================================================
+//Affiche les informations d'une méthode
+%>
+<% let data = obj %>
+<div class="members" id="member-<%= id.replace(/^\./, '') %>">
+    <header class="<%= kind %>">
+        <% /* Signature */ %>
+        <h2 class="<%= data.access || 'public' %>">
+            <%= data.name %><span class="signature"><%= data.signature.replace(":", ": ").replace(/\|?null/, "") %></span>
+        </h2>
+
+        <% /* Sources */ %>
+        <% if (data.meta && this.outputSourceFiles) {%>
+            <div class="sources">
+                 <%= this.linkto(meta.shortpath, `${meta.shortpath} (line ${meta.lineno})`) %>
+            </div>
+        <% } %>
+
+        <% /* Propriétés : statique, abstrait, surcharge, accessibilité... */ %>
+        <div class="properties">
+            <%= /\(.*\)/.test(data.attribs) ? data.attribs.match(/\((.*)\)/)[1].split(",").map(a => a.trim()).map(a => /public|protected|private/.test(a) ? "" : `<label class="${a}">${a.charAt(0).toLocaleUpperCase()}${a.substr(1)}</label></label></label>`).join(" ") : "" %>
+            <% if (kind === "event") { %> <label class="event">Event</label> <% } %>
+            <% if (/\|?null/.test(data.signature)) { %> <label class="nullable">Nullable</label> <% } %>
+            <label class="<%= data.access || 'public' %>"><%= data.access || 'Public' %></label>
+        </div>
+    </header>
+
+    <% /* Description */ %>
+    <% if (data.summary) { %>
+        <p><%= data.summary %></p>
+    <% } %>
+    <% if (data.description) { %>
+        <p><%= data.description %></p>
+    <% } %>
+
+    <% /*  Evénements */ %>
+    <% if (data.fires && fires.length) { %>
+    <div class="card definition">
+        <ul>
+            <% /* Evénements déclenchés */ %>
+            <% if (data.fires && fires.length) { %>
+                <li>
+                    <h3>Events fired</h3>
+                        <% fires.forEach(f => { %> <%= this.linkto(f, `
+                            <div class="event">
+                                <span>${f.match(/^(.*?)#/)[1]}</span>
+                                <span>${f.match(/#event:(.*)$/)[1]}</span>
+                            </div>
+                        `) %> <% }) %>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+    <br />
+    <% } %>
+
+    <% /* Exemples */ %>
+    <% if (data.examples && examples.length) { %>
+        <%= this.partial("examples.tmpl", examples) %>
+        <br />
+    <% } %>
+
+    <% /* Détails */ %>
+        <%= this.partial("details.tmpl", data) %>
+</div>

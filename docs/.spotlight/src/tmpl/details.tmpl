@@ -1,0 +1,124 @@
+<%
+//========================================================================
+//Liste les détails d'un memebre
+%>
+<%
+    let data = obj
+    let properties = data.properties
+%>
+<% if ((properties && properties.length)||((data.version)||(data.since)||(data.author && author.length)||(data.copyright)||(data.license))||((data.tutorials && tutorials.length)||(data.see && see.length))||(data.todo && todo.length)) { %>
+    <div class="card definition">
+        <ul>
+            <% /* Propriétés */ %>
+            <% if (properties && properties.length) { %>
+            <li>
+                <h3>Properties</h3>
+                <%= this.partial("properties.tmpl", data) %>
+            </li>
+            <% } %>
+
+            <% /* Licenses et détails */ %>
+            <% if ((data.version)||(data.since)||(data.author && author.length)||(data.copyright)||(data.license)) { %>
+            <li>
+                <h3>Versions, authors and licenses</h3>
+                <table class="details">
+                    <% /* Version */ %>
+                    <% if (data.version) { %>
+                        <tr>
+                            <td>Version</td>
+                            <td><%= version %></td>
+                        </tr>
+                    <% } %>
+
+                    <% /* Depuis */ %>
+                    <% if (data.since) { %>
+                        <tr>
+                            <td>Since</td>
+                            <td><%= since %></td>
+                        </tr>
+                    <% } %>
+
+                    <% /* Auteurs */ %>
+                    <% if (data.author && author.length) { %>
+                        <tr>
+                            <td><%= (author.length > 1) ? "Authors" : "Author" %></td>
+                            <td><%= author.map(a => this.resolveAuthorLinks(a)).join(", ") %></td>
+                        </tr>
+                    <% } %>
+
+                    <% /* Copyright */ %>
+                    <% if (data.copyright) { %>
+                        <tr>
+                            <td>Copyright</td>
+                            <td><%= copyright %></td>
+                        </tr>
+                    <% } %>
+
+                    <% /* License */ %>
+                    <% if (data.license) { %>
+                        <tr>
+                            <td>License</td>
+                            <td><%= license %></td>
+                        </tr>
+                    <% } %>
+                </table>
+            </li>
+            <% } %>
+
+            <% /* Resources externes */ %>
+            <% if ((data.tutorials && tutorials.length)||(data.see && see.length)) { %>
+            <li>
+                <h3>External resources</h3>
+                <table class="details">
+                    <% /* Tutoriels */ %>
+                    <% if (data.tutorials && tutorials.length) { %>
+                        <tr>
+                            <td>Tutorials</td>
+                            <td><%= tutorials.map(t => this.tutoriallink(t)).join("<br />") %></td>
+                        </tr>
+                    <% } %>
+
+                    <% /* Liens */ %>
+                    <% if (data.see && see.length) { %>
+                        <tr>
+                            <td>See</td>
+                            <td><%= see.map(s => this.linkto(s)).join("<br />") %></td>
+                        </tr>
+                    <% } %>
+                </table>
+            </li>
+            <% } %>
+
+            <% /* Autres */ %>
+            <% if (data.todo && todo.length) { %>
+            <li>
+                <h3>Miscelleanous</h3>
+                <table class="details">
+                    <% /*  A faire */ %>
+                    <% if (data.todo && todo.length) { %>
+                        <tr>
+                            <td>To do</td>
+                            <td><%= todo.join("<br />") %></td>
+                        </tr>
+                    <% } %>
+                </table>
+            </li>
+            <% } %>
+
+            <% /* Dépendances */ %>
+            <% if (data.requires && data.requires.length) { %>
+                <li>
+                    <h3>Requirements</h3>
+                    <table class="details">
+                        <tr>
+                            <td>Requirements</td>
+                            <td><%= data.requires.map(r => this.linkto(r, r).replace(/module:/, "")).join("<br />") %></td>
+                        </tr>
+                    </table>
+                </li>
+            <% } %>
+
+
+        </ul>
+    </div>
+<% } %>
