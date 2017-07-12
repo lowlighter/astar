@@ -43,7 +43,7 @@
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 809)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 813)</a>
             </div>
         
 
@@ -62,7 +62,18 @@
 
     
     
-        <p><pre>Even is Graphs structures are really convenients, it can be quite costly to create them.That's why this library works with reusable configurations. It will create graphs adpated to the data you provided.Then, you'll just have to call the <span class="bold">path</span> method to compute a path. If you need to partially update your graphs, you can do it manually.If your graphs must be totally updated, it may be better to just create a new configuration.</pre><div class="alert info">Due to JavaScript being monothread, each time you compute a path, you'll need to wait until completition before the rest of your code is executed.When <span class="bold">options.thread</span> is enabled, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Workers</a> will be used to prevent paths calculations from blocking your main thread.It means that you'll be able to perform others tasks during calculations.However, it comes with certains constraints : none of the instance's members can be edited directly.</div></p>
+        <p><pre>
+Even is Graphs structures are really convenients, it can be quite costly to create them.
+That's why this library works with reusable configurations. It will create graphs adpated to the data you provided.
+Then, you'll just have to call the <span class="bold">path</span> method to compute a path. If you need to partially update your graphs, you can do it manually.
+If your graphs must be totally updated, it may be better to just create a new configuration.
+</pre>
+<div class="alert info">
+Due to JavaScript being monothread, each time you compute a path, you'll need to wait until completition before the rest of your code is executed.
+When <span class="bold">options.thread</span> is enabled, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Workers</a> will be used to prevent paths calculations from blocking your main thread.
+It means that you'll be able to perform others tasks during calculations.
+However, it comes with certains constraints : none of the instance's members can be edited directly.
+</div></p>
     
 
     
@@ -381,7 +392,50 @@ String
         
         <li>
              <h3>Simple usage</h3> 
-            <pre><code class="javascript">//Define some variableslet map = [], X = 30, Y = 30//Define a biome function (optional)let biome = (x, y) => {     let e = noise(x, y) //Elevation     if (e <= 0.1) { return -1.0 } //Sea     if (e <= 0.2) { return  1.1 } //Beach     if (e <= 0.4) { return  1.0 } //Plains     if (e <= 0.5) { return  1.2 } //Forest     if (e <= 0.7) { return  1.4 } //Hills     if (e <= 0.9) { return  1.6 } //Mountains     if (e <= 1.0) { return  2.0 } //Snow mountains}//Create mapfor (let x = 0; x < X; x++) { map[x] = []     for (let y = 0; y < Y; y++) {         map[x][y] = biome(x, y)     }}//Define configurations optionslet options = {      order:"xy",      diagonals:<span class="code-diagonals">true</span>,      cutting:<span class="code-cutting">false</span>,      torus:<span class="code-torus">false</span>,      heuristic:<span class="code-heuristic">"euclidian"</span>}//Create a new configuration//You can define multiples layers with differents parameters and/or cost functions while using the same maplet astar = new Lowlight.Astar.Configuration(map,     $.extend({cost() { return m >= 0 ? m : null }}, options), //Only terrestrial fields accepted     $.extend({cost() { return m < 0 ? -m : null }}, options), //Only aquatic fields accepted     $.extend({cost() { return Math.abs(m) }}, options) //All fields types accepted)//Compute a pathastar.path({x:<span class="code-start-x">0</span>, y:<span class="code-start-y">0</span>}, {x:<span class="code-goal-x">0</span>, y:<span class="code-goal-y">0</span>}, {     callback(path, scores) { path.map(n => console.log(n)) },     layer:<span class="code-profil">0</span> //<span class="code-profil-name">Terrestrial</span>})</code></pre>
+            <pre><code class="javascript">//Define some variables
+let map = [], X = 30, Y = 30
+
+//Define a biome function (optional)
+let biome = (x, y) => {
+     let e = noise(x, y) //Elevation
+     if (e <= 0.1) { return -1.0 } //Sea
+     if (e <= 0.2) { return  1.1 } //Beach
+     if (e <= 0.4) { return  1.0 } //Plains
+     if (e <= 0.5) { return  1.2 } //Forest
+     if (e <= 0.7) { return  1.4 } //Hills
+     if (e <= 0.9) { return  1.6 } //Mountains
+     if (e <= 1.0) { return  2.0 } //Snow mountains
+}
+
+//Create map
+for (let x = 0; x < X; x++) { map[x] = []
+     for (let y = 0; y < Y; y++) {
+         map[x][y] = biome(x, y)
+     }
+}
+
+//Define configurations options
+let options = {
+      order:"xy",
+      diagonals:<span class="code-diagonals">true</span>,
+      cutting:<span class="code-cutting">false</span>,
+      torus:<span class="code-torus">false</span>,
+      heuristic:<span class="code-heuristic">"euclidian"</span>
+}
+
+//Create a new configuration
+//You can define multiples layers with differents parameters and/or cost functions while using the same map
+let astar = new Lowlight.Astar.Configuration(map,
+     $.extend({cost() { return m >= 0 ? m : null }}, options), //Only terrestrial fields accepted
+     $.extend({cost() { return m < 0 ? -m : null }}, options), //Only aquatic fields accepted
+     $.extend({cost() { return Math.abs(m) }}, options) //All fields types accepted
+)
+
+//Compute a path
+astar.path({x:<span class="code-start-x">0</span>, y:<span class="code-start-y">0</span>}, {x:<span class="code-goal-x">0</span>, y:<span class="code-goal-y">0</span>}, {
+     callback(path, scores) { path.map(n => console.log(n)) },
+     layer:<span class="code-profil">0</span> //<span class="code-profil-name">Terrestrial</span>
+})</code></pre>
         </li>
         
     </ul>
@@ -428,7 +482,7 @@ String
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 817)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 821)</a>
             </div>
         
 
@@ -444,7 +498,9 @@ String
     
     
     
-        <p><pre>List of graphs used by this configuration.</pre></p>
+        <p><pre>
+List of graphs used by this configuration.
+</pre></p>
     
 
     
@@ -471,7 +527,7 @@ String
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 826)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 830)</a>
             </div>
         
 
@@ -487,7 +543,10 @@ String
     
     
     
-        <p><pre>Name of heuristic to be used.You can use custom heuristics by giving their names but heuristic function definition must be stored in Heuristics library.</pre></p>
+        <p><pre>
+Name of heuristic to be used.
+You can use custom heuristics by giving their names but heuristic function definition must be stored in Heuristics library.
+</pre></p>
     
 
     
@@ -514,7 +573,7 @@ String
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 834)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 838)</a>
             </div>
         
 
@@ -530,7 +589,9 @@ String
     
     
     
-        <p><pre>Default heuristics options.</pre></p>
+        <p><pre>
+Default heuristics options.
+</pre></p>
     
 
     
@@ -558,7 +619,7 @@ String
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 911)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 915)</a>
             </div>
         
 
@@ -577,7 +638,14 @@ String
 
     
     
-        <p><pre>Compute a path from start to end.The heuristic used by this method must be stored in <a href="Heuristic.html">Heuristic</a>.Values in scores are the sum of total cost from start to current node and heuristic cost from current node to goal. Scores aren't available when <span class="bold">options.thread</span> is enabled.</pre><div class="alert info">You must use an admissible heuristic function to find the shortest past.</div></p>
+        <p><pre>
+Compute a path from start to end.
+The heuristic used by this method must be stored in <a href="Heuristic.html">Heuristic</a>.
+Values in scores are the sum of total cost from start to current node and heuristic cost from current node to goal. Scores aren't available when <span class="bold">options.thread</span> is enabled.
+</pre>
+<div class="alert info">
+You must use an admissible heuristic function to find the shortest past.
+</div></p>
     
 
     
@@ -837,7 +905,7 @@ Array.&lt;<a href="Node.html">Node</a>>
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 865)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 869)</a>
             </div>
         
 
@@ -853,7 +921,16 @@ Array.&lt;<a href="Node.html">Node</a>>
     
     
     
-        <p><pre>WebWorker associated to current configuration.</pre><div class="alert info">This member is defined only when instance has been instanciated with <span class="bold">options.thread</span> set to true.<br></div><div class="alert warning">A <span class="bold">WorkerError</span> exception can be thrown if specified file path (i.e. lowlight.astar.js path) can't be opened.<br>Note that some browsers may not allow the usage of local WebWorkers, which will also results in a <span class="bold">WorkerError</span> exception.</div></p>
+        <p><pre>
+WebWorker associated to current configuration.
+</pre>
+<div class="alert info">
+This member is defined only when instance has been instanciated with <span class="bold">options.thread</span> set to true.<br>
+</div>
+<div class="alert warning">
+A <span class="bold">WorkerError</span> exception can be thrown if specified file path (i.e. lowlight.astar.js path) can't be opened.<br>
+Note that some browsers may not allow the usage of local WebWorkers, which will also results in a <span class="bold">WorkerError</span> exception.
+</div></p>
     
 
     
@@ -882,7 +959,7 @@ Array.&lt;<a href="Node.html">Node</a>>
 
         </section>
         <footer>
-            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Jul 07 2017 14:57:37 GMT+0200 (Paris, Madrid (heure d’été))
+            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.1</a> on Wed Jul 12 2017 01:47:19 GMT-0700 (Pacific Daylight Time)
             <br />
             Embellished by <a href="https://github.com/lowlighter/jsdoc-spotlight">Spotlight</a> theme
         </footer>

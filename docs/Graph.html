@@ -25,7 +25,9 @@
 
         
         <div class="main-description">
-            Graph structure.It allows to store generic data which allow this library to be flexible.Although only <span class="bold">Graph.fromArray</span> is currently defined to create Graphs from existing data, you're free to add new methods to
+            Graph structure.
+It allows to store generic data which allow this library to be flexible.
+Although only <span class="bold">Graph.fromArray</span> is currently defined to create Graphs from existing data, you're free to add new methods to
         </div>
 
         
@@ -185,7 +187,7 @@
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 150)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 154)</a>
             </div>
         
 
@@ -204,7 +206,10 @@
 
     
     
-        <p><pre>Add a new node to this graph and return it. As nodes are stored in a Set structure, it isn't possible to have duplicate nodes.Multiples nodes can be added by passing more than one argument. In that case, an array containing added nodes will be returned instead.</pre></p>
+        <p><pre>
+Add a new node to this graph and return it. As nodes are stored in a Set structure, it isn't possible to have duplicate nodes.
+Multiples nodes can be added by passing more than one argument. In that case, an array containing added nodes will be returned instead.
+</pre></p>
     
 
     
@@ -324,7 +329,10 @@
 
     
     
-        <p><pre>Test if there is an edge between two nodes.Note that order may be important for graph with directed edges.</pre></p>
+        <p><pre>
+Test if there is an edge between two nodes.
+Note that order may be important for graph with directed edges.
+</pre></p>
     
 
     
@@ -469,7 +477,15 @@ Boolean
 
     
     
-        <p><pre>Compute connectivity between node.</pre><div class="alert info">This method isn't called automatically after each update and should be called manually.</div><div class="alert warning">Arguments are reserved for recursive usage and are documented only for developper's usage.</div></p>
+        <p><pre>
+Compute connectivity between node.
+</pre>
+<div class="alert info">
+This method isn't called automatically after each update and should be called manually.
+</div>
+<div class="alert warning">
+Arguments are reserved for recursive usage and are documented only for developper's usage.
+</div></p>
     
 
     
@@ -592,7 +608,9 @@ Number
 
     
     
-        <p><pre>Test if two nodes are connected.</pre></p>
+        <p><pre>
+Test if two nodes are connected.
+</pre></p>
     
 
     
@@ -718,7 +736,7 @@ Boolean
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 211)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 215)</a>
             </div>
         
 
@@ -737,7 +755,10 @@ Boolean
 
     
     
-        <p><pre>Edge cost from node a to node b.null will be returned if nodes aren't connected together.</pre></p>
+        <p><pre>
+Edge cost from node a to node b.
+null will be returned if nodes aren't connected together.
+</pre></p>
     
 
     
@@ -882,7 +903,10 @@ Number
 
     
     
-        <p><pre>Return node data from associated graph.Note that whilst nodes can be associated to multiples graphs, node data is specific to each graph.</pre></p>
+        <p><pre>
+Return node data from associated graph.
+Note that whilst nodes can be associated to multiples graphs, node data is specific to each graph.
+</pre></p>
     
 
     
@@ -983,7 +1007,7 @@ Object
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 165)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 169)</a>
             </div>
         
 
@@ -1002,7 +1026,10 @@ Object
 
     
     
-        <p><pre>Remove a node from this graph and return it. No errors will be thrown if passed node isn't in graph.Multiples nodes can be removed by passing more than one argument. In that case, an array containing removed nodes will be returned instead.</pre></p>
+        <p><pre>
+Remove a node from this graph and return it. No errors will be thrown if passed node isn't in graph.
+Multiples nodes can be removed by passing more than one argument. In that case, an array containing removed nodes will be returned instead.
+</pre></p>
     
 
     
@@ -1103,7 +1130,7 @@ Object
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 193)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 197)</a>
             </div>
         
 
@@ -1122,7 +1149,11 @@ Object
 
     
     
-        <p><pre>Create an edge between two nodes.Set null on one edge cost value to mark a directed edge.Set null on both edge value to remove edge.</pre></p>
+        <p><pre>
+Create an edge between two nodes.
+Set null on one edge cost value to mark a directed edge.
+Set null on both edge value to remove edge.
+</pre></p>
     
 
     
@@ -1323,7 +1354,13 @@ Error
         
         <li>
              <h3>Create a directed edge</h3> 
-            <pre><code class="javascript">// Graph definitionlet graph = new Graph()let a = graph.add(new Node()), b = graph.add(new Node())graph.edge(a, b, 1, null)// Going from a to b cost 1 whereas it isn't possible to go from b to agraph.adjacent(a, b) //Truegraph.adjacent(b, a) //False</code></pre>
+            <pre><code class="javascript">// Graph definition
+let graph = new Graph()
+let a = graph.add(new Node()), b = graph.add(new Node())
+graph.edge(a, b, 1, null)
+// Going from a to b cost 1 whereas it isn't possible to go from b to a
+graph.adjacent(a, b) //True
+graph.adjacent(b, a) //False</code></pre>
         </li>
         
     </ul>
@@ -1351,7 +1388,7 @@ Error
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 260)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 264)</a>
             </div>
         
 
@@ -1630,7 +1667,33 @@ Boolean
         
         <li>
              <h3>Creating a graph from an Array structure</h3> 
-            <pre><code class="javascript">// Assume with have this maplet map = [     [0, 1, 0],     [0, 2, 1],     [0, 0, 0]]// Define optionslet options = { }// To access a member of our array, we use following notation : map[y][x]options.order = "yx"// Define cost function// Return null to prevent links between two squaresoptions.cost = (a, b) => { return b >= 0 ? b : null }// Tell if map is torus (map wrapper on itself)options.torus = true// Tell if squares must be linked diagonallyoptions.diagonals = true// Tell if squares must be linked diagonally between two blocking squaresoptions.cutting = false// Start by defining optionslet graph = Graph.fromArray(map, options)</code></pre>
+            <pre><code class="javascript">// Assume with have this map
+let map = [
+     [0, 1, 0],
+     [0, 2, 1],
+     [0, 0, 0]
+]
+
+// Define options
+let options = { }
+
+// To access a member of our array, we use following notation : map[y][x]
+options.order = "yx"
+
+// Define cost function
+// Return null to prevent links between two squares
+options.cost = (a, b) => { return b >= 0 ? b : null }
+
+// Tell if map is torus (map wrapper on itself)
+options.torus = true
+
+// Tell if squares must be linked diagonally
+options.diagonals = true
+// Tell if squares must be linked diagonally between two blocking squares
+options.cutting = false
+
+// Start by defining options
+let graph = Graph.fromArray(map, options)</code></pre>
         </li>
         
     </ul>
@@ -1739,7 +1802,10 @@ Boolean
 
     
     
-        <p><pre>Convert an object to a node id.This method should be overridden when you create a graph from an existing structure.</pre></p>
+        <p><pre>
+Convert an object to a node id.
+This method should be overridden when you create a graph from an existing structure.
+</pre></p>
     
 
     
@@ -1827,7 +1893,12 @@ Number
         
         <li>
              <h3>Overriding Graph.id method</h3> 
-            <pre><code class="javascript">// Graph definitionlet graph = new Graph()let node = graph.add(new Node(3))graph.id = (coordinates) => { return coordinates.x % 2 + coordinates.y * 2 }// Nodes can now be accessed with id others than numbersgraph.id({x:1, y:1})</code></pre>
+            <pre><code class="javascript">// Graph definition
+let graph = new Graph()
+let node = graph.add(new Node(3))
+graph.id = (coordinates) => { return coordinates.x % 2 + coordinates.y * 2 }
+// Nodes can now be accessed with id others than numbers
+graph.id({x:1, y:1})</code></pre>
         </li>
         
     </ul>
@@ -1874,7 +1945,9 @@ Number
 
     
     
-        <p><pre>Return neighbors of a node.</pre></p>
+        <p><pre>
+Return neighbors of a node.
+</pre></p>
     
 
     
@@ -1994,7 +2067,10 @@ Array.&lt;<a href="Node.html">Node</a>>
 
     
     
-        <p><pre>Return node associated to id.You should access nodes only through this method.</pre></p>
+        <p><pre>
+Return node associated to id.
+You should access nodes only through this method.
+</pre></p>
     
 
     
@@ -2167,7 +2243,7 @@ Boolean
 
         </section>
         <footer>
-            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Jul 07 2017 14:57:38 GMT+0200 (Paris, Madrid (heure d’été))
+            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.1</a> on Wed Jul 12 2017 01:47:19 GMT-0700 (Pacific Daylight Time)
             <br />
             Embellished by <a href="https://github.com/lowlighter/jsdoc-spotlight">Spotlight</a> theme
         </footer>
