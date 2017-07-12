@@ -14,7 +14,7 @@
     "less-plugin-clean-css": "^1.5.1",
     "babili": "^0.1.4"
   },
-  "scripts":{
+  "scripts": {
     "build": "node ./src/build.js"
   },
   "config": {

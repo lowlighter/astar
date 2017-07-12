@@ -131,11 +131,15 @@
          */
             connect(node, marker) {
                 //Connect
-                    if (arguments.length === 0) { this.nodes.forEach((node, marker) => { this.connect(node, marker) }) }
+                    if (arguments.length === 0) { this.nodes.forEach((node, marker) => { setTimeout(() => { this.connect(node, marker) }, 0) }) }
                 //Mark if isn't marked and spread
                     else if (node.graph.get(this)._connectivity === undefined) {
                         node.graph.get(this)._connectivity = marker
-                        this.neighbors(node).map(neighbor => { this.connect(neighbor, marker) })
+                        this.neighbors(node).map(neighbor => {
+                            setTimeout(() => {
+                                this.connect(neighbor, marker)
+                            }, 0)
+                        })
                     }
             }
 
