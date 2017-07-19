@@ -40,7 +40,7 @@ $(function () {
             //Declarations
                 let map = [], X = app.view.width/size, Y = app.view.height/size;
                 let astar, start = {x:0, y:0}
-                let param = {torus:0, diagonals:1, heuristic:"euclidian", profil:0, scores:1, cutting:0, jps:1}, taps = 0
+                let param = {torus:0, diagonals:1, heuristic:"euclidian", profil:0, scores:1, cutting:0, jps:0}, taps = 0
 
             //Users interactions
                 let interactions = ui.addChild(new PIXI.Sprite.fromFrame("black.png"))
@@ -124,7 +124,7 @@ $(function () {
             function demo(regenerate) {
                 //Build map
                     if (regenerate) {
-                        noise.seed(0)
+                        noise.seed(Math.random())
                         for (let x = 0; x < X; x++) { map[x] = []; for (let y = 0; y < Y; y++) {
                             //Biome
                                 let b = biome(x, y)
