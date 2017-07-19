@@ -95,6 +95,15 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Jump Point Search</td>
+                                <td>
+                                    <select name="jps">
+                                        <option value="1">Enabled</option>
+                                        <option value="0" selected>Disabled</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Map</td>
                                 <td><button name="generate">Generate a new one</button></td>
                             </tr>
@@ -164,7 +173,7 @@
         <script type="text/javascript" src="./js/jquery.js"></script>
         <script type="text/javascript" src="./js/noise.js"></script>
         <script type="text/javascript" src="./js/pixi.js"></script>
-        <script type="text/javascript" src="./../bin/lowlight.astar.min.js"></script>
+        <script type="text/javascript" src="./../bin/lowlight.astar.js"></script>
         <script type="text/javascript" src="./js/demo.js"></script>
         <script src="js/highlight.pack.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>

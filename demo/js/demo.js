@@ -5,6 +5,7 @@ $(function () {
     //Create texture
         let size = 10
         let texture = ((new PIXI.Graphics()).beginFill(0xFFFFFF, 1).drawRect(0, 0, size, size).endFill()).generateTexture()
+        window.texture = texture
 
     //Biome generation
     //See http://www.redblobgames.com/maps/terrain-from-noise/ for more informations
@@ -35,11 +36,12 @@ $(function () {
     //Layers
         let fields = app.stage.addChild(new PIXI.Container())
         let results = app.stage.addChild(new PIXI.Container())
+        window.results = results
 
     //Declarations
         let map = [], X = 40, Y = 40, taps = 0;
         let astar, start = {x:0, y:0}
-        let param = {torus:false, diagonals:true, heuristic:"euclidian", profil:0, scores:false, cutting:false}
+        let param = {torus:false, diagonals:true, heuristic:"euclidian", profil:0, scores:false, cutting:false, jps:false}
 
     //Demo function
         function demo(regenerate) {
@@ -74,9 +76,12 @@ $(function () {
                                     $(".code-goal-x").find("*").text(x)
                                     $(".code-goal-y").find("*").text(y)
                                 //Path computation
-                                    astar.path(start, {x, y}, {layer:param.profil, callback(path, scores) {
+                                    let t = performance.now()
+                                    results.removeChildren()
+                                    astar.path(start, {x, y}, {layer:param.profil, jps:param.jps, callback(path, scores) {
+                                        //console.log(performance.now()-t)
                                         //Display path
-                                            results.removeChildren()
+                                            //results.removeChildren()
                                             path.map((n, i) => {
                                                 let ss = results.addChild(new PIXI.Sprite(texture))
                                                 ss.position.set(n.x*size, n.y*size)
@@ -147,6 +152,7 @@ $(function () {
         $('[name="cutting"]').on("change", function () { param.cutting = $(this).val() === "1"; demo() })
         $('[name="heuristic"]').on("change", function () { param.heuristic = $(this).val(); demo() })
         $('[name="scores"]').on("change", function () { param.scores = $(this).val() === "1"; demo() })
+        $('[name="jps"]').on("change", function () { param.jps = $(this).val() === "1"; demo() })
         $('[name="profil"]').on("change", function () {
             param.profil = $(this).val()
             $(".code-profil").find("*").text(param.profil)
