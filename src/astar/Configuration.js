@@ -172,7 +172,7 @@ class Configuration {
      * @param {String} [options.heuristic] - Name of heuristic function to use (override default heuristic)
      * @param {Object} [options.heuristicOptions] - Options for heuristic options (override default heuristic options)
      * @param {Boolean} [options.jps] - Execute A* JPS (Jump Point Search) to speed up computation
-     * @param {Function} [options.callback] - Callback
+     * @param {Function} [options.callback] - Callback (will receive path and scores as arguments)
      * @return {Node[]} Path
      */
         path(start, goal, options = {}) {
