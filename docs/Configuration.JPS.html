@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>A*</title>
+
+    <link type="text/css" rel="stylesheet" href="css/atom-one-dark.css">
+    <link type="text/css" rel="stylesheet" href="css/styles.min.css">
+</head>
+
+<body>
+
+    <aside>
+        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li class="category">A* Pathfinding</li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-JPS"><a href="Configuration.JPS.html">JPS</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li class="category">Used structures</li><li id="menu-Node"><a href="Node.html">Node</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li></ul>
+    </aside>
+
+    <main>
+        <header>
+            <h1>JPS</h1>
+        </header>
+        <section>
+            
+
+
+
+        
+        <div class="main-description">
+            
+        </div>
+
+        
+        
+         
+
+<div class="members" id="member-JPS">
+    <header class="class">
+        
+        <h2 class="private">
+            JPS
+             <span class="signature"><span class="signature">()</span><span class="type-signature"></span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 984)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="abstract">Abstract</label></label></label> 
+            
+            
+            
+            <label class="private">private</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p><pre>Parts of Jump Point Search algorithm.These methods shouldn't be used other than by <a href="Configuration.html#path">Configuration.path</a>.Based on the work of Daniel Harabor and Alban Grastien.See <a href="http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf">explanations</a>.</pre></p>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+        
+        
+        
+
+        
+        
+        
+
+        
+        
+
+        
+
+        
+        
+        
+
+        
+        
+
+<div class="members" id="member-access">
+    <header class="function">
+        
+        <h2 class="private">
+            access
+             <span class="signature"><span class="signature">(graph, a, b, convert)</span><span class="type-signature"> &rarr; {Boolean}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 996)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+             <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="private">private</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Tell if it's possible to access node b from node a.<br>First argument should be bound.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            graph
+            
+        </td>
+    
+        <td>
+
+<a href="Graph.html">Graph</a>
+</td>
+    
+        <td>
+            Graph (bound)
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            a
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Departing node
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            b
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Destination node
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            convert
+            
+        </td>
+    
+        <td>
+
+Boolean
+</td>
+    
+        <td>
+            Convert b to a node
+            
+        </td>
+    
+        <td>
+            
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+Boolean
+</td>
+    
+        <td>Access exists</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-jump">
+    <header class="function">
+        
+        <h2 class="private">
+            jump
+             <span class="signature"><span class="signature">(access, graph, scores, goal, node, parent)</span><span class="type-signature"> &rarr; (nullable) {<a href="Node.html">Node</a>}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 1068)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+             <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="private">private</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Main function to perform Jump Point Search.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            access
+            
+        </td>
+    
+        <td>
+
+function
+</td>
+    
+        <td>
+            Access method (bound)
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            graph
+            
+        </td>
+    
+        <td>
+
+<a href="Graph.html">Graph</a>
+</td>
+    
+        <td>
+            Graph (bound)
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            scores
+            
+        </td>
+    
+        <td>
+
+Map
+</td>
+    
+        <td>
+            Scores (bound)
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            goal
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Goal node (bound)
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            node
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Current node
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            parent
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Parent node
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>Jump node</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-neighborhood">
+    <header class="function">
+        
+        <h2 class="private">
+            neighborhood
+             <span class="signature"><span class="signature">(access, graph, scores, node)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Node.html">Node</a>>}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 1011)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+             <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="private">private</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Compute JPS neighbors.<br>First two arguments should be bound.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            access
+            
+        </td>
+    
+        <td>
+
+function
+</td>
+    
+        <td>
+            Access method (bound)
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            graph
+            
+        </td>
+    
+        <td>
+
+<a href="Graph.html">Graph</a>
+</td>
+    
+        <td>
+            Graph (bound)
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            scores
+            
+        </td>
+    
+        <td>
+
+Map
+</td>
+    
+        <td>
+            Scores (bound)
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            node
+            
+        </td>
+    
+        <td>
+
+<a href="Node.html">Node</a>
+</td>
+    
+        <td>
+            Node
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+Array.&lt;<a href="Node.html">Node</a>>
+</td>
+    
+        <td>List of JPS neighbors</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+
+
+
+        
+        
+        
+
+        
+        
+        
+
+
+        </section>
+        <footer>
+            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jul 19 2017 02:17:13 GMT+0200 (Paris, Madrid (heure d’été))
+            <br />
+            Embellished by <a href="https://github.com/lowlighter/jsdoc-spotlight">Spotlight</a> theme
+        </footer>
+    </main>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/scripts.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
