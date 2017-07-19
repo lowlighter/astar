@@ -83,3 +83,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Windows
+# =========================
+bin
+demo
+docs
+src/build.js
