@@ -104,24 +104,39 @@
         /**
          * <pre>
          * Compute connectivity between node.
-         * Thanks to [NoiSek]{@link https://github.com/NoiSek} for solving an issue with stack when using larger grid size.
+         * Thanks to [NoiSek]{@link https://github.com/NoiSek} for seeing stack issues on larger grid size.
          * </pre>
          * <div class="alert info">
          * This method isn't called automatically after each update and should be called manually.
          * </div>
-         * <div class="alert warning">
-         * Arguments are reserved for recursive usage and are documented only for developper's usage.
+         * <div class="alert info">
+         * This method used to be recursive, but caused Stack Memory issues on some browsers.
+         * It is now iterative.
          * </div>
-         * @param {Node} [node] - Node to mark (used by recursive calls)
-         * @param {Number} [marker] - Mark (used by recursive calls)
          */
-            connect(node, marker) {
-                //Connect
-                    if (arguments.length === 0) { this.nodes.forEach((node, marker) => { setTimeout(this.connect(node, marker), 0) }) }
-                //Mark if isn't marked and spread
-                    else if (node.graph.get(this)._connectivity === undefined) {
-                        node.graph.get(this)._connectivity = marker
-                        this.neighbors(node).map(neighbor => { setTimeout(this.connect(neighbor, marker), 0) })
+            connect() {
+                //Initialization and reset connectivity markers
+                    let nodes = Array.from(this.nodes.values()), marker = 0
+                    for (let i = 0; i < nodes.length; i++) { nodes[i].graph.get(this)._connectivity = undefined }
+
+                //Mark nodes connectivity
+                    for (let i = 0; i < nodes.length; i++) {
+                        //Pass if already treated
+                            if (nodes[i].graph.get(this)._connectivity !== undefined) { continue }
+
+                        //Start a new subset marking
+                            let stack = [nodes[i]]
+                            marker++
+                        //Stack processing
+                            while (stack.length) {
+                                //Mark current node
+                                    let node = stack.shift()
+                                    node.graph.get(this)._connectivity = marker
+                                //Add neighbor if it hasn't be treated
+                                    this.neighbors(node).map(neighbor => {
+                                        if ((neighbor.graph.get(this)._connectivity === undefined)&&(stack.indexOf(neighbor) < 0)) { stack.push(neighbor) }
+                                    })
+                            }
                     }
             }
 
