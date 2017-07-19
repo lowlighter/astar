@@ -89,6 +89,7 @@
                         //Connectivity computing and id overriding
                             Object.defineProperty(graph, "id", {enumerable:false, configurable:false, writable:true, value(c) { return id(c.x, c.y) }})
                             graph.connect()
+                            graph.X = X, graph.Y = Y, graph.DIAGONALS = options.diagonals, graph.TORUS = options.torus
                             if (!nodes) { nodes = graph.nodes }
                     }
                 //Return

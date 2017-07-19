@@ -162,16 +162,23 @@ class Configuration {
      * <div class="alert info">
      * You must use an admissible heuristic function to find the shortest past.
      * </div>
+     * <div class="alert danger">
+     * When <span class="bold">options.jps</span> is enabled, movements cost should be uniform, as JPS makes assumptions on them to prevent nodes expansions.
+     * </div>
      * @param {Object} start - Start node id
      * @param {Object} goal - Goal node id
      * @param {Object} [options] - Options
      * @param {Number} [options.layer=0] - Layer to use (if multiple graphs are enabled)
      * @param {String} [options.heuristic] - Name of heuristic function to use (override default heuristic)
      * @param {Object} [options.heuristicOptions] - Options for heuristic options (override default heuristic options)
+     * @param {Boolean} [options.jps] - Execute A* JPS (Jump Point Search) to speed up computation
      * @param {Function} [options.callback] - Callback
      * @return {Node[]} Path
      */
         path(start, goal, options = {}) {
+            //Jump Point Search
+                if (options.jps) { return this.jps(start, goal, options) }
+
             //Discovered nodes and total scores
                 let open = new BinaryHeap((node) => { return node.estimated; })
                 let scores = new Map()

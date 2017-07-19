@@ -31,6 +31,7 @@
 
         /* #include <astar/WorkerError.js> */
         /* #include <astar/Configuration.js> */
+        /* #include <astar/variants/JumpSearchPoint.js> */
         /* #include <astar/ThreadConfiguration.js> */
 
         global.Lowlight.Astar = {Graph, Node, BinaryHeap, Heuristic, Configuration, WorkerError}
