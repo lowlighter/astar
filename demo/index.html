@@ -42,7 +42,7 @@
                                 <td>Diagonals</td>
                                 <td>
                                     <select name="diagonals">
-                                        <option value="1" selected>Enabled</option>
+                                        <option value="1">Enabled</option>
                                         <option value="0">Disabled</option>
                                     </select>
                                 </td>
@@ -52,7 +52,7 @@
                                 <td>
                                     <select name="cutting">
                                         <option value="1">Enabled</option>
-                                        <option value="0" selected>Disabled</option>
+                                        <option value="0">Disabled</option>
                                     </select>
                                 </td>
                             </tr>
@@ -61,7 +61,7 @@
                                 <td>
                                     <select name="torus">
                                         <option value="1">Enabled</option>
-                                        <option value="0" selected>Disabled</option>
+                                        <option value="0">Disabled</option>
                                     </select>
                                 </td>
                             </tr>
@@ -71,7 +71,7 @@
                                     <select name="heuristic">
                                         <option value="manhattan">Manhattan</option>
                                         <option value="diagonal">Diagonal</option>
-                                        <option value="euclidian" selected>Euclidian</option>
+                                        <option value="euclidian">Euclidian</option>
                                     </select>
                                 </td>
                             </tr>
@@ -79,7 +79,7 @@
                                 <td>Profil</td>
                                 <td>
                                     <select name="profil">
-                                        <option value="0" selected>Terrestrial</option>
+                                        <option value="0">Terrestrial</option>
                                         <option value="1">Aquatic</option>
                                         <option value="2">Amphibian</option>
                                     </select>
@@ -90,7 +90,7 @@
                                 <td>
                                     <select name="scores">
                                         <option value="1">Display</option>
-                                        <option value="0" selected>Hide</option>
+                                        <option value="0">Hide</option>
                                     </select>
                                 </td>
                             </tr>
@@ -99,7 +99,7 @@
                                 <td>
                                     <select name="jps">
                                         <option value="1">Enabled</option>
-                                        <option value="0" selected>Disabled</option>
+                                        <option value="0">Disabled</option>
                                     </select>
                                 </td>
                             </tr>
@@ -116,7 +116,7 @@
                 <pre>
                     <code>
     //Define some variables
-        let map = [], X = 40, Y = 40
+        let map = [], X = <span class="code-X">0</span>, Y = <span class="code-Y">0</span>
 
     //Create map
         for (let x = 0; x < X; x++) { map[x] = []
@@ -146,29 +146,34 @@
     //Compute a path
         astar.path({x:<span class="code-start-x">0</span>, y:<span class="code-start-y">0</span>}, {x:<span class="code-goal-x">0</span>, y:<span class="code-goal-y">0</span>}, {
             callback(path, scores) { path.map(n => console.log(n)) },
-            layer:<span class="code-profil">0</span> //<span class="code-profil-name">Terrestrial</span>
+            layer:<span class="code-profil">0</span>, //<span class="code-profil-name">Terrestrial</span>
+            jps:<span class="code-jps">false</span>,
         })
-                </code>
-            </pre>
-        </div>
-        <div class="code card">
-            <h3>Miscelleanous</h3>
-            <pre>
-                <code>
-    //Biome function
-        function biome(x, y) {
-            let e = noise(x, y) //Elevation
-            if (e <= 0.1) { return -1.0 } //Sea
-            if (e <= 0.2) { return  1.1 } //Beach
-            if (e <= 0.4) { return  1.0 } //Plains
-            if (e <= 0.5) { return  1.2 } //Forest
-            if (e <= 0.7) { return  1.4 } //Hills
-            if (e <= 0.9) { return  1.6 } //Mountains
-            if (e <= 1.0) { return  2.0 } //Snow mountains
-        }
                     </code>
                 </pre>
             </div>
+            <div class="code card">
+                <h3>Miscelleanous</h3>
+                <pre>
+                    <code>
+        //Biome function
+        //Note that when JPS is enabled, cost will be ignored
+            function biome(x, y) {
+                let e = noise(x, y) //Elevation
+                if (e <= 0.1) { return -1.0 } //Sea
+                if (e <= 0.2) { return  1.1 } //Beach
+                if (e <= 0.4) { return  1.0 } //Plains
+                if (e <= 0.5) { return  1.2 } //Forest
+                if (e <= 0.7) { return  1.4 } //Hills
+                if (e <= 0.9) { return  1.6 } //Mountains
+                if (e <= 1.0) { return  2.0 } //Snow mountains
+            }
+                    </code>
+                </pre>
+            </div>
+        </div>
+        <div class="hidden">
+            <p class="text-no-path-found">No path found :(</p>
         </div>
         <script type="text/javascript" src="./js/jquery.js"></script>
         <script type="text/javascript" src="./js/noise.js"></script>

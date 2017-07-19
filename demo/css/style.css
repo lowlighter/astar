@@ -1,4 +1,6 @@
-.bold { font-weight: bold; }
+/* Miscelleanous */
+    .bold { font-weight: bold; }
+    .hidden { display: none; }
 
 /* Body */
     body {
@@ -7,8 +9,6 @@
         font-family: "Courier New", Courier, monospace;
         margin: 0;
     }
-
-
 
 /* Header */
     header {
@@ -178,16 +178,3 @@
         color: black;
         background-color: white;
     }
-
-/* Summary */
-    summary:hover {
-        cursor: pointer;
-        color: black;
-        background-color: white;
-    }
-
-    details, summary {
-        outline: none;
-    }
-
-    details summary::-webkit-details-marker { display:none; }
