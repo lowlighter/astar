@@ -104,6 +104,7 @@
         /**
          * <pre>
          * Compute connectivity between node.
+         * Thanks to [NoiSek]{@link https://github.com/NoiSek} for solving an issue with stack when using larger grid size.
          * </pre>
          * <div class="alert info">
          * This method isn't called automatically after each update and should be called manually.
@@ -116,11 +117,11 @@
          */
             connect(node, marker) {
                 //Connect
-                    if (arguments.length === 0) { this.nodes.forEach((node, marker) => { this.connect(node, marker) }) }
+                    if (arguments.length === 0) { this.nodes.forEach((node, marker) => { setTimeout(this.connect(node, marker), 0) }) }
                 //Mark if isn't marked and spread
                     else if (node.graph.get(this)._connectivity === undefined) {
                         node.graph.get(this)._connectivity = marker
-                        this.neighbors(node).map(neighbor => { this.connect(neighbor, marker) })
+                        this.neighbors(node).map(neighbor => { setTimeout(this.connect(neighbor, marker), 0) })
                     }
             }
 
