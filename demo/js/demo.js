@@ -183,7 +183,7 @@ $(function () {
             $('[name="profil"]').val(param.profil).on("change", function () {
                 param.profil = $(this).val()
                 $(".code-profil").find("*").text(param.profil)
-                $(".code-profil-name").find("*").text(["Terrestrial", "Aquatic", "Amphibian"][param.profil])
+                $(".code-profil-name").find("*").text([$(".app .text-p1").text(), $(".app .text-p2").text(), $(".app .text-p3").text()][param.profil])
             })
             demo(true);
             interactions.interactive = true
