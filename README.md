@@ -11,6 +11,7 @@ This library is another implementation in JavaScript of the famous **A&ast; algo
     * **Any access order** supported ([x][y] or [y][x])
     * **Diagonals move** support, with or without corner-cutting
     * **Toric** maps support (maps wrapped on itself)
+    * **Jump Point Search** (JPS) support for faster computations on uniform cost grids.  _(NB: Toric support isn't yet supported with JPS)_
 * **3 heuristics** functions availables : Manhattan, Diagonals or Euclidian
     * **Custom** heuristic function also supported
 * **Variable cost** support
