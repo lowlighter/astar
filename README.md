@@ -159,6 +159,18 @@ Note that if you're using a multiple layers graph, you may specify the layer you
     astar.path({x:0, y:0}, {x:2, y:2}, {layer:1})
 ```
 
+### Using Jump Search Point (JPS)
+A&ast; JPS is pruning rules to avoid node exploration expansion. 
+This means that it's generally much faster than classic A*,
+however, it comes with a major **drawback** : movement costs must be uniform.
+
+You may specify that you want to use jps in _options_ when computing a path :
+```javascript
+    astar.path({x:0, y:0}, {x:2, y:2}, {jps:true})
+```
+
+_Nota Bene : This only works for two-dimensionals grid._
+
 ## Project content
 |            |                            |
 | ---------- | -------------------------- |
