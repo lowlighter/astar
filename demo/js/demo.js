@@ -1,7 +1,7 @@
 $(function () {
     //Create PIXI View
         let app = new PIXI.Application(400, 400, {transparent:true})
-        $(".pixi-view").append(app.view)
+        $(".app-view").append(app.view)
     //Load textures
         let size = 8
         PIXI.loader.add("src/sprites.json").load(function () {
@@ -12,7 +12,7 @@ $(function () {
                         x /= X ; y /= Y
                         let e = Math.pow(0.5*(1 + 1*noise.simplex2(1 * x, 1 * y) + 0.5*noise.simplex2(2 * x, 2 * y) + 0.25*noise.simplex2(4 * x, 4 * y)), 2)
                     //Biomes
-                        if (e < 0.1) { return biome.config.SEA }
+                        if (e < 0.1 + biome.sea_variations) { return biome.config.SEA }
                         else if (e < 0.2) { return biome.config.BEACH }
                         else if (e < 0.4) { return biome.config.PLAINS }
                         else if (e < 0.5) { return biome.config.FOREST }
@@ -30,6 +30,7 @@ $(function () {
                     MOUNTAINS:{cost:1.6, sprite:"mountains.png"},
                     SNOW:{cost:2, sprite:"snow.png"},
                 }
+                biome.sea_variations = 0
 
             //Layers
                 let fields = app.stage.addChild(new PIXI.Container())
@@ -40,7 +41,7 @@ $(function () {
             //Declarations
                 let map = [], X = app.view.width/size, Y = app.view.height/size;
                 let astar, start = {x:0, y:0}
-                let param = {torus:0, diagonals:1, heuristic:"euclidian", profil:0, scores:1, cutting:0, jps:0}, taps = 0
+                let param = {torus:0, diagonals:1, heuristic:"euclidian", profil:0, scores:1, cutting:0, jps:0}, taps = 0, ticker = null
 
             //Users interactions
                 let interactions = ui.addChild(new PIXI.Sprite.fromFrame("black.png"))
@@ -124,7 +125,10 @@ $(function () {
             function demo(regenerate) {
                 //Build map
                     if (regenerate) {
+                        app.ticker.remove(ticker)
                         noise.seed(Math.random())
+                        fields.removeChildren()
+                        biome.sea_variations = 0
                         for (let x = 0; x < X; x++) { map[x] = []; for (let y = 0; y < Y; y++) {
                             //Biome
                                 let b = biome(x, y)
@@ -134,6 +138,21 @@ $(function () {
                                 s.width = s.height = size
                                 s.position.set(x*size, y*size)
                         } }
+                        //
+                        ticker = function () {
+                            if (app.ticker.lastTime + 1000 < ticker.lastTime) { return } else { ticker.lastTime = app.ticker.lastTime }
+                            biome.sea_variations = Math.sin(ticker.iterations++/70)*0.01
+                            for (let x = 0; x < X; x++) { for (let y = 0; y < Y; y++) {
+                                //Biome
+                                    let b = biome(x, y)
+                                    map[x][y] = b.cost
+                                //Sprite
+                                    fields.children[y + x*Y].texture = new PIXI.Texture.fromFrame(b.sprite)
+                            } }
+                        }
+                        ticker.lastTime = 0
+                        ticker.iterations = 0
+                        app.ticker.add(ticker)
                     }
 
                 //Create new configuration
@@ -189,3 +208,10 @@ $(function () {
             interactions.interactive = true
         })
 })
+
+
+window.array = []
+window.proxy = new Proxy(array, {
+  get(object, prop) { console.log(object, prop) },
+  set(object, prop) { console.log(object, prop) },
+ })

@@ -93,6 +93,7 @@
                             if (!nodes) { nodes = graph.nodes }
                     }
                 //Return
+                    let update = Graph.fromArray.update.bind(null, graph, edge)
                     return graphs.length > 1 ? graphs : graphs[0]
             }
 
@@ -171,4 +172,32 @@
  */
     Graph.fromArray.edge = function (graph, cost, a, b) {
         if (b) { graph.edge(a, b, cost(graph.data(a), graph.data(b)), cost(graph.data(b), graph.data(a))) }
+    }
+
+/**
+ * TODO
+ * + Indiquer dans la doc que si l"array est un proxy, les couts dynamiques peuvent être automatiques
+ * + Implémenter la méthode de vérification des arrêtes.
+ */
+    Graph.fromArray.update = function (graph, edge, x, y) {
+        console.warn("Graph.fromArray isn't implemented yet")
+        /*
+            let node = graph.node({x, y}, true)
+
+            edge(node, graph.node({x:x-1, y}, true))
+            edge(node, graph.node({x:x+1, y}, true))
+            edge(node, graph.node({x, y:y-1}, true))
+            edge(node, graph.node({x, y:y+1}, true))
+        //Link diagonals (if enabled)
+            if (options.diagonals) {
+                //Check nodes
+                    let lx = graph.adjacent(node, graph.node({x:x-1, y}), true), rx = graph.adjacent(node, graph.node({x:x+1, y}, true))
+                    let oy = graph.adjacent(node, graph.node({x, y:y-1}), true), uy = graph.adjacent(node, graph.node({x, y:y+1}, true))
+                //Link neighbors
+                    if ((lx||oy)||(options.cutting)) { edge(node, graph.node({x:x-1, y:y-1}, true)) }
+                    if ((lx||uy)||(options.cutting)) { edge(node, graph.node({x:x-1, y:y+1}, true)) }
+                    if ((rx||oy)||(options.cutting)) { edge(node, graph.node({x:x+1, y:y-1}, true)) }
+                    if ((rx||uy)||(options.cutting)) { edge(node, graph.node({x:x+1, y:y+1}, true)) }
+            }
+        */
     }

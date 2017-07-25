@@ -150,6 +150,8 @@ Configuration.JPS = class JPS {
 * @param {String} [options.heuristic] - Name of heuristic function to use (override default heuristic)
 * @param {Object} [options.heuristicOptions] - Options for heuristic options (override default heuristic options)
 * @param {Function} [options.callback] - Callback (will receive path and scores as arguments)
+* @param {Boolean} [options.static] - If enabled, a connectivity check will be performed before processing, thus avoiding useless computations if path doesn't exist.
+*                                     [Graph.connect]{@link Graph#connect} must be called each time you're adding or removing edges in Graph.
 * @return {Node[]} Path
 */
 Configuration.prototype.jps = function (start, goal, options = {}) {
@@ -179,7 +181,7 @@ Configuration.prototype.jps = function (start, goal, options = {}) {
         let jump = Configuration.JPS.jump.bind(this, access, graph, scores, goal)
 
     //Computing path (check if nodes are connected before computing)
-        if (graph.connected(start, goal)) {
+        if ((!options.static)||(graph.connected(start, goal))) {
             while (open.size) {
                 //Current node
                     let current = open.pop().node

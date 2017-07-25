@@ -46,7 +46,7 @@
         }
 
 /* Pixi view */
-    .pixi-view {
+    .app-view {
         width: 400px;
         height: 400px;
         cursor: pointer;

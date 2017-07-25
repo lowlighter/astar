@@ -70,13 +70,26 @@
 
         /**
          * <pre>
-         * Return node data from associated graph.
+         * Return or update node data from associated graph.
          * Note that whilst nodes can be associated to multiples graphs, node data is specific to each graph.
+         * You can set global properties for each node directly by creating properties on it.
          * </pre>
+         * @example <caption>Overriding Graph.id method</caption>
+         * // Graph specific data
+         * graph.data(node, {hello:"world"})
+         * graph.data(node) //Returns {hello:"world"}
+         * node.hello //undefined
+         *
+         * //Gmpbal node data
+         * node.hello = "universe"
+         * graph.data(node) //Return {hello:"world"}
+         * node.hello //Returns "universe"
          * @param {Node} node - Node
+         * @param {Object} [content] - New node content
          * @return {Object} Node data
          */
-            data(node) {
+            data(node, content) {
+                if (argument.length === 2) { node.graph.get(this)._data = content }
                 return node.graph.get(this)._data
             }
 
@@ -325,6 +338,7 @@
                             if (!nodes) { nodes = graph.nodes }
                     }
                 //Return
+                    let update = Graph.fromArray.update.bind(null, graph, edge)
                     return graphs.length > 1 ? graphs : graphs[0]
             }
 
@@ -403,6 +417,34 @@
  */
     Graph.fromArray.edge = function (graph, cost, a, b) {
         if (b) { graph.edge(a, b, cost(graph.data(a), graph.data(b)), cost(graph.data(b), graph.data(a))) }
+    }
+
+/**
+ * TODO
+ * + Indiquer dans la doc que si l"array est un proxy, les couts dynamiques peuvent être automatiques
+ * + Implémenter la méthode de vérification des arrêtes.
+ */
+    Graph.fromArray.update = function (graph, edge, x, y) {
+        console.warn("Graph.fromArray isn't implemented yet")
+        /*
+            let node = graph.node({x, y}, true)
+
+            edge(node, graph.node({x:x-1, y}, true))
+            edge(node, graph.node({x:x+1, y}, true))
+            edge(node, graph.node({x, y:y-1}, true))
+            edge(node, graph.node({x, y:y+1}, true))
+        //Link diagonals (if enabled)
+            if (options.diagonals) {
+                //Check nodes
+                    let lx = graph.adjacent(node, graph.node({x:x-1, y}), true), rx = graph.adjacent(node, graph.node({x:x+1, y}, true))
+                    let oy = graph.adjacent(node, graph.node({x, y:y-1}), true), uy = graph.adjacent(node, graph.node({x, y:y+1}, true))
+                //Link neighbors
+                    if ((lx||oy)||(options.cutting)) { edge(node, graph.node({x:x-1, y:y-1}, true)) }
+                    if ((lx||uy)||(options.cutting)) { edge(node, graph.node({x:x-1, y:y+1}, true)) }
+                    if ((rx||oy)||(options.cutting)) { edge(node, graph.node({x:x+1, y:y-1}, true)) }
+                    if ((rx||uy)||(options.cutting)) { edge(node, graph.node({x:x+1, y:y+1}, true)) }
+            }
+        */
     }
 
         
@@ -926,6 +968,8 @@ class Configuration {
      * @param {String} [options.heuristic] - Name of heuristic function to use (override default heuristic)
      * @param {Object} [options.heuristicOptions] - Options for heuristic options (override default heuristic options)
      * @param {Boolean} [options.jps] - Execute A* JPS (Jump Point Search) to speed up computation
+     * @param {Boolean} [options.static] - If enabled, a connectivity check will be performed before processing, thus avoiding useless computations if path doesn't exist.
+     *                                     [Graph.connect]{@link Graph#connect} must be called each time you're adding or removing edges in Graph.
      * @param {Function} [options.callback] - Callback (will receive path and scores as arguments)
      * @return {Node[]} Path
      */
@@ -945,7 +989,7 @@ class Configuration {
                 scores.set(start, {score:0, from:null})
 
             //Computing path (check if nodes are connected before computing)
-                if (graph.connected(start, goal)) {
+                if ((!options.static)||(graph.connected(start, goal))) {
                     while (open.size) {
                         //Current node
                             let current = open.pop().node
@@ -1134,6 +1178,8 @@ Configuration.JPS = class JPS {
 * @param {String} [options.heuristic] - Name of heuristic function to use (override default heuristic)
 * @param {Object} [options.heuristicOptions] - Options for heuristic options (override default heuristic options)
 * @param {Function} [options.callback] - Callback (will receive path and scores as arguments)
+* @param {Boolean} [options.static] - If enabled, a connectivity check will be performed before processing, thus avoiding useless computations if path doesn't exist.
+*                                     [Graph.connect]{@link Graph#connect} must be called each time you're adding or removing edges in Graph.
 * @return {Node[]} Path
 */
 Configuration.prototype.jps = function (start, goal, options = {}) {
@@ -1163,7 +1209,7 @@ Configuration.prototype.jps = function (start, goal, options = {}) {
         let jump = Configuration.JPS.jump.bind(this, access, graph, scores, goal)
 
     //Computing path (check if nodes are connected before computing)
-        if (graph.connected(start, goal)) {
+        if ((!options.static)||(graph.connected(start, goal))) {
             while (open.size) {
                 //Current node
                     let current = open.pop().node

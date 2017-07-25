@@ -55,13 +55,26 @@
 
         /**
          * <pre>
-         * Return node data from associated graph.
+         * Return or update node data from associated graph.
          * Note that whilst nodes can be associated to multiples graphs, node data is specific to each graph.
+         * You can set global properties for each node directly by creating properties on it.
          * </pre>
+         * @example <caption>Overriding Graph.id method</caption>
+         * // Graph specific data
+         * graph.data(node, {hello:"world"})
+         * graph.data(node) //Returns {hello:"world"}
+         * node.hello //undefined
+         *
+         * //Gmpbal node data
+         * node.hello = "universe"
+         * graph.data(node) //Return {hello:"world"}
+         * node.hello //Returns "universe"
          * @param {Node} node - Node
+         * @param {Object} [content] - New node content
          * @return {Object} Node data
          */
-            data(node) {
+            data(node, content) {
+                if (argument.length === 2) { node.graph.get(this)._data = content }
                 return node.graph.get(this)._data
             }
 
