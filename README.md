@@ -5,7 +5,7 @@ This library is another implementation in JavaScript of the famous **A&ast; algo
 * [Documentation](https://lowlighter.github.io/astar/docs/)
 * [About](https://lowlight.fr/en/blog/pathfinding-library/)
 
-![Image of pathfinding](./../demo/imgs/demo.gif)
+![Image of pathfinding](https://github.com/lowlighter/astar/raw/master/demo/imgs/demo.gif)
 
 # Features
 * Based on **Graph theory** for more flexibility

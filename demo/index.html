@@ -42,40 +42,40 @@
                 <div class="app-controller">
                     <table>
                         <tr>
-                            <td>Diagonales</td>
+                            <td>Diagonals</td>
                             <td>
                                 <select name="diagonals">
-                                    <option value="1">Activées</option>
-                                    <option value="0">Désactivées</option>
+                                    <option value="1">Enabled</option>
+                                    <option value="0">Disabled</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td>Couper à travers</td>
+                            <td>Cutting</td>
                             <td>
                                 <select name="cutting">
-                                    <option value="1">Oui</option>
-                                    <option value="0">Non</option>
-                                    <option value="strict">Non (Strict)</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    <option value="strict">No (Strict)</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td>Carte torique</td>
+                            <td>Toric map</td>
                             <td>
                                 <select name="torus">
-                                    <option value="1">Oui</option>
-                                    <option value="0">Non</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td>Heuristique</td>
+                            <td>Heuristic</td>
                             <td>
                                 <select name="heuristic">
                                     <option value="manhattan">Manhattan</option>
-                                    <option value="diagonal">Diagonales</option>
-                                    <option value="euclidian">Euclidienne</option>
+                                    <option value="diagonal">Diagonal</option>
+                                    <option value="euclidian">Euclidian</option>
                                 </select>
                             </td>
                         </tr>
@@ -83,9 +83,9 @@
                             <td>Profil</td>
                             <td>
                                 <select name="profil">
-                                    <option value="0">Terrestre</option>
-                                    <option value="1">Aquatique</option>
-                                    <option value="2">Amphibien</option>
+                                    <option value="0">Terrestrial</option>
+                                    <option value="1">Aquatic</option>
+                                    <option value="2">Amphibian</option>
                                 </select>
                             </td>
                         </tr>
@@ -93,8 +93,8 @@
                             <td>Scores</td>
                             <td>
                                 <select name="scores">
-                                    <option value="1">Afficher</option>
-                                    <option value="0">Masquer</option>
+                                    <option value="1">Show</option>
+                                    <option value="0">Hide</option>
                                 </select>
                             </td>
                         </tr>
@@ -102,14 +102,14 @@
                             <td>Jump Point Search</td>
                             <td>
                                 <select name="jps">
-                                    <option value="1">Activé</option>
-                                    <option value="0">Désactivé</option>
+                                    <option value="1">Enabled</option>
+                                    <option value="0">Disabled</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td>Carte</td>
-                            <td><button name="generate">Générer une nouvelle carte</button></td>
+                            <td>Map</td>
+                            <td><button name="generate">Generate a new one</button></td>
                         </tr>
                     </table>
                 </div>
@@ -118,18 +118,18 @@
         <div class="container-full">
             <pre>
                 <code class="code">
-        //Initialisation
+        //Initialization
             let map = [], X = <span class="code-X">0</span>, Y = <span class="code-Y">0</span>
 
-        //Création de la carte
+        //Map generation
             for (let x = 0; x < X; x++) { map[x] = []
                 for (let y = 0; y < Y; y++) {
-                    //Retourne une valeur positive pour les biomes terrestres, négative pour les biomes aquatiques
+                    //Returns a positive value for terrestrial biomes and negative for the aquatics ones
                         map[x][y] = biome(x, y)
                 }
             }
 
-        //Paramétrage des options
+        //Options
             let options = {
                 order:"xy",
                 diagonals:<span class="code-diagonals">true</span>,
@@ -139,25 +139,30 @@
                 thread:false
             }
 
-        //Nouvelle configuration
-        //Il est possible de définir plusieurs couches avec différents paramètres/fonction de coût avec une même carte
-        //n désigne la cellule de départ et m celle d'arrivée
+        //Create configuration
+        //It's possible to define multiple layers with differents options/cost functions with a same map
+        //Cost function returns the cost to go from node n to node m
             let astar = new Lowlight.Astar.Configuration(map,
-                $.extend({cost(n, m) { return m >= 0 ? m : null }}, options), //Terrestre
+                $.extend({cost(n, m) { return m >= 0 ? m : null }}, options), //Terrestrial
                 $.extend({cost(n, m) { return m < 0 ? -m : null }}, options), //Aquatic
-                $.extend({cost(n, m) { return Math.abs(m) }}, options) //Tout type de terrain
+                $.extend({cost(n, m) { return Math.abs(m) }}, options) //All biomes types
             )
 
-        //Calcul d'un chemin
+        //Path computing
             astar.path({x:<span class="code-start-x">0</span>, y:<span class="code-start-y">0</span>}, {x:<span class="code-goal-x">0</span>, y:<span class="code-goal-y">0</span>}, {
                 callback(path, scores) { path.map(n => console.log(n)) },
-                layer:<span class="code-profil">0</span>, //<span class="code-profil-name">Terrestre</span>
-                jps:<span class="code-jps">false</span>,
-                static:true, //Teste si les noeuds sont connectés pour éviter les calculs inutiles
+                layer:<span class="code-profil">0</span>, //<span class="code-profil-name">Terrestrial</span>
+                jps:<span class="code-jps">false</span>
             })</code>
             </pre>
         </div>
 
+        <div class="hidden">
+            <p class="text-no-path-found">No path found :(</p>
+            <p class="text-p1">Terrestrial</p>
+            <p class="text-p2">Aquatic</p>
+            <p class="text-p3">Amphibian</p>
+        </div>
 
         <script type="text/javascript" src="./js/jquery.js"></script>
         <script type="text/javascript" src="./js/noise.js"></script>
