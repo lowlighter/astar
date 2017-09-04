@@ -1,58 +1,59 @@
-/* Miscelleanous */
-    .bold { font-weight: bold; }
-    .hidden { display: none; }
-
+.bold { font-weight: bold; }
+.hidden { display: none; }
 /* Body */
     body {
-        background: #0C0C0C;
-        color: white;
-        font-family: "Courier New", Courier, monospace;
         margin: 0;
+        font-family: "Lucida Console", Monaco, monospace;
+        background-color: black;
     }
 
 /* Header */
     header {
-        padding: 0 40px;
+        padding: 20px;
+        padding-bottom: 0px;
         border-bottom: 1px solid #333333;
-        margin-bottom: 12px;
         display: flex;
         vertical-align: middle;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        flex-direction: column;
+        color: white;
     }
 
-    /* Project name */
-        header h1 {
-            display: inline-block;
+    @media (min-width: 768px) {
+        header {
+            flex-direction: row;
+            height: 72px;
+            padding: 0 20px;
         }
+    }
 
-    /* Element wrapper */
-        header div {
-            padding: 10px;
-            display: none;
-        }
+/* Title and menu */
+    header h1 {
+        margin: 0;
+    }
 
-        @media (min-width: 768px) { header div { display: block;} header h1 { width: 80%; } }
-
-    /* Links */
-        header a, header a:visited {
-            color: white;
-            text-decoration: none;
-        }
-
-        header a:hover {
-            background: white;
-            color: black;
-        }
-
-/* Pixi view */
-    .app-view {
-        width: 400px;
-        height: 400px;
-        cursor: pointer;
+    nav a, nav a:visited {
+        display: inline-block;
+        padding: 20px 0px;
+        width: 140px;
+        text-align: center;
         background-color: black;
-        border-radius: .25rem;
     }
+
+/* Links */
+    a:hover {
+        filter: invert();
+        cursor: pointer;
+    }
+
+    a, a:visited {
+        text-decoration: none;
+        font-weight: bold;
+        background-color: white;
+        color: #61AFEF;
+    }
+
 
 /* Container */
     .container {
@@ -61,65 +62,34 @@
         max-width: 100%;
     }
 
+    .container-full {
+        width: 100%;
+    }
+
+    main.container-full {
+        background-color: white;
+    }
+
     @media (min-width: 576px) { .container { width: 540px; } }
     @media (min-width: 768px) { .container { width: 720px; } }
     @media (min-width: 992px) { .container { width: 960px; } }
     @media (min-width: 1200px) { .container { width: 1140px; } }
 
-/* App */
-    .app {
-        margin: 40px 0;
-        overflow: auto;
-    }
-
-    .app .wrapper {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    @media (min-width: 960px) { .app .wrapper { flex-direction: row; } }
-
-    /* App configuration */
-        .app table td {
-            border-collapse: collapse;
-            padding: 0px 16px;
-            height: 38px;
-            width: auto;
-        }
-
-        .app.card {
-            background-color: #272B2D;
-        }
-
-        .app div {
-            margin: 20px;
-        }
-
-/* Cards */
-    .card {
-        border: 1px solid rgba(0, 0, 0, 0.125);
+/* Local warning */
+    p.local-warning {
+        padding: .75rem 1.25rem;
+        margin: 1rem auto;
+        border: 1px solid #faf2cc;
         border-radius: .25rem;
-        overflow: auto;
-    }
-
-    .card h3 {
-        border-top: none;
-        border-radius: calc(-0.75rem) calc(-0.75rem) 0 0;
-        font-size: 16px;
-        padding: 12px 16px;
-        margin: 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        display: block;
-        background-color: #242729;
-        color: #dde4e8;
+        background: #fcf8e3;
+        color: #8a6d3b;
+        display: none;
     }
 
 /* Pre and code */
-    .code pre { margin: 0; }
+    pre { margin: 0; }
 
-    .code pre code {
+    pre code.hljs, pre code {
         margin: 0;
         padding: 20px 40px;
         font-family: Source Code Pro,Menlo,monospace;
@@ -129,52 +99,69 @@
         font-weight: 500;
         margin: 0;
         padding: 0;
-        background: #282c34;
+        background: none;
     }
 
-    .card.code {
-        background: #282c34;
-        margin-bottom: 40px;
+
+/* Application */
+    div.app {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
     }
 
-/* Button and inputs */
-    select, button, input {
-        font-size: 14px;
-        font-weight: 400;
-        background-color: white;
+    @media (min-width: 840px) {
+        div.app {
+            flex-direction: row;
+            min-width: 800px;
+        }
+        div.app-controller {
+            flex-grow: 1;
+        }
+    }
+
+    div.app-view, div.app-controller {
+        width: 400px;
+        min-height: 400px;
+    }
+
+    div.app-view canvas {
+        width: 100%;
+    }
+
+    div.app-controller table {
+        padding: 20px;
+        color: white;
+        width: 100%;
+        height: 100%;
+        color: black;
+    }
+
+    div.app-controller table td:nth-child(1), div.app-controller table td:nth-child(2) {
+        width: 50%;
+    }
+
+    div.app-controller select, div.app-controller button, div.app-controller input {
+        background: white;
+        color: black;
+        text-align: left;
         cursor: pointer;
         border-radius: 10px;
-        border: 2px solid transparent;
+        border: 2px solid black;
         padding: 6px 10px;
         margin-bottom: 2px;
-        min-width: 240px;
-        text-align: left;
-    }
-
-    select, button {
+        width: 100%;
+        display: block;
         -moz-box-sizing: content-box;
         -webkit-box-sizing:content-box;
         box-sizing:content-box;
-        display: block;
     }
 
-    select:focus, button:focus, input:focus {
+    div.app-controller select:focus, div.app-controller button:focus, div.app-controller input:focus {
         outline: none;
-        border: 2px double black;
+        border: 2px double #61AFEF;
     }
 
-    [disabled] {
-        opacity: 0.5;
-    }
-
-/* Links */
-    a, a:visited {
-        color:white;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    a:hover {
-        color: black;
-        background-color: white;
+    div.app-controller select[disabled], div.app-controller button[disabled], div.app-controller input[disabled] {
+        opacity: 0.5
     }

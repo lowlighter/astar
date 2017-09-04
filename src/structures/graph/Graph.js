@@ -74,7 +74,7 @@
          * @return {Object} Node data
          */
             data(node, content) {
-                if (argument.length === 2) { node.graph.get(this)._data = content }
+                if (arguments.length === 2) { node.graph.get(this)._data = content }
                 return node.graph.get(this)._data
             }
 

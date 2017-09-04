@@ -296,7 +296,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     if (items.length) {
         var itemsNav = '';
         var previousCategory = undefined;
-        items.sort((a, b) => { return (a.category||"").toString().localeCompare((b.category||"").toString) || a.name.localeCompare(b.name) }).forEach(function(item) {
+        items.sort((a, b) => { return (a.category||"").toString().localeCompare((b.category||"").toString()) || a.name.localeCompare(b.name) }).forEach(function(item) {
             if ((item.category)&&(item.category[0] != previousCategory)) {
                 previousCategory = item.category[0] ;
                 itemsNav += '<li class="category">'+env.conf.categories[item.category[0]].displayName+'</li>'

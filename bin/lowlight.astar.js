@@ -89,7 +89,7 @@
          * @return {Object} Node data
          */
             data(node, content) {
-                if (argument.length === 2) { node.graph.get(this)._data = content }
+                if (arguments.length === 2) { node.graph.get(this)._data = content }
                 return node.graph.get(this)._data
             }
 
@@ -251,7 +251,7 @@
  * @param {Object} [options.cost=Graph.fromArray.cost] - Cost function
  * @param {Boolean} [options.torus=false] - If enabled, map will be treated as a torus
  * @param {Boolean} [options.diagonals=false] - If enabled, diagonals movements are allowed
- * @param {Boolean} [options.cutting=false] - If enabled, diagonals movements between two blocking cells are allowed
+ * @param {Boolean|String} [options.cutting=false] - If enabled, diagonals movements between two blocking cells are allowed. If set to "strict", diagonals movements with a blocking cell is not allowed.
  * @return {Graph} Graph generated from array
  * @see {Graph}
  * @author Lecoq Simon
@@ -325,10 +325,17 @@
                                     let lx = graph.adjacent(node, graph.nodes.get(id(x-1, y))), rx = graph.adjacent(node, graph.nodes.get(id(x+1, y)))
                                     let oy = graph.adjacent(node, graph.nodes.get(id(x, y-1))), uy = graph.adjacent(node, graph.nodes.get(id(x, y+1)))
                                 //Link neighbors
-                                    if ((lx||oy)||(options.cutting)) { edge(node, graph.nodes.get(id(x-1, y-1))) }
-                                    if ((lx||uy)||(options.cutting)) { edge(node, graph.nodes.get(id(x-1, y+1))) }
-                                    if ((rx||oy)||(options.cutting)) { edge(node, graph.nodes.get(id(x+1, y-1))) }
-                                    if ((rx||uy)||(options.cutting)) { edge(node, graph.nodes.get(id(x+1, y+1))) }
+                                    if (options.cutting === "strict") {
+                                        if (lx && oy) { edge(node, graph.nodes.get(id(x-1, y-1))) }
+                                        if (lx && uy) { edge(node, graph.nodes.get(id(x-1, y+1))) }
+                                        if (rx && oy) { edge(node, graph.nodes.get(id(x+1, y-1))) }
+                                        if (rx && uy) { edge(node, graph.nodes.get(id(x+1, y+1))) }
+                                    } else {
+                                        if ((lx||oy)||(options.cutting)) { edge(node, graph.nodes.get(id(x-1, y-1))) }
+                                        if ((lx||uy)||(options.cutting)) { edge(node, graph.nodes.get(id(x-1, y+1))) }
+                                        if ((rx||oy)||(options.cutting)) { edge(node, graph.nodes.get(id(x+1, y-1))) }
+                                        if ((rx||uy)||(options.cutting)) { edge(node, graph.nodes.get(id(x+1, y+1))) }
+                                    }
                             } } }
 
                         //Connectivity computing and id overriding
@@ -338,7 +345,6 @@
                             if (!nodes) { nodes = graph.nodes }
                     }
                 //Return
-                    let update = Graph.fromArray.update.bind(null, graph, edge)
                     return graphs.length > 1 ? graphs : graphs[0]
             }
 
@@ -424,7 +430,7 @@
  * + Indiquer dans la doc que si l"array est un proxy, les couts dynamiques peuvent être automatiques
  * + Implémenter la méthode de vérification des arrêtes.
  */
-    Graph.fromArray.update = function (graph, edge, x, y) {
+    Graph.fromArray.update = function (graphs, edge, x, y) {
         console.warn("Graph.fromArray isn't implemented yet")
         /*
             let node = graph.node({x, y}, true)

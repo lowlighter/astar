@@ -1,3 +1,7 @@
+/**
+ * This file allow to quickly build project from sources files.
+ */
+
 //Dependancies
     const fs = require("fs")
     const path = require("path")
@@ -11,7 +15,7 @@
 //Title
     console.log("\033[2J")
     console.log("+-------------------------------+")
-    console.log("| JSDoc 3 - Spotlight theme     |")
+    console.log(`| ${(process.env.npm_package_config_project_name+" ".repeat(29)).substr(0, 29)} |`)
     console.log("+-------------------------------+")
 
 //Scripts
@@ -30,12 +34,11 @@
     function execute(name, bin, args) {
         try {
             //Check installation
-                if ((process.platform === "win32")&&(/node_modules\/\.bin\/[^/\\]*$/.test(bin))) { bin += ".cmd" }
                 bin = bin.split("/"), bin.unshift(__dirname)
                 let pckg = path.join.apply(null, bin)
                 if (!fs.existsSync(pckg)) { throw new Error(`${name} isn't installed`) }
             //Execute command
-                let c = spawn(pckg, args)
+                let c = spawn(pckg, args, {shell:true})
             //Output
                 if (c.stderr.length) { throw new Error(c.stderr) }
                 console.log("    \x1b[32m%s\x1b[0m", "Success")
@@ -49,4 +52,3 @@
 //Return
     console.log("General status :")
     if (exit) { console.log("    \x1b[31m%s\x1b[0m", `${exit} error${exit > 1 ? "s" : ""} occured :(`) } else { console.log("    \x1b[32m%s\x1b[0m", "Success :)") }
-    process.exit(exit)

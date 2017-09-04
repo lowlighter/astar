@@ -2,14 +2,15 @@
 This is a template for [JSDoc 3](https://github.com/jsdoc3/jsdoc).
 
 * [Live demo](https://lowlighter.github.io/jsdoc-spotlight/demo)
+* [About](https://lowlight.fr/en/blog/documentation-template/)
 
-# Usage
-Start by installing dependencies with the following command :
-```
+## Getting Started
+You'll need to run the following command the first time to install dependencies.
+```shell
 npm install
 ```
 
-You may configure options for documentation generation in your **conf.json** file :
+Configure options for documentation generation in your `conf.json` file :
 ```json
 {
   "name": "<Project name>",
@@ -18,8 +19,8 @@ You may configure options for documentation generation in your **conf.json** fil
 }
 ```
 
-This template use the [**@category**](https://github.com/ErnstHaagsman/jsdoc-plugins/blob/master/categories.md) tag,
-you may create some create a **categories.json** file and add some categories in it :
+As this template uses the [**@category**](https://github.com/ErnstHaagsman/jsdoc-plugins/blob/master/categories.md) tag, you'll need to
+create a `categories.json` file :
 ```json
 {
   "category_1" : {"displayName" : "<Category 1>"},
@@ -28,29 +29,31 @@ you may create some create a **categories.json** file and add some categories in
 }
 ```
 
-Then generate your documentation with the usual command (change path if needed) :
-```
+Note that you don't have to use them, but ensure that `categories.json` still exists.
+
+Then generate your documentation with the usual command *(change path if needed)* :
+```shell
 jsdoc src.js -a all -c conf.json -t spotlight -R readme.md
 ```
 
-## Rebuild project
-
-If you need to rebuild project, just run the following command :
-```
+## Rebuild project and expanding the library
+To rebuild project, just run the following command :
+```shell
 npm run build
-# src/static/js/scripts.js will be minified
-# src/static/css/styles.less will be processed and minified
-# demo/docs will be updated so you can have a preview of your changes
 ```
 
-## Notes
-This template has been edited from the default theme to suit my needs.
-It may lacks some functionnalities that I removed because I didn't use them.
+This will minify both `src/static/js/scripts.js` and `src/static/css/styles.less`.
+`demo/docs` will be also be updated so you can have a preview of your changes.
 
-The version of [Highlight.js](https://highlightjs.org/download/) included only contains **JavaScript**, **JSON** and **HTML** color syntaxing.
-You may download a more complete pack if needed.
+* Less processing is performed with [Less](https://github.com/less/less-docs).
+* File minification is performed with [Babel minify](https://github.com/babel/minify).
+* Documentation is generated with [JSDoc 3](https://github.com/jsdoc3/jsdoc).
+* Syntaxic coloration for `JavaScript`, `JSON` and `HTML` is rendered with [Highlight.js](https://highlightjs.org/download/)
 
-The template is designed to be responsive, but it's still optimized for desktop users.
+
+The template is designed to support mobile devices, but is optimized for desktop.
 
 ## License
-This project is licensed under the MIT License. See [LICENSE.md](https://github.com/lowlighter/jsdoc-spotlight/blob/master/LICENSE.md) file for details.
+This project is licensed under the MIT License.
+
+See [LICENSE.md](https://github.com/lowlighter/file-system/blob/master/LICENSE.md) file for details.

@@ -185,6 +185,10 @@ main section.source {
   font-size: 14px;
   line-height: 21px;
 }
+.members p img,
+.readme p img {
+  max-width: 100%;
+}
 .members header,
 .readme header {
   margin: 0 -40px;
