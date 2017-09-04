@@ -3,6 +3,9 @@ This library is another implementation in JavaScript of the famous **A&ast; algo
 
 * [Live demo](https://lowlighter.github.io/astar/demo/)
 * [Documentation](https://lowlighter.github.io/astar/docs/)
+* [About](https://lowlight.fr/en/blog/pathfinding-library/)
+
+![Image of pathfinding](./../demo/imgs/demo.gif)
 
 # Features
 * Based on **Graph theory** for more flexibility
@@ -19,19 +22,23 @@ This library is another implementation in JavaScript of the famous **A&ast; algo
 * Use of Binary Heaps and Connectivity to **speed up** calculations
 
 ## Getting Started
-First of all, you need to include the library :
+First of all, you'll need to include the library :
 ```html
     <script src="./bin/lowlight.astar.js"></script>
 ```
 
-Then you may want create an alias for convenience :
+You may include the minified library instead :
+```html
+    <script src="./bin/lowlight.astar.min.js"></script>
+```
+
+Then you may create alias for convenience :
 ```javascript
     let Astar = Lowlight.Astar
 ```
 
-## Preparing a map
+## Create a graph
 
-### Create a graph
 If you're using a custom data structure, you'll need to convert it into a Graph struture. Don't worry, it's quite easy.
 
 Assume your datas look like this :
@@ -49,7 +56,7 @@ First, start by creating a new Graph and some nodes :
     c = new Astar.Node(c.id, c) //c.gym = "Volcano badge"
 ```
 
-Then you'll need to override **graph.id** method because graphs instances only use numbers as identifiers.
+Then you'll need to override `Graph.id(id)` method because graphs instances only use numbers as identifiers.
 ```javascript
     //Override graph.id method
     graph.id = function (name) {
@@ -67,7 +74,7 @@ Finally link different nodes :
 ```
 
 ### Create a graph from an array structure
-For convenience, you may also create directly a graph from an array structure without specific order :
+For conveniency, it's possible to create directly a graph from an array structure without specific order :
 
 #### YX Order
 ```javascript
@@ -87,7 +94,7 @@ For convenience, you may also create directly a graph from an array structure wi
 ```
 
 ## Create a configuration
-To create a new **Configuration**, just type the following code :
+To create a new `Configuration`, just type the following code :
 ```javascript
     let astar = new Astar.Configuration(map)
 ```
@@ -105,17 +112,16 @@ If you want to specify options, you can pass a second argument to instanciation 
     })
 ```
 
-If you want to reuse same map but with different option, just create instance with multiple **options** objects.
+If you want to reuse same map but with different option, just create instance with multiple `options` objects.
 ```javascript
     let graph = new Astar.Configuration(map, layer1, layer2, layer3)
 ```
 
-
 ### Cost function
-Cost function takes will be called with two **Node** instances : source node and destination node.
+Cost function takes will be called with two `Node` instances : source node and destination node.
 It must returns a number or `null`.
 
-While it's possible to use `Infinity` and negatives values, it isn't recommanded because it can leads to suspicious behaviour.
+While it's possible to use `Infinity` and negatives values, it isn't advised because it can leads to suspicious behaviours.
 
 Most of the time, you'll only need the second argument, but you may want to use the first one to detect transitions.
 For example, going from plains to mountains may cost 2 whereas going from mountains to mountains may cost only 1.
@@ -160,9 +166,8 @@ Note that if you're using a multiple layers graph, you may specify the layer you
 ```
 
 ### Using Jump Search Point (JPS)
-A&ast; JPS is pruning rules to avoid node exploration expansion. 
-This means that it's generally much faster than classic A*,
-however, it comes with a major **drawback** : movement costs must be uniform.
+A&ast; JPS is pruning rules to avoid node exploration expansion.
+This means that it's generally much faster than classic A&ast;, however, it comes with a major **drawback** : movement costs must be uniform.
 
 You may specify that you want to use jps in _options_ when computing a path :
 ```javascript
@@ -171,27 +176,49 @@ You may specify that you want to use jps in _options_ when computing a path :
 
 _Nota Bene : This only works for two-dimensionals grid._
 
+### Using static graphs
+If your graph is static, you can set the `static` option to prevent useless computations.
+Before computing a path, it'll do a connectivity test to check if a path exists before computing one.
+
+```javascript
+    astar.path({x:0, y:0}, {x:2, y:2}, {static:true})
+```
+
+You can also use it on dynamics graphs, but don't forget to rebuild connectivity by calling `graph.connectivity()` method each time you edit it.
+
 ## Project content
-|            |                            |
-| ---------- | -------------------------- |
-| **/bin**   | Production and test files  |
-| **/src**   | Source files               |
-| **/demo**  | Demo and codes examples    |
-| **/docs**  | Library's documentations   |
+|            |                             |
+| ---------- | --------------------------- |
+| **/bin**   | Live and dev scrripts files |
+| **/src**   | Source files                |
+| **/demo**  | Demo and codes examples     |
+| **/docs**  | Documentation               |
 
-### Rebuild project
-
-If you need to rebuild project, just run the following command :
-```
-npm run build
-# /bin will be updated with /src scripts files
-# /docs will be updated
-```
-
-Don't forget to install dependencies before running the previous command.
-```
+## Rebuild project and expanding the library
+You'll need to run the following command the first time to install dependencies.
+```shell
 npm install
 ```
 
+Then to rebuild project, just run the following command :
+```shell
+npm run build
+```
+
+This will update `/bin` files with included `/src` files.
+Although `package.json` (which contains `"source" and "output"` paths) are preconfigured, you may need to reconfigure them if you're planning to expand this library.
+
+To include a file just use the following syntax in the `"source"` file :
+```javascript
+    /* #include <path/to/file.js> */
+```
+
+* File minification is performed with [Babel minify](https://github.com/babel/minify).
+* Documentation is generated with [JSDoc 3](https://github.com/jsdoc3/jsdoc).
+
+Although `package.json` (which contains `"jsdoc_source", "jsdoc_output", "jsdoc_config" and "jsdoc_readme"`) and `docs/categories.json` are preconfigured, you may need to reconfigure them if you're planning to expand this library.
+
 ## License
-This project is licensed under the MIT License. See [LICENSE.md](https://github.com/lowlighter/astar/blob/master/LICENSE.md) file for details.
+This project is licensed under the MIT License.
+
+See [LICENSE.md](https://github.com/lowlighter/quadtree/blob/master/LICENSE.md) file for details.
