@@ -6,6 +6,7 @@
     const fs = require("fs")
     const path = require("path")
     const spawn = require("child_process").spawnSync
+    const hash = require("crypto").createHash("sha256")
     const src = path.join(__dirname, process.env.npm_package_config_source)
     const out = path.join(__dirname, process.env.npm_package_config_output)
     let exit = 0
@@ -39,11 +40,12 @@
 //Writing all content in concatened file
     console.log(`Saving project :`)
     try { fs.writeFileSync(out, content), console.log("    \x1b[32m%s\x1b[0m", out) } catch (e) { console.log("    \x1b[31m%s\x1b[0m", `${out} (failed)`) ; exit++ }
+    try { hash.update(content), console.log("    \x1b[32m%s\x1b[0m", `Sha-256 : ${hash.digest("hex")}`) } catch (e) {  }
 
 //Scripts
     console.log("Scripts minification :")
     let min = out.replace(/js$/, "min.js")
-    exit += execute("Babili", "../node_modules/.bin/babili", [out, "-o", min])
+    exit += execute("Babel-minify", "../node_modules/.bin/babel-minify", [out, "-o", min])
     try {
         let mcontent = fs.readFileSync(min).toString()
         let license = fs.readFileSync("./LICENSE.md").toString()
@@ -77,9 +79,9 @@
                 let pckg = path.join.apply(null, bin)
                 if (!fs.existsSync(pckg)) { throw new Error(`${name} isn't installed`) }
             //Execute command
-                let c = spawn(pckg, args, {shell:true})
+                let c = spawn(pckg, args, {shell:true, stdio:["inherit", "pipe", "pipe"]})
             //Output
-                if (c.stderr.length) { throw new Error(c.stderr) }
+                if (c.stderr.length) { throw new Error(c.stderr.toString().replace(/\n*$/, "")) }
                 console.log("    \x1b[32m%s\x1b[0m", "Success")
                 return 0
         } catch (e) {
