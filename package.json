@@ -11,8 +11,9 @@
     "dependencies": {
         "babel-minify": "^0.2.0",
         "jsdoc": "^3.4.3",
-        "less": "^2.7.2",
-        "less-plugin-clean-css": "^1.5.1"
+        "less": "^2.7.3",
+        "less-plugin-clean-css": "^1.5.1",
+        "marked": "^0.3.9"
     },
     "scripts": {
         "build": "node ./src/build.js"
