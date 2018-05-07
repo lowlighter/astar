@@ -1,58 +1,72 @@
-.bold { font-weight: bold; }
-.hidden { display: none; }
+/* Miscelleanous */
+  .bold { font-weight: bold; }
+  .hidden { display: none; }
+
 /* Body */
-    body {
-        margin: 0;
-        font-family: "Lucida Console", Monaco, monospace;
-        background-color: black;
-    }
+  body {
+    margin: 0;
+    font-family: lucida console,Monaco,monospace;
+    background-color: black;
+  }
 
 /* Header */
-    header {
-        padding: 20px;
-        padding-bottom: 0px;
-        border-bottom: 1px solid #333333;
-        display: flex;
-        vertical-align: middle;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: column;
-        color: white;
-    }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    color: white;
+  }
 
-    @media (min-width: 768px) {
-        header {
-            flex-direction: row;
-            height: 72px;
-            padding: 0 20px;
-        }
+  @media (min-width: 768px) {
+    header {
+      flex-direction: row;
+      height: 72px;
+      padding: 0 20px;
     }
+  }
 
 /* Title and menu */
-    header h1 {
-        margin: 0;
-    }
+  header h1 {
+    margin: 10px 0;
+  }
 
-    nav a, nav a:visited {
-        display: inline-block;
-        padding: 20px 0px;
-        width: 140px;
-        text-align: center;
-        background-color: black;
+  nav {
+    width: 100%;
+    display: flex;
+  }
+
+  nav a, nav a:visited {
+    display: block;
+    padding: 20px 0px;
+    text-align: center;
+    background-color: black;
+    flex-grow: 1;
+    border-radius: 5px;
+    transition: background-color .2s;
+  }
+
+  nav a:hover {
+    background-color: white;
+  }
+
+  @media (min-width: 768px) {
+    nav {
+      max-width: 600px;
     }
+  }
 
 /* Links */
-    a:hover {
-        filter: invert();
-        cursor: pointer;
-    }
+  a:hover {
+    cursor: pointer;
+  }
 
-    a, a:visited {
-        text-decoration: none;
-        font-weight: bold;
-        background-color: white;
-        color: #61AFEF;
-    }
+  a, a:visited {
+    text-decoration: none;
+    font-weight: bold;
+    background-color: white;
+    color: #61AFEF;
+  }
 
 
 /* Container */
@@ -120,6 +134,10 @@
         }
     }
 
+    div.app-view {
+      background-color: whitesmoke;
+    }
+
     div.app-view, div.app-controller {
         width: 400px;
         min-height: 400px;
@@ -164,4 +182,9 @@
 
     div.app-controller select[disabled], div.app-controller button[disabled], div.app-controller input[disabled] {
         opacity: 0.5
+    }
+
+    .disabled {
+      cursor: not-allowed !important;
+      opacity: 0.4;
     }
