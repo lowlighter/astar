@@ -1,9 +1,8 @@
 # A* Pathfinding
 This library is another implementation in JavaScript of the famous **A&ast; algorithm**.
 
-* [Live demo](https://lowlighter.github.io/astar/demo/)
-* [Documentation](https://lowlighter.github.io/astar/docs/)
-* [About](https://lowlight.fr/en/blog/pathfinding-library/)
+* [Live demo](https://lowlight.fr/astar/demo/)
+* [Documentation](https://lowlight.fr/astar/docs/)
 
 ![Image of pathfinding](https://github.com/lowlighter/astar/raw/master/demo/imgs/demo.gif)
 
@@ -221,4 +220,4 @@ Although `package.json` (which contains `"jsdoc_source", "jsdoc_output", "jsdoc_
 ## License
 This project is licensed under the MIT License.
 
-See [LICENSE.md](https://github.com/lowlighter/quadtree/blob/master/LICENSE.md) file for details.
+See [LICENSE.md](https://github.com/lowlighter/astar/blob/master/LICENSE.md) file for details.
