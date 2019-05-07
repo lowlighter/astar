@@ -11,7 +11,7 @@
 <body>
 
     <aside>
-        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li id="menu-JPS"><a href="-_anonymous_-Configuration-Configuration.JPS.html">JPS</a></li><li id="menu-Node"><a href="Node.html">Node</a></li></ul>
+        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-ExternalPromise"><a href="ExternalPromise.html">ExternalPromise</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li id="menu-JPS"><a href="-_anonymous_-Configuration-Configuration.JPS.html">JPS</a></li><li id="menu-Vertex"><a href="Vertex.html">Vertex</a></li></ul>
     </aside>
 
     <main>
@@ -25,7 +25,7 @@
 
         
         <div class="main-description">
-            Graph structure.It allows to store generic data which allow this library to be flexible.Although only <span class="bold">Graph.fromArray</span> is currently defined to create Graphs from existing data, you're free to add new methods to
+            Graph structure.It allows to store generic data into vertices.
         </div>
 
         
@@ -37,13 +37,13 @@
         
         <h2 class="public">
             Graph
-             <span class="signature"><span class="signature">()</span><span class="type-signature"></span></span> 
+             <span class="signature"><span class="signature">(&hellip;vertices)</span><span class="type-signature"></span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 25)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 30)</a>
             </div>
         
 
@@ -62,10 +62,58 @@
 
     
     
-        <p>Create a new graph.</p>
+        <p>Graph.</p>
     
 
     
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            vertices
+            
+        </td>
+    
+        <td>
+
+<a href="Vertex.html">Vertex</a>
+</td>
+    
+        <td>
+            Vertices to add
+            
+        </td>
+    
+        <td>
+            <label class='repeatable'>Repeatable</label>
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+        </ul>
+    </div>
+    <br />
     
 
     
@@ -85,31 +133,6 @@
 
             
             
-            <li>
-                <h3>Versions, authors and licenses</h3>
-                <table class="details">
-                    
-                    
-
-                    
-                    
-
-                    
-                    
-                        <tr>
-                            <td>Author</td>
-                            <td>Lecoq Simon</td>
-                        </tr>
-                    
-
-                    
-                    
-
-                    
-                    
-                </table>
-            </li>
-            
 
             
             
@@ -123,7 +146,7 @@
                     
                         <tr>
                             <td>See</td>
-                            <td><a href="Node.html">Node</a></td>
+                            <td><a href="Vertex.html">Vertex</a></td>
                         </tr>
                     
                 </table>
@@ -134,16 +157,6 @@
             
 
             
-            
-                <li>
-                    <h3>Requirements</h3>
-                    <table class="details">
-                        <tr>
-                            <td>Requirements</td>
-                            <td>Node</td>
-                        </tr>
-                    </table>
-                </li>
             
 
 
@@ -179,13 +192,13 @@
         
         <h2 class="public">
             add
-             <span class="signature"><span class="signature">(&hellip;node)</span><span class="type-signature"> &rarr; {<a href="Node.html">Node</a>|Array.&lt;<a href="Node.html">Node</a>>}</span></span> 
+             <span class="signature"><span class="signature">(&hellip;vertices)</span><span class="type-signature"> &rarr; {<a href="Graph.html">Graph</a>}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 179)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 63)</a>
             </div>
         
 
@@ -204,7 +217,7 @@
 
     
     
-        <p><pre>Add a new node to this graph and return it. As nodes are stored in a Set structure, it isn't possible to have duplicate nodes.Multiples nodes can be added by passing more than one argument. In that case, an array containing added nodes will be returned instead.</pre></p>
+        <p>Add vertices to Graph (ignore duplicated vertices).</p>
     
 
     
@@ -225,17 +238,17 @@
 <tr>
     
         <td>
-            node
+            vertices
             
         </td>
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node to add
+            Vertices to add
             
         </td>
     
@@ -264,10 +277,10 @@
     
         <td>
 
-<a href="Node.html">Node</a><br />Array.&lt;<a href="Node.html">Node</a>>
+<a href="Graph.html">Graph</a>
 </td>
     
-        <td>Added node</td>
+        <td>Instance</td>
     
         <td></td>
 </tr>
@@ -305,7 +318,7 @@
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 105)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 162)</a>
             </div>
         
 
@@ -324,7 +337,7 @@
 
     
     
-        <p><pre>Test if there is an edge between two nodes.Note that order may be important for graph with directed edges.</pre></p>
+        <p>Test if two vertices are adjacent.Order is important for directed graphs.</p>
     
 
     
@@ -351,11 +364,11 @@
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node a
+            Vertex A
             
         </td>
     
@@ -376,11 +389,11 @@
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node b
+            Vertex B
             
         </td>
     
@@ -412,7 +425,7 @@
 Boolean
 </td>
     
-        <td>True if a is adjacent to b</td>
+        <td>True if A is adjacent to B</td>
     
         <td></td>
 </tr>
@@ -444,13 +457,13 @@ Boolean
         
         <h2 class="public">
             connect
-             <span class="signature"><span class="signature">()</span><span class="type-signature"></span></span> 
+             <span class="signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Graph.html">Graph</a>}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 145)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 214)</a>
             </div>
         
 
@@ -469,10 +482,43 @@ Boolean
 
     
     
-        <p><pre>Compute connectivity between node.Thanks to <a href="https://github.com/NoiSek">NoiSek</a> for seeing stack issues on larger grid size.</pre><div class="alert info">This method isn't called automatically after each update and should be called manually.</div><div class="alert info">This method used to be recursive, but caused Stack Memory issues on some browsers.It is now iterative.</div></p>
+        <p>Precompute connectivity between node.</p>
     
 
     
+    
+    <div class="card definition">
+        <ul>
+            
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+<a href="Graph.html">Graph</a>
+</td>
+    
+        <td>Instance<div class="alert info">  This method is not called automatically after you update the graph.  You'll need to call this method manually if you want to rebuild the connectivity markers.</div><div class="alert danger"> If you have a directed graph, you may need to use the BFS parameter when calling <a href="Graph.html#connected">Graph#connected</a></div></td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
     
 
     
@@ -494,13 +540,13 @@ Boolean
         
         <h2 class="public">
             connected
-             <span class="signature"><span class="signature">(a, b)</span><span class="type-signature"> &rarr; {Boolean}</span></span> 
+             <span class="signature"><span class="signature">(a, b, bfs)</span><span class="type-signature"> &rarr; {Boolean}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 128)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 174)</a>
             </div>
         
 
@@ -519,7 +565,7 @@ Boolean
 
     
     
-        <p><pre>Test if two nodes are connected.</pre></p>
+        <p>Test if two vertices are connected.A BFS may be required to validate connectivity check if graph is directed, but it may cost additional time to compute.</p>
     
 
     
@@ -546,11 +592,11 @@ Boolean
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node a
+            Vertex A
             
         </td>
     
@@ -571,11 +617,39 @@ Boolean
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node b
+            Vertex B
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            bfs
+            
+                <br />
+                <span class="default-value">Default : false</span>
+            
+        </td>
+    
+        <td>
+
+Boolean
+</td>
+    
+        <td>
+            Perform a BFS if connectivity check is positive
             
         </td>
     
@@ -607,7 +681,7 @@ Boolean
 Boolean
 </td>
     
-        <td>True if a is connected to b</td>
+        <td>True if A is connected to B</td>
     
         <td></td>
 </tr>
@@ -639,13 +713,13 @@ Boolean
         
         <h2 class="public">
             cost
-             <span class="signature"><span class="signature">(a, b)</span><span class="type-signature"> &rarr; {Number|null}</span></span> 
+             <span class="signature"><span class="signature">(a, b)</span><span class="type-signature"> &rarr; {Number}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 240)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 151)</a>
             </div>
         
 
@@ -664,7 +738,7 @@ Boolean
 
     
     
-        <p><pre>Edge cost from node a to node b.null will be returned if nodes aren't connected together.</pre></p>
+        <p>Get edge cost from vertex A to vertex B.NaN will be returned if vertices aren't connected together.</p>
     
 
     
@@ -691,11 +765,11 @@ Boolean
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node a
+            Vertex A
             
         </td>
     
@@ -716,11 +790,11 @@ Boolean
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node b
+            Vertex B
             
         </td>
     
@@ -754,7 +828,7 @@ Number
     
         <td>Edge cost</td>
     
-        <td><label class='nullable'>Nullable</label></td>
+        <td></td>
 </tr>
  
                     </table>
@@ -779,12 +853,62 @@ Number
 </div>
  
 
-<div class="members" id="member-data">
+<div class="members" id="member-debug">
     <header class="function">
         
         <h2 class="public">
-            data
-             <span class="signature"><span class="signature">(node, content)</span><span class="type-signature"> &rarr; {Object}</span></span> 
+            debug
+             <span class="signature"><span class="signature">()</span><span class="type-signature"></span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 246)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Print graph for debug.</p>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-delete">
+    <header class="function">
+        
+        <h2 class="public">
+            delete
+             <span class="signature"><span class="signature">(&hellip;vertices)</span><span class="type-signature"> &rarr; {<a href="Graph.html">Graph</a>}</span></span> 
         </h2>
 
         
@@ -809,7 +933,7 @@ Number
 
     
     
-        <p><pre>Return or update node data from associated graph.Note that whilst nodes can be associated to multiples graphs, node data is specific to each graph.You can set global properties for each node directly by creating properties on it.</pre></p>
+        <p>Remove vertices from Graph.No errors will be thrown if a given vertex isn't part of the graph.</p>
     
 
     
@@ -830,177 +954,17 @@ Number
 <tr>
     
         <td>
-            node
+            vertices
             
         </td>
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node
-            
-        </td>
-    
-        <td>
-            
-            
-            
-        </td>
-</tr>
-
-
-<tr>
-    
-        <td>
-            content
-            
-        </td>
-    
-        <td>
-
-Object
-</td>
-    
-        <td>
-            New node content
-            
-        </td>
-    
-        <td>
-            
-            
-            <label class='optional'>Optional</label>
-        </td>
-</tr>
-
-</table>
-
-                </li>
-            
-
-            
-            
-                <li>
-                    <h3>Returns</h3>
-                    <table class="returns">
-                         
-
-<tr>
-    
-        <td></td>
-    
-        <td>
-
-Object
-</td>
-    
-        <td>Node data</td>
-    
-        <td></td>
-</tr>
- 
-                    </table>
-                </li>
-            
-        </ul>
-    </div>
-    <br />
-    
-
-    
-    
-
-    
-    
-        
-
-<div class="card examples">
-    <ul>
-        
-        <li>
-             <h3>Overriding Graph.id method</h3> 
-            <pre><code class="javascript">// Graph specific datagraph.data(node, {hello:"world"})graph.data(node) //Returns {hello:"world"}node.hello //undefined//Gmpbal node datanode.hello = "universe"graph.data(node) //Return {hello:"world"}node.hello //Returns "universe"</code></pre>
-        </li>
-        
-    </ul>
-</div>
-
-        <br />
-    
-
-    
-        
-
-
-
-</div>
- 
-
-<div class="members" id="member-delete">
-    <header class="function">
-        
-        <h2 class="public">
-            delete
-             <span class="signature"><span class="signature">(&hellip;node)</span><span class="type-signature"> &rarr; {<a href="Node.html">Node</a>|Array.&lt;<a href="Node.html">Node</a>>}</span></span> 
-        </h2>
-
-        
-        
-            <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 194)</a>
-            </div>
-        
-
-        
-        <div class="properties">
-            
-            
-            
-            
-            <label class="public">public</label>
-        </div>
-    </header>
-
-    
-    
-
-    
-    
-        <p><pre>Remove a node from this graph and return it. No errors will be thrown if passed node isn't in graph.Multiples nodes can be removed by passing more than one argument. In that case, an array containing removed nodes will be returned instead.</pre></p>
-    
-
-    
-    
-    <div class="card definition">
-        <ul>
-            
-            
-                <li>
-                    <h3>Arguments</h3>
-                    
-
-
-
-<table class="params">
-    
-
-<tr>
-    
-        <td>
-            node
-            
-        </td>
-    
-        <td>
-
-<a href="Node.html">Node</a>
-</td>
-    
-        <td>
-            Node to remove
+            Vertices to remove
             
         </td>
     
@@ -1029,10 +993,10 @@ Object
     
         <td>
 
-<a href="Node.html">Node</a><br />Array.&lt;<a href="Node.html">Node</a>>
+<a href="Graph.html">Graph</a>
 </td>
     
-        <td>Removed node</td>
+        <td>Instance</td>
     
         <td></td>
 </tr>
@@ -1064,13 +1028,13 @@ Object
         
         <h2 class="public">
             edge
-             <span class="signature"><span class="signature">(a, b, a_to_b, b_to_a)</span><span class="type-signature"> &rarr; {<a href="Graph.html">Graph</a>}</span></span> 
+             <span class="signature"><span class="signature">(a, b, cost)</span><span class="type-signature"> &rarr; {<a href="Graph.html">Graph</a>}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 222)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 127)</a>
             </div>
         
 
@@ -1089,7 +1053,7 @@ Object
 
     
     
-        <p><pre>Create an edge between two nodes.Set null on one edge cost value to mark a directed edge.Set null on both edge value to remove edge.</pre></p>
+        <p>Create an edge between two vertices.Set NaN on one edge cost to mark it as a directed edge.Set NaN on both edge to remove edge.</p>
     
 
     
@@ -1116,11 +1080,11 @@ Object
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node a
+            Vertex A
             
         </td>
     
@@ -1141,11 +1105,11 @@ Object
     
         <td>
 
-<a href="Node.html">Node</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
         <td>
-            Node b
+            Vertex B
             
         </td>
     
@@ -1160,7 +1124,28 @@ Object
 <tr>
     
         <td>
-            a_to_b
+            cost
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Edge costs for vertices A and B
+            
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            ab
             
                 <br />
                 <span class="default-value">Default : 1</span>
@@ -1173,13 +1158,13 @@ Number
 </td>
     
         <td>
-            Edge cost from node a to node b
+            Edge cost from vertex A to vertex B
             
         </td>
     
         <td>
             
-            <label class='nullable'>Nullable</label>
+            
             <label class='optional'>Optional</label>
         </td>
 </tr>
@@ -1188,7 +1173,7 @@ Number
 <tr>
     
         <td>
-            b_to_a
+            ba
             
                 <br />
                 <span class="default-value">Default : 1</span>
@@ -1201,13 +1186,24 @@ Number
 </td>
     
         <td>
-            Edge cost from node b to node a
+            Edge cost from vertex B to vertex A
             
         </td>
     
         <td>
             
-            <label class='nullable'>Nullable</label>
+            
+            <label class='optional'>Optional</label>
+        </td>
+</tr>
+
+</table>
+
+        </td>
+    
+        <td>
+            
+            
             <label class='optional'>Optional</label>
         </td>
 </tr>
@@ -1266,7 +1262,7 @@ Number
 Error
 </td>
     
-        <td>Nodes must be on the same graph</td>
+        <td>Vertices must be on the same graph</td>
     
         <td></td>
 </tr>
@@ -1290,7 +1286,12 @@ Error
         
         <li>
              <h3>Create a directed edge</h3> 
-            <pre><code class="javascript">// Graph definitionlet graph = new Graph()let a = graph.add(new Node()), b = graph.add(new Node())graph.edge(a, b, 1, null)// Going from a to b cost 1 whereas it isn't possible to go from b to agraph.adjacent(a, b) //Truegraph.adjacent(b, a) //False</code></pre>
+            <pre><code class="javascript">//Graph definition  const graph = new Graph()  const a = graph.add(new Vertex()), b = graph.add(new Vertex())  graph.edge(a, b, {ab:1, ba:NaN})//Going from A to B cost 1 whereas it isn't possible to go from B to A  graph.adjacent(a, b) //True  graph.adjacent(b, a) //False</code></pre>
+        </li>
+        
+        <li>
+             <h3>Create a directed edge</h3> 
+            <pre><code class="javascript">//Remove edge  graph.edge(a, b, {ab:NaN, ba:NaN})</code></pre>
         </li>
         
     </ul>
@@ -1307,24 +1308,24 @@ Error
 </div>
  
 
-<div class="members" id="member-fromArray">
+<div class="members" id="member-get">
     <header class="function">
         
         <h2 class="public">
-            fromArray
-             <span class="signature"><span class="signature">(array, &hellip;options)</span><span class="type-signature"> &rarr; {<a href="Graph.html">Graph</a>}</span></span> 
+            get
+             <span class="signature"><span class="signature">(id)</span><span class="type-signature"> &rarr; {<a href="Vertex.html">Vertex</a>|null}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 289)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 81)</a>
             </div>
         
 
         
         <div class="properties">
-            <label class="static">Static</label></label></label>
+            
             
             
             
@@ -1337,7 +1338,7 @@ Error
 
     
     
-        <p>Utilitary method to create graph and subgraph from 2D Arrays.</p>
+        <p>Retrieve a specific vertex.</p>
     
 
     
@@ -1358,17 +1359,17 @@ Error
 <tr>
     
         <td>
-            array
+            id
             
         </td>
     
         <td>
 
-Array.&lt;Object>
+Number<br />String
 </td>
     
         <td>
-            Array
+            Vertex id
             
         </td>
     
@@ -1376,178 +1377,6 @@ Array.&lt;Object>
             
             
             
-        </td>
-</tr>
-
-
-<tr>
-    
-        <td>
-            options
-            
-        </td>
-    
-        <td>
-
-Object
-</td>
-    
-        <td>
-            Options, specifying multiple options object will create subgraph with reused nodes
-            
-
-
-
-<table class="params">
-    
-
-<tr>
-    
-        <td>
-            order
-            
-                <br />
-                <span class="default-value">Default : "yx"</span>
-            
-        </td>
-    
-        <td>
-
-String
-</td>
-    
-        <td>
-            Array access order, accepted values are "xy" and "yx"
-            
-        </td>
-    
-        <td>
-            
-            
-            <label class='optional'>Optional</label>
-        </td>
-</tr>
-
-
-<tr>
-    
-        <td>
-            cost
-            
-                <br />
-                <span class="default-value">Default : Graph.fromArray.cost</span>
-            
-        </td>
-    
-        <td>
-
-Object
-</td>
-    
-        <td>
-            Cost function
-            
-        </td>
-    
-        <td>
-            
-            
-            <label class='optional'>Optional</label>
-        </td>
-</tr>
-
-
-<tr>
-    
-        <td>
-            torus
-            
-                <br />
-                <span class="default-value">Default : false</span>
-            
-        </td>
-    
-        <td>
-
-Boolean
-</td>
-    
-        <td>
-            If enabled, map will be treated as a torus
-            
-        </td>
-    
-        <td>
-            
-            
-            <label class='optional'>Optional</label>
-        </td>
-</tr>
-
-
-<tr>
-    
-        <td>
-            diagonals
-            
-                <br />
-                <span class="default-value">Default : false</span>
-            
-        </td>
-    
-        <td>
-
-Boolean
-</td>
-    
-        <td>
-            If enabled, diagonals movements are allowed
-            
-        </td>
-    
-        <td>
-            
-            
-            <label class='optional'>Optional</label>
-        </td>
-</tr>
-
-
-<tr>
-    
-        <td>
-            cutting
-            
-                <br />
-                <span class="default-value">Default : false</span>
-            
-        </td>
-    
-        <td>
-
-Boolean<br />String
-</td>
-    
-        <td>
-            If enabled, diagonals movements between two blocking cells are allowed. If set to "strict", diagonals movements with a blocking cell is not allowed.
-            
-        </td>
-    
-        <td>
-            
-            
-            <label class='optional'>Optional</label>
-        </td>
-</tr>
-
-</table>
-
-        </td>
-    
-        <td>
-            <label class='repeatable'>Repeatable</label>
-            
-            <label class='optional'>Optional</label>
         </td>
 </tr>
 
@@ -1569,12 +1398,12 @@ Boolean<br />String
     
         <td>
 
-<a href="Graph.html">Graph</a>
+<a href="Vertex.html">Vertex</a>
 </td>
     
-        <td>Graph generated from array</td>
+        <td>Vertex</td>
     
-        <td></td>
+        <td><label class='nullable'>Nullable</label></td>
 </tr>
  
                     </table>
@@ -1590,506 +1419,69 @@ Boolean<br />String
 
     
     
-        
-
-<div class="card examples">
-    <ul>
-        
-        <li>
-             <h3>Creating a graph from an Array structure</h3> 
-            <pre><code class="javascript">// Assume with have this maplet map = [     [0, 1, 0],     [0, 2, 1],     [0, 0, 0]]// Define optionslet options = { }// To access a member of our array, we use following notation : map[y][x]options.order = "yx"// Define cost function// Return null to prevent links between two squaresoptions.cost = (a, b) => { return b >= 0 ? b : null }// Tell if map is torus (map wrapper on itself)options.torus = true// Tell if squares must be linked diagonallyoptions.diagonals = true// Tell if squares must be linked diagonally between two blocking squaresoptions.cutting = false// Start by defining optionslet graph = Graph.fromArray(map, options)</code></pre>
-        </li>
-        
-    </ul>
-</div>
-
-        <br />
-    
 
     
         
 
-
-    <div class="card definition">
-        <ul>
-            
-            
-
-            
-            
-            <li>
-                <h3>Versions, authors and licenses</h3>
-                <table class="details">
-                    
-                    
-
-                    
-                    
-
-                    
-                    
-                        <tr>
-                            <td>Author</td>
-                            <td>Lecoq Simon</td>
-                        </tr>
-                    
-
-                    
-                    
-
-                    
-                    
-                </table>
-            </li>
-            
-
-            
-            
-            <li>
-                <h3>External resources</h3>
-                <table class="details">
-                    
-                    
-
-                    
-                    
-                        <tr>
-                            <td>See</td>
-                            <td>{<a href="Graph.html">Graph</a>}</td>
-                        </tr>
-                    
-                </table>
-            </li>
-            
-
-            
-            
-
-            
-            
-
-
-        </ul>
-    </div>
 
 
 </div>
  
 
-<div class="members" id="member-id">
-    <header class="function">
+<div class="members" id="member-meta">
+    <header class="member">
         
         <h2 class="public">
-            id
-             <span class="signature"><span class="signature">(id)</span><span class="type-signature"> &rarr; {Number}</span></span> 
+            meta<span class="signature"><span class="type-signature"> : Object</span></span>
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 42)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            
+            
+            
+            <label class="public">Public</label>
+        </div>
+    </header>
+
+    
+    
+    
+        <p>Metadata.</p>
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-size">
+    <header class="member">
+        
+        <h2 class="public">
+            size<span class="signature"><span class="type-signature"> : Number</span></span>
         </h2>
 
         
         
             <div class="sources">
                  <a href="lowlight.astar.js.html">lowlight.astar.js (line 54)</a>
-            </div>
-        
-
-        
-        <div class="properties">
-            <label class="abstract">Abstract</label></label></label>
-            
-            
-            
-            <label class="public">public</label>
-        </div>
-    </header>
-
-    
-    
-
-    
-    
-        <p><pre>Convert an object to a node id.This method should be overridden when you create a graph from an existing structure.</pre></p>
-    
-
-    
-    
-    <div class="card definition">
-        <ul>
-            
-            
-                <li>
-                    <h3>Arguments</h3>
-                    
-
-
-
-<table class="params">
-    
-
-<tr>
-    
-        <td>
-            id
-            
-        </td>
-    
-        <td>
-
-Object
-</td>
-    
-        <td>
-            Id to convert
-            
-        </td>
-    
-        <td>
-            
-            
-            
-        </td>
-</tr>
-
-</table>
-
-                </li>
-            
-
-            
-            
-                <li>
-                    <h3>Returns</h3>
-                    <table class="returns">
-                         
-
-<tr>
-    
-        <td></td>
-    
-        <td>
-
-Number
-</td>
-    
-        <td>Id</td>
-    
-        <td></td>
-</tr>
- 
-                    </table>
-                </li>
-            
-        </ul>
-    </div>
-    <br />
-    
-
-    
-    
-
-    
-    
-        
-
-<div class="card examples">
-    <ul>
-        
-        <li>
-             <h3>Overriding Graph.id method</h3> 
-            <pre><code class="javascript">// Graph definitionlet graph = new Graph()let node = graph.add(new Node(3))graph.id = (coordinates) => { return coordinates.x % 2 + coordinates.y * 2 }// Nodes can now be accessed with id others than numbersgraph.id({x:1, y:1})</code></pre>
-        </li>
-        
-    </ul>
-</div>
-
-        <br />
-    
-
-    
-        
-
-
-
-</div>
- 
-
-<div class="members" id="member-neighbors">
-    <header class="function">
-        
-        <h2 class="public">
-            neighbors
-             <span class="signature"><span class="signature">(node)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Node.html">Node</a>>}</span></span> 
-        </h2>
-
-        
-        
-            <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 116)</a>
-            </div>
-        
-
-        
-        <div class="properties">
-            
-            
-            
-            
-            <label class="public">public</label>
-        </div>
-    </header>
-
-    
-    
-
-    
-    
-        <p><pre>Return neighbors of a node.</pre></p>
-    
-
-    
-    
-    <div class="card definition">
-        <ul>
-            
-            
-                <li>
-                    <h3>Arguments</h3>
-                    
-
-
-
-<table class="params">
-    
-
-<tr>
-    
-        <td>
-            node
-            
-        </td>
-    
-        <td>
-
-<a href="Node.html">Node</a>
-</td>
-    
-        <td>
-            Node
-            
-        </td>
-    
-        <td>
-            
-            
-            
-        </td>
-</tr>
-
-</table>
-
-                </li>
-            
-
-            
-            
-                <li>
-                    <h3>Returns</h3>
-                    <table class="returns">
-                         
-
-<tr>
-    
-        <td></td>
-    
-        <td>
-
-Array.&lt;<a href="Node.html">Node</a>>
-</td>
-    
-        <td>Neighbors list</td>
-    
-        <td></td>
-</tr>
- 
-                    </table>
-                </li>
-            
-        </ul>
-    </div>
-    <br />
-    
-
-    
-    
-
-    
-    
-
-    
-        
-
-
-
-</div>
- 
-
-<div class="members" id="member-node">
-    <header class="function">
-        
-        <h2 class="public">
-            node
-             <span class="signature"><span class="signature">(id, convert)</span><span class="type-signature"> &rarr; {<a href="Node.html">Node</a>}</span></span> 
-        </h2>
-
-        
-        
-            <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 67)</a>
-            </div>
-        
-
-        
-        <div class="properties">
-            
-            
-            
-            
-            <label class="public">public</label>
-        </div>
-    </header>
-
-    
-    
-
-    
-    
-        <p><pre>Return node associated to id.You should access nodes only through this method.</pre></p>
-    
-
-    
-    
-    <div class="card definition">
-        <ul>
-            
-            
-                <li>
-                    <h3>Arguments</h3>
-                    
-
-
-
-<table class="params">
-    
-
-<tr>
-    
-        <td>
-            id
-            
-        </td>
-    
-        <td>
-
-Number<br />Object
-</td>
-    
-        <td>
-            Id
-            
-        </td>
-    
-        <td>
-            
-            
-            
-        </td>
-</tr>
-
-
-<tr>
-    
-        <td>
-            convert
-            
-                <br />
-                <span class="default-value">Default : false</span>
-            
-        </td>
-    
-        <td>
-
-Boolean
-</td>
-    
-        <td>
-            If enabled, Graph.id method will be called on first argument
-            
-        </td>
-    
-        <td>
-            
-            
-            <label class='optional'>Optional</label>
-        </td>
-</tr>
-
-</table>
-
-                </li>
-            
-
-            
-            
-                <li>
-                    <h3>Returns</h3>
-                    <table class="returns">
-                         
-
-<tr>
-    
-        <td></td>
-    
-        <td>
-
-<a href="Node.html">Node</a>
-</td>
-    
-        <td>Node</td>
-    
-        <td></td>
-</tr>
- 
-                    </table>
-                </li>
-            
-        </ul>
-    </div>
-    <br />
-    
-
-    
-    
-
-    
-    
-
-    
-        
-
-
-
-</div>
- 
-
-<div class="members" id="member-nodes">
-    <header class="member">
-        
-        <h2 class="public">
-            nodes<span class="signature"><span class="type-signature"> : Map.&lt;Object, <a href="Node.html">Node</a>></span></span>
-        </h2>
-
-        
-        
-            <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 35)</a>
             </div>
         
 
@@ -2105,7 +1497,50 @@ Boolean
     
     
     
-        <p>List of nodes belonging to graph.</p>
+        <p>Graph size (number of vertices).</p>
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-vertices">
+    <header class="member">
+        
+        <h2 class="public">
+            vertices<span class="signature"><span class="type-signature"> : Map.&lt;(Number|String), <a href="Vertex.html">Vertex</a>></span></span>
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 36)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="readonly">Readonly</label></label></label>
+            
+            
+            <label class="public">Public</label>
+        </div>
+    </header>
+
+    
+    
+    
+        <p>Vertices belonging to this graph.</p>
     
 
     
@@ -2134,7 +1569,7 @@ Boolean
 
         </section>
         <footer>
-            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon May 07 2018 18:46:26 GMT+0200 (Paris, Madrid (heure d’été))
+            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Jan 27 2020 00:53:07 GMT+0100 (GMT+01:00)
             <br />
             Embellished by <a href="https://github.com/lowlighter/jsdoc-spotlight">Spotlight</a> theme
         </footer>

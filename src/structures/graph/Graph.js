@@ -1,228 +1,234 @@
 /**
  * Graph structure.
- * It allows to store generic data which allow this library to be flexible.
- * Although only <span class="bold">Graph.fromArray</span> is currently defined to create Graphs from existing data, you're free to add new methods to
+ * It allows to store generic data into vertices.
  * @category structures
- * @see Node
- * @author Lecoq Simon
- * @requires Node
+ * @see Vertex
  */
-    class Graph {
+  class Graph {
+    /**
+     * Graph.
+     * @constructor
+     * @param {...Vertex} [vertices] - Vertices to add
+     */
+      constructor(...vertices) {
         /**
-         * Create a new graph.
+         * Vertices belonging to this graph.
+         * @readonly
+         * @type {Map<Number|String, Vertex>}
          */
-            constructor() {
-                /**
-                 * List of nodes belonging to graph.
-                 * @readonly
-                 * @type {Map<Object, Node>}
-                 */
-                    this.nodes = new Map()
-            }
-
-        /**
-         * <pre>
-         * Convert an object to a node id.
-         * This method should be overridden when you create a graph from an existing structure.
-         * </pre>
-         * @param {Object} id - Id to convert
-         * @return {Number} Id
-         * @abstract
-         * @example <caption>Overriding Graph.id method</caption>
-         * // Graph definition
-         * let graph = new Graph()
-         * let node = graph.add(new Node(3))
-         * graph.id = (coordinates) => { return coordinates.x % 2 + coordinates.y * 2 }
-         * // Nodes can now be accessed with id others than numbers
-         * graph.id({x:1, y:1})
-         */
-            id(id) {
-                return id
-            }
+          this.vertices = new Map()
 
         /**
-         * <pre>
-         * Return node associated to id.
-         * You should access nodes only through this method.
-         * </pre>
-         * @param {Number|Object} id - Id
-         * @param {Boolean} [convert=false] - If enabled, {@link Graph.id} method will be called on first argument
-         * @return {Node} Node
+         * Metadata.
+         * @type {Object}
          */
-            node(id, convert = false) {
-                return convert ? this.nodes.get(this.id(arguments[0])) : this.nodes.get(id)
-            }
+          this.meta = {}
 
-        /**
-         * <pre>
-         * Return or update node data from associated graph.
-         * Note that whilst nodes can be associated to multiples graphs, node data is specific to each graph.
-         * You can set global properties for each node directly by creating properties on it.
-         * </pre>
-         * @example <caption>Overriding Graph.id method</caption>
-         * // Graph specific data
-         * graph.data(node, {hello:"world"})
-         * graph.data(node) //Returns {hello:"world"}
-         * node.hello //undefined
-         *
-         * //Gmpbal node data
-         * node.hello = "universe"
-         * graph.data(node) //Return {hello:"world"}
-         * node.hello //Returns "universe"
-         * @param {Node} node - Node
-         * @param {Object} [content] - New node content
-         * @return {Object} Node data
-         */
-            data(node, content) {
-                if (arguments.length === 2) { node.graph.get(this)._data = content }
-                return node.graph.get(this)._data
-            }
+        //Add initial vertices
+          if (vertices.length)
+            this.add(...vertices)
+      }
 
-        /**
-         * <pre>
-         * Test if there is an edge between two nodes.
-         * Note that order may be important for graph with directed edges.
-         * </pre>
-         * @param {Node} a - Node a
-         * @param {Node} b - Node b
-         * @return {Boolean} True if a is adjacent to b
-         */
-            adjacent(a, b) {
-                return a.graph.get(this).has(b)
-            }
+    /**
+     * Graph size (number of vertices).
+     * @readonly
+     * @type {Number}
+     */
+      get size() {
+        return this.vertices.size
+      }
 
-        /**
-         * <pre>
-         * Return neighbors of a node.
-         * </pre>
-         * @param {Node} node - Node
-         * @return {Array<Node>} Neighbors list
-         */
-            neighbors(node) {
-                return Array.from(node.graph.get(this).keys())
-            }
+    /**
+     * Add vertices to Graph (ignore duplicated vertices).
+     * @param {...Vertex} vertices - Vertices to add
+     * @return {Graph} Instance
+     */
+      add(...vertices) {
+        //Add vertices
+          vertices.forEach(vertex => {
+            //Register this graph to vertex
+              if (!this.vertices.has(this))
+                vertex.graphs.set(this, new Map())
+            //Register vertex to this graph
+              if (!this.vertices.has(vertex.id))
+                this.vertices.set(vertex.id, vertex)
+          })
+        return this
+      }
 
-        /**
-         * <pre>
-         * Test if two nodes are connected.
-         * </pre>
-         * @param {Node} a - Node a
-         * @param {Node} b - Node b
-         * @return {Boolean} True if a is connected to b
-         */
-            connected(a, b) {
-                return a.graph.get(this)._connectivity === b.graph.get(this)._connectivity
-            }
+    /**
+     * Retrieve a specific vertex.
+     * @param {Number|String} id - Vertex id
+     * @return {Vertex|null} Vertex
+     */
+      get(id) {
+        return this.vertices.get(id) || null
+      }
 
-        /**
-         * <pre>
-         * Compute connectivity between node.
-         * Thanks to [NoiSek]{@link https://github.com/NoiSek} for seeing stack issues on larger grid size.
-         * </pre>
-         * <div class="alert info">
-         * This method isn't called automatically after each update and should be called manually.
-         * </div>
-         * <div class="alert info">
-         * This method used to be recursive, but caused Stack Memory issues on some browsers.
-         * It is now iterative.
-         * </div>
-         */
-            connect() {
-                //Initialization and reset connectivity markers
-                    let nodes = Array.from(this.nodes.values()), marker = 0
-                    for (let i = 0; i < nodes.length; i++) { nodes[i].graph.get(this)._connectivity = undefined }
+    /**
+     * Remove vertices from Graph.
+     * No errors will be thrown if a given vertex isn't part of the graph.
+     * @param {...Vertex} vertices - Vertices to remove
+     * @return {Graph} Instance
+     */
+      delete(...vertices) {
+        //Delete vertices
+          vertices.forEach(vertex => {
+            //Delete this vertex from its neighbors
+              vertex.neighbors(this).forEach(neighbor => neighbor.graphs.get(this) && neighbor.graphs.get(this).delete(vertex.id))
+            //Delete this graph from vertex
+              vertex.graphs.delete(this)
+            //Delete vertex from this graph
+              this.vertices.delete(vertex.id)
+          })
+        return this
+      }
 
-                //Mark nodes connectivity
-                    for (let i = 0; i < nodes.length; i++) {
-                        //Pass if already treated
-                            if (nodes[i].graph.get(this)._connectivity !== undefined) { continue }
+    /**
+     * Create an edge between two vertices.
+     * Set NaN on one edge cost to mark it as a directed edge.
+     * Set NaN on both edge to remove edge.
+     * @param {Vertex} a - Vertex A
+     * @param {Vertex} b - Vertex B
+     * @param {Object} [cost] - Edge costs for vertices A and B
+     * @param {Number} [cost.ab=1] - Edge cost from vertex A to vertex B
+     * @param {Number} [cost.ba=1] - Edge cost from vertex B to vertex A
+     * @return {Graph} Instance
+     * @throws {Error} Vertices must be on the same graph
+     * @example <caption>Create a directed edge</caption>
+     * //Graph definition
+     *   const graph = new Graph()
+     *   const a = graph.add(new Vertex()), b = graph.add(new Vertex())
+     *   graph.edge(a, b, {ab:1, ba:NaN})
+     * //Going from A to B cost 1 whereas it isn't possible to go from B to A
+     *   graph.adjacent(a, b) //True
+     *   graph.adjacent(b, a) //False
+     * @example <caption>Create a directed edge</caption>
+     * //Remove edge
+     *   graph.edge(a, b, {ab:NaN, ba:NaN})
+     */
+      edge(a, b, {ab = 1, ba = 1} = {}) {
+        //Check if vertices are on the same graph
+          if ((!a.graphs.has(this))||(!b.graphs.has(this)))
+            throw new Error("Vertices must be on the same graph")
+        //Link or unlink vertex A to B
+          if (isNaN(ab))
+            a.graphs.get(this).delete(b.id)
+          else
+            a.graphs.get(this).set(b.id, ab)
+        //Link or unlink vertex B to A
+          if (isNaN(ba))
+            b.graphs.get(this).delete(a.id)
+          else
+            b.graphs.get(this).set(a.id, ba)
+        return this
+      }
 
-                        //Start a new subset marking
-                            let stack = [nodes[i]]
-                            marker++
-                        //Stack processing
-                            while (stack.length) {
-                                //Mark current node
-                                    let node = stack.shift()
-                                    node.graph.get(this)._connectivity = marker
-                                //Add neighbor if it hasn't be treated
-                                    this.neighbors(node).map(neighbor => {
-                                        if ((neighbor.graph.get(this)._connectivity === undefined)&&(stack.indexOf(neighbor) < 0)) { stack.push(neighbor) }
-                                    })
-                            }
+    /**
+     * Get edge cost from vertex A to vertex B.
+     * NaN will be returned if vertices aren't connected together.
+     * @param {Vertex} a - Vertex A
+     * @param {Vertex} b - Vertex B
+     * @return {Number} Edge cost
+     */
+      cost(a, b) {
+        return this.adjacent(a, b) ? a.graphs.get(this).get(b.id) : NaN
+      }
+
+    /**
+     * Test if two vertices are adjacent.
+     * Order is important for directed graphs.
+     * @param {Vertex} a - Vertex A
+     * @param {Vertex} b - Vertex B
+     * @return {Boolean} True if A is adjacent to B
+     */
+      adjacent(a, b) {
+        return b ? a.graphs.get(this).has(b.id) : false
+      }
+
+    /**
+     * Test if two vertices are connected.
+     * A BFS may be required to validate connectivity check if graph is directed, but it may cost additional time to compute.
+     * @param {Vertex} a - Vertex A
+     * @param {Vertex} b - Vertex B
+     * @param {Boolean} bfs - Perform a BFS if connectivity check is positive
+     * @return {Boolean} True if A is connected to B
+     */
+      connected(a, b, bfs = false) {
+        const connectivity = (a.graphs.get(this).__connectivity === b.graphs.get(this).__connectivity)
+        //If connectivity check, perform a BFS if needed
+          if ((bfs)&&(connectivity)) {
+            let found = false
+            const stack = [a], visited = new WeakSet([a]), marker = a.graphs.get(this).__connectivity
+            while (stack.length) {
+              //Get neighbors
+                const vertex = stack.shift()
+                const neighbors = vertex.neighbors(this)
+              //Iterate through neighbors to find second node
+                for (let neighbor of neighbors) {
+                  //Check if second node
+                    if (neighbor.id === b.id) {
+                      found = true
+                      break
                     }
+                  //Add neighbor if to stack if same connectivity
+                    if ((!visited.has(neighbor))&&(neighbor.graphs.get(this).__connectivity === marker)) {
+                      stack.push(neighbor)
+                      visited.add(neighbor)
+                    }
+                }
             }
+            return found
+          }
+        return connectivity
+      }
 
-        /**
-         * <pre>
-         * Add a new node to this graph and return it. As nodes are stored in a Set structure, it isn't possible to have duplicate nodes.
-         * Multiples nodes can be added by passing more than one argument. In that case, an array containing added nodes will be returned instead.
-         * </pre>
-         * @param {...Node} node - Node to add
-         * @return {Node|Array<Node>} Added node
-         */
-            add(node) {
-                if (arguments.length > 1) { return Array.from(arguments).map(n => this.add(n)) }
-                node.graph.set(this, new Map())
-                this.nodes.set(node.id, node)
-                return node;
-            }
+    /**
+     * Precompute connectivity between node.
+     * @return {Graph} Instance
+     * <div class="alert info">
+     *   This method is not called automatically after you update the graph.
+     *   You'll need to call this method manually if you want to rebuild the connectivity markers.
+     * </div>
+     * <div class="alert danger">
+     *  If you have a directed graph, you may need to use the BFS parameter when calling {@link Graph#connected}
+     * </div>
+     */
+      connect() {
+        //Initialization and reset connectivity markers
+          let marker = 0
+          const vertices = [...this.vertices.values()]
+          vertices.forEach(vertex => vertex.graphs.get(this).__connectivity = NaN)
 
-        /**
-         * <pre>
-         * Remove a node from this graph and return it. No errors will be thrown if passed node isn't in graph.
-         * Multiples nodes can be removed by passing more than one argument. In that case, an array containing removed nodes will be returned instead.
-         * </pre>
-         * @param {...Node} node - Node to remove
-         * @return {Node|Array<Node>} Removed node
-         */
-            delete(node) {
-                if (arguments.length > 1) { return Array.from(arguments).map(n => this.delete(n)) }
-                node.graph.delete(this)
-                this.nodes.delete(node.id)
-                return node
-            }
+        //Precompute connectivity
+          for (let vertex of vertices) {
+            //Pass if already treated
+              if (!isNaN(vertex.graphs.get(this).__connectivity))
+                continue
+            //Start marking
+              const stack = [vertex]
+              marker++
+            //Stack processing
+              while (stack.length) {
+                //Mark vertex
+                  const cvertex = stack.shift()
+                  cvertex.graphs.get(this).__connectivity = marker
+                //Check its neighbors
+                  cvertex.neighbors(this).forEach(neighbor => {
+                    if ((isNaN(neighbor.graphs.get(this).__connectivity))&&(stack.indexOf(neighbor) < 0))
+                      stack.push(neighbor)
+                  })
+              }
+          }
+        return this
+      }
 
-        /**
-         * <pre>
-         * Create an edge between two nodes.
-         * Set null on one edge cost value to mark a directed edge.
-         * Set null on both edge value to remove edge.
-         * </pre>
-         * @param {Node} a - Node a
-         * @param {Node} b - Node b
-         * @param {?Number} [a_to_b=1] - Edge cost from node a to node b
-         * @param {?Number} [b_to_a=1] - Edge cost from node b to node a
-         * @return {Graph} Instance
-         * @throws {Error} Nodes must be on the same graph
-         * @example <caption>Create a directed edge</caption>
-         * // Graph definition
-         * let graph = new Graph()
-         * let a = graph.add(new Node()), b = graph.add(new Node())
-         * graph.edge(a, b, 1, null)
-         * // Going from a to b cost 1 whereas it isn't possible to go from b to a
-         * graph.adjacent(a, b) //True
-         * graph.adjacent(b, a) //False
-         */
-            edge(a, b, a_to_b = 1, b_to_a = 1) {
-                //Check if nodes are on the same graph
-                    if ((!a.graph.has(this))||(!b.graph.has(this))) { throw new Error("Nodes must be on the same graph") }
-                //Link nodes
-                    if (a_to_b === null) { a.graph.get(this).delete(b) } else { a.graph.get(this).set(b, a_to_b) }
-                    if (b_to_a === null) { b.graph.get(this).delete(a) } else { b.graph.get(this).set(a, b_to_a) }
-                return this
-            }
-
-        /**
-         * <pre>
-         * Edge cost from node a to node b.
-         * null will be returned if nodes aren't connected together.
-         * </pre>
-         * @param {Node} a - Node a
-         * @param {Node} b - Node b
-         * @return {Number|null} Edge cost
-         */
-            cost(a, b) {
-                return this.adjacent(a, b) ? a.graph.get(this).get(b) : null
-            }
-    }
+    /**
+     * Print graph for debug.
+     */
+      debug() {
+        console.log(`${"ID".padEnd(8)} | ${"Neighbors".padEnd(32)} | Data`)
+        for (let vertex of this.vertices.values())
+          console.log(`${vertex.id.toString().padEnd(8)} | ${vertex.neighbors(this).map(n => n.id).join(", ").padEnd(32)} | ${JSON.stringify(vertex.data)}`)
+      }
+  }

@@ -8,15 +8,10 @@
     },
     "author": "lowlight(er)",
     "license": "MIT",
-    "dependencies": {
-        "babel-minify": "^0.2.0",
-        "jsdoc": "^3.4.3",
-        "less": "^2.7.3",
-        "less-plugin-clean-css": "^1.5.1",
-        "marked": "^0.3.9"
-    },
+    "dependencies": {},
     "scripts": {
-        "build": "node ./src/build.js"
+        "build": "node ./src/build.js",
+        "test": "jest"
     },
     "config": {
         "project_name": "A* Pathfinding library",
@@ -31,5 +26,15 @@
         "jsdoc_readme": "../../../README.md",
         "demo_template": "./demo/template.html",
         "demo_output": "./demo/index.html"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.8.3",
+        "@babel/core": "^7.8.3",
+        "babel-preset-minify": "^0.5.1",
+        "express": "^4.17.1",
+        "jest": "^24.9.0",
+        "jsdoc": "^3.6.3",
+        "less": "^3.10.3",
+        "marked": "^0.8.0"
     }
 }

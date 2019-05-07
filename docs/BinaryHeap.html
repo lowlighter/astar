@@ -11,7 +11,7 @@
 <body>
 
     <aside>
-        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li id="menu-JPS"><a href="-_anonymous_-Configuration-Configuration.JPS.html">JPS</a></li><li id="menu-Node"><a href="Node.html">Node</a></li></ul>
+        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-ExternalPromise"><a href="ExternalPromise.html">ExternalPromise</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li id="menu-JPS"><a href="-_anonymous_-Configuration-Configuration.JPS.html">JPS</a></li><li id="menu-Vertex"><a href="Vertex.html">Vertex</a></li></ul>
     </aside>
 
     <main>
@@ -25,7 +25,7 @@
 
         
         <div class="main-description">
-            Structure data.It serves as priority queue in this context.This allow to gain time performances.
+            Data structure used as priority queue.In JavaScript A*, it allows better performances as it acts like a sorted array for the open list.
         </div>
 
         
@@ -43,7 +43,7 @@
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 513)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 504)</a>
             </div>
         
 
@@ -62,7 +62,7 @@
 
     
     
-        <p><pre>Create a new binary heap.Score function is mandatory if this heap will contain objects other than numbers.</pre></p>
+        <p>Binary heap.</p>
     
 
     
@@ -126,52 +126,6 @@ function
         
 
 
-    <div class="card definition">
-        <ul>
-            
-            
-
-            
-            
-            <li>
-                <h3>Versions, authors and licenses</h3>
-                <table class="details">
-                    
-                    
-
-                    
-                    
-
-                    
-                    
-                        <tr>
-                            <td>Author</td>
-                            <td>Lecoq Simon</td>
-                        </tr>
-                    
-
-                    
-                    
-
-                    
-                    
-                </table>
-            </li>
-            
-
-            
-            
-
-            
-            
-
-            
-            
-
-
-        </ul>
-    </div>
-
 
 </div>
  
@@ -201,13 +155,13 @@ function
         
         <h2 class="public">
             add
-             <span class="signature"><span class="signature">(&hellip;node)</span><span class="type-signature"> &rarr; {<a href="BinaryHeap.html">BinaryHeap</a>}</span></span> 
+             <span class="signature"><span class="signature">(&hellip;nodes)</span><span class="type-signature"> &rarr; {<a href="BinaryHeap.html">BinaryHeap</a>}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 559)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 535)</a>
             </div>
         
 
@@ -226,7 +180,7 @@ function
 
     
     
-        <p><pre>Add nodes to this heap and place them accordingly to their respective scores.</pre></p>
+        <p>Add nodes to heap.</p>
     
 
     
@@ -247,7 +201,7 @@ function
 <tr>
     
         <td>
-            node
+            nodes
             
         </td>
     
@@ -327,7 +281,7 @@ Object
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 632)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 613)</a>
             </div>
         
 
@@ -441,13 +395,13 @@ Number
         
         <h2 class="public">
             delete
-             <span class="signature"><span class="signature">(&hellip;node)</span><span class="type-signature"> &rarr; {<a href="BinaryHeap.html">BinaryHeap</a>}</span></span> 
+             <span class="signature"><span class="signature">(&hellip;nodes)</span><span class="type-signature"> &rarr; {<a href="BinaryHeap.html">BinaryHeap</a>}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 610)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 549)</a>
             </div>
         
 
@@ -466,7 +420,7 @@ Number
 
     
     
-        <p><pre>Remove nodes from heap.Update the rest of the heap accordingly.</pre></p>
+        <p>Remove nodes from heap.</p>
     
 
     
@@ -487,7 +441,7 @@ Number
 <tr>
     
         <td>
-            node
+            nodes
             
         </td>
     
@@ -497,7 +451,7 @@ Object
 </td>
     
         <td>
-            Nodes to remove (multiple arguments supported)
+            Nodes to remove
             
         </td>
     
@@ -566,7 +520,7 @@ Object
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 531)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 510)</a>
             </div>
         
 
@@ -582,7 +536,7 @@ Object
     
     
     
-        <p><pre>List of nodes.</pre></p>
+        <p>Nodes.</p>
     
 
     
@@ -610,7 +564,7 @@ Object
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 586)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 591)</a>
             </div>
         
 
@@ -629,7 +583,7 @@ Object
 
     
     
-        <p><pre>Pop heap's root and sort heap again.</pre></p>
+        <p>Pop root.</p>
     
 
     
@@ -692,7 +646,7 @@ Object
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 542)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 518)</a>
             </div>
         
 
@@ -708,7 +662,7 @@ Object
     
     
     
-        <p><pre>Score function.One node will be passed as argument and this function should return a number from it.</pre></p>
+        <p>Score function. Used to map a node to a numerical value which will be used in comparaisons.</p>
     
 
     
@@ -723,133 +677,13 @@ Object
         
         <li>
              <h3>Usage</h3> 
-            <pre><code class="javascript">heap.score = function (node) { return node.value }</code></pre>
+            <pre><code class="javascript">heap.score = node => node.value</code></pre>
         </li>
         
     </ul>
 </div>
 
         <br />
-    
-
-    
-        
-
-
-
-</div>
- 
-
-<div class="members" id="member-set">
-    <header class="function">
-        
-        <h2 class="public">
-            set
-             <span class="signature"><span class="signature">(node)</span><span class="type-signature"> &rarr; {<a href="BinaryHeap.html">BinaryHeap</a>}</span></span> 
-        </h2>
-
-        
-        
-            <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 573)</a>
-            </div>
-        
-
-        
-        <div class="properties">
-            
-            
-            
-            
-            <label class="public">public</label>
-        </div>
-    </header>
-
-    
-    
-
-    
-    
-        <p><pre>Update the value of a registered node and replace it accordingly to its new score.If node isn't part of heap, it will be added.</pre></p>
-    
-
-    
-    
-    <div class="card definition">
-        <ul>
-            
-            
-                <li>
-                    <h3>Arguments</h3>
-                    
-
-
-
-<table class="params">
-    
-
-<tr>
-    
-        <td>
-            node
-            
-        </td>
-    
-        <td>
-
-Object
-</td>
-    
-        <td>
-            Node to update
-            
-        </td>
-    
-        <td>
-            
-            
-            
-        </td>
-</tr>
-
-</table>
-
-                </li>
-            
-
-            
-            
-                <li>
-                    <h3>Returns</h3>
-                    <table class="returns">
-                         
-
-<tr>
-    
-        <td></td>
-    
-        <td>
-
-<a href="BinaryHeap.html">BinaryHeap</a>
-</td>
-    
-        <td>Instance</td>
-    
-        <td></td>
-</tr>
- 
-                    </table>
-                </li>
-            
-        </ul>
-    </div>
-    <br />
-    
-
-    
-    
-
-    
     
 
     
@@ -871,7 +705,7 @@ Object
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 655)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 636)</a>
             </div>
         
 
@@ -990,13 +824,13 @@ Number
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 550)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 526)</a>
             </div>
         
 
         
         <div class="properties">
-            
+            <label class="readonly">Readonly</label></label></label>
             
             
             <label class="public">Public</label>
@@ -1028,13 +862,13 @@ Number
         
         <h2 class="public">
             top
-             <span class="signature"><span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></span> 
+             <span class="signature"><span class="signature">()</span><span class="type-signature"> &rarr; {Object|null}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 598)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 603)</a>
             </div>
         
 
@@ -1053,7 +887,7 @@ Number
 
     
     
-        <p><pre>Return heap's root without popping it.</pre></p>
+        <p>Return root.</p>
     
 
     
@@ -1080,6 +914,126 @@ Object
 </td>
     
         <td>Current root</td>
+    
+        <td><label class='nullable'>Nullable</label></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-update">
+    <header class="function">
+        
+        <h2 class="public">
+            update
+             <span class="signature"><span class="signature">(&hellip;nodes)</span><span class="type-signature"> &rarr; {<a href="BinaryHeap.html">BinaryHeap</a>}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 572)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Update nodes positions after external changes.If a node isn't part of heap, it will be added.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            nodes
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Nodes to update
+            
+        </td>
+    
+        <td>
+            <label class='repeatable'>Repeatable</label>
+            
+            
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+<a href="BinaryHeap.html">BinaryHeap</a>
+</td>
+    
+        <td>Instance</td>
     
         <td></td>
 </tr>
@@ -1118,7 +1072,7 @@ Object
 
         </section>
         <footer>
-            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon May 07 2018 18:46:26 GMT+0200 (Paris, Madrid (heure d’été))
+            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Jan 27 2020 00:53:07 GMT+0100 (GMT+01:00)
             <br />
             Embellished by <a href="https://github.com/lowlighter/jsdoc-spotlight">Spotlight</a> theme
         </footer>

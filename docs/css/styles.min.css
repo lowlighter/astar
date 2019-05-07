@@ -198,11 +198,11 @@ main section.source {
 }
 .members header.event,
 .readme header.event {
-  background-color: #000066 ;
+  background-color: #000066;
 }
 .members header.member,
 .readme header.member {
-  background-color: #3c3737 ;
+  background-color: #3c3737;
 }
 .members header a,
 .readme header a {
@@ -279,7 +279,7 @@ main section.source {
 }
 .members div.event > span,
 .readme div.event > span {
-  padding: .5rem .75rem;
+  padding: 0.5rem 0.75rem;
   margin-bottom: 0;
   font-size: 1rem;
   font-weight: 400;
@@ -287,7 +287,7 @@ main section.source {
   text-align: center;
   color: #464a4c;
   border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   white-space: nowrap;
   vertical-align: middle;
 }
@@ -306,7 +306,7 @@ main section.source {
 .members .card,
 .readme .card {
   border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   overflow: auto;
 }
 .members .card ul,
@@ -333,11 +333,11 @@ main section.source {
 .members .card ul li:first-child h3,
 .readme .card ul li:first-child h3 {
   border-top: none;
-  border-radius: calc(-0.75rem) calc(-0.75rem) 0 0;
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
 }
 .members .card ul li div,
 .readme .card ul li div {
-  padding: .75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
 }
 .members .card ul li div:not(:last-child, .event),
 .readme .card ul li div:not(:last-child, .event) {
@@ -390,7 +390,7 @@ h1 .version {
 }
 label {
   display: inline-block;
-  padding: .5em .75em;
+  padding: 0.5em 0.75em;
   font-size: 75%;
   font-weight: 700;
   line-height: 1;
@@ -398,8 +398,8 @@ label {
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  border-radius: .25rem;
-  margin: 0 .25em;
+  border-radius: 0.25rem;
+  margin: 0 0.25em;
   min-width: 50px;
   background-color: #5cb85c;
 }
@@ -418,7 +418,7 @@ label.override {
 label.static,
 label.constant,
 label.inherited {
-  background-color: #282c34 ;
+  background-color: #282c34;
 }
 label.deprecated {
   background-color: #ffae54;
@@ -481,10 +481,10 @@ table.params .default-value {
   margin-left: 16px;
 }
 .alert {
-  padding: .75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
   border: 1px solid transparent;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 .alert.warning {
   background-color: #fcf8e3;

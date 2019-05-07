@@ -11,7 +11,7 @@
 <body>
 
     <aside>
-        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li id="menu-JPS"><a href="-_anonymous_-Configuration-Configuration.JPS.html">JPS</a></li><li id="menu-Node"><a href="Node.html">Node</a></li></ul>
+        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-ExternalPromise"><a href="ExternalPromise.html">ExternalPromise</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li id="menu-JPS"><a href="-_anonymous_-Configuration-Configuration.JPS.html">JPS</a></li><li id="menu-Vertex"><a href="Vertex.html">Vertex</a></li></ul>
     </aside>
 
     <main>
@@ -40,25 +40,30 @@
 
     <section>
         <div class="readme">
-            <h1>A* Pathfinding</h1><p>This library is another implementation in JavaScript of the famous <strong>A&ast; algorithm</strong>.</p>
+            <h1>A* Pathfinding</h1>
+<p>This library is another implementation in JavaScript of the famous <strong>A* algorithm</strong>.</p>
 <ul>
 <li><a href="https://lowlight.fr/astar/demo/">Live demo</a></li>
 <li><a href="https://lowlight.fr/astar/docs/">Documentation</a></li>
 </ul>
 <p><img src="https://github.com/lowlighter/astar/raw/master/demo/imgs/demo.gif" alt="Image of pathfinding"></p>
-<h1>Features</h1><ul>
-<li>Based on <strong>Graph theory</strong> for more flexibility<ul>
+<h1>Features</h1>
+<ul>
+<li>Based on <strong>Graph theory</strong> for more flexibility
+<ul>
 <li><strong>Multiple graphs</strong> support, use the same nodes instances for differents graph instances</li>
 </ul>
 </li>
-<li>Graph builder helper for <strong>2D Arrays</strong><ul>
+<li>Graph builder helper for <strong>2D Arrays</strong>
+<ul>
 <li><strong>Any access order</strong> supported ([x][y] or [y][x])</li>
 <li><strong>Diagonals move</strong> support, with or without corner-cutting</li>
 <li><strong>Toric</strong> maps support (maps wrapped on itself)</li>
 <li><strong>Jump Point Search</strong> (JPS) support for faster computations on uniform cost grids.  <em>(NB: Toric support isn't yet supported with JPS)</em></li>
 </ul>
 </li>
-<li><strong>3 heuristics</strong> functions availables : Manhattan, Diagonals or Euclidian<ul>
+<li><strong>3 heuristics</strong> functions availables : Manhattan, Diagonals or Euclidian
+<ul>
 <li><strong>Custom</strong> heuristic function also supported</li>
 </ul>
 </li>
@@ -66,37 +71,63 @@
 <li><strong>Multi-threading</strong> support (with Web Workers)</li>
 <li>Use of Binary Heaps and Connectivity to <strong>speed up</strong> calculations</li>
 </ul>
-<h2>Getting Started</h2><p>First of all, you'll need to include the library :</p>
-<pre class="prettyprint source lang-html"><code>    &lt;script src=&quot;./bin/lowlight.astar.js&quot;>&lt;/script></code></pre><p>You may include the minified library instead :</p>
-<pre class="prettyprint source lang-html"><code>    &lt;script src=&quot;./bin/lowlight.astar.min.js&quot;>&lt;/script></code></pre><p>Then you may create alias for convenience :</p>
-<pre class="prettyprint source lang-javascript"><code>    let Astar = Lowlight.Astar</code></pre><h2>Create a graph</h2><p>If you're using a custom data structure, you'll need to convert it into a Graph struture. Don't worry, it's quite easy.</p>
+<h2>Getting Started</h2>
+<p>First of all, you'll need to include the library :</p>
+<pre class="prettyprint source lang-html"><code>    &lt;script src=&quot;./bin/lowlight.astar.js&quot;>&lt;/script>
+</code></pre>
+<p>You may include the minified library instead :</p>
+<pre class="prettyprint source lang-html"><code>    &lt;script src=&quot;./bin/lowlight.astar.min.js&quot;>&lt;/script>
+</code></pre>
+<p>Then you may create alias for convenience :</p>
+<pre class="prettyprint source lang-javascript"><code>    let Astar = Lowlight.Astar
+</code></pre>
+<h2>Create a graph</h2>
+<p>If you're using a custom data structure, you'll need to convert it into a Graph struture. Don't worry, it's quite easy.</p>
 <p>Assume your datas look like this :</p>
 <pre class="prettyprint source lang-javascript"><code>    let a = {id:&quot;pallet-town&quot;, gym:null}
     let b = {id:&quot;viridian-city&quot;, gym:&quot;Earth badge&quot;}
-    let c = {id:&quot;cinnabar-island&quot;, gym:&quot;Volcano badge&quot;}</code></pre><p>First, start by creating a new Graph and some nodes :</p>
+    let c = {id:&quot;cinnabar-island&quot;, gym:&quot;Volcano badge&quot;}
+</code></pre>
+<p>First, start by creating a new Graph and some nodes :</p>
 <pre class="prettyprint source lang-javascript"><code>    let graph = new Astar.Graph()
     a = new Astar.Node(a.id, a) //Datas are synchronized :
     b = new Astar.Node(b.id, b) //b.gym = &quot;Earth badge&quot;
-    c = new Astar.Node(c.id, c) //c.gym = &quot;Volcano badge&quot;</code></pre><p>Then you'll need to override <code>Graph.id(id)</code> method because graphs instances only use numbers as identifiers.</p>
+    c = new Astar.Node(c.id, c) //c.gym = &quot;Volcano badge&quot;
+</code></pre>
+<p>Then you'll need to override <code>Graph.id(id)</code> method because graphs instances only use numbers as identifiers.</p>
 <pre class="prettyprint source lang-javascript"><code>    //Override graph.id method
     graph.id = function (name) {
         return [&quot;pallet-town&quot;, &quot;viridian-city&quot;, &quot;cinnabar-island&quot;].indexOf(name)
     }
 
     //This way, graph.id will be compatible with any id type
-    graph.id(&quot;pallet-town&quot;) //Return 0</code></pre><p>Finally link different nodes :</p>
+    graph.id(&quot;pallet-town&quot;) //Return 0
+</code></pre>
+<p>Finally link different nodes :</p>
 <pre class="prettyprint source lang-javascript"><code>    graph.edge(a, b, 1, 2) //Going from a to b cost 1 whereas going from b to a cost 2
-    graph.edge(a, c, 1, null) //Going from a to b cost 1 whereas it's not possible to go from b to a</code></pre><h3>Create a graph from an array structure</h3><p>For conveniency, it's possible to create directly a graph from an array structure without specific order :</p>
-<h4>YX Order</h4><pre class="prettyprint source lang-javascript"><code>    let map =  [
+    graph.edge(a, c, 1, null) //Going from a to b cost 1 whereas it's not possible to go from b to a
+</code></pre>
+<h3>Create a graph from an array structure</h3>
+<p>For conveniency, it's possible to create directly a graph from an array structure without specific order :</p>
+<h4>YX Order</h4>
+<pre class="prettyprint source lang-javascript"><code>    let map =  [
         [0, 1, 0],
         [0, 1, 1],
         [0, 0, 0],
-    ]</code></pre><h4>XY Order</h4><pre class="prettyprint source lang-javascript"><code>    let map =  []
+    ]
+</code></pre>
+<h4>XY Order</h4>
+<pre class="prettyprint source lang-javascript"><code>    let map =  []
     for (let x = 0; x &lt; 3; x++) { map[x] = []
         for (let y = 0; y &lt; 3; y++) {
             map[x][y] = Math.random() > 0.5
-    }   }</code></pre><h2>Create a configuration</h2><p>To create a new <code>Configuration</code>, just type the following code :</p>
-<pre class="prettyprint source lang-javascript"><code>    let astar = new Astar.Configuration(map)</code></pre><p>If you want to specify options, you can pass a second argument to instanciation :</p>
+    }   }
+</code></pre>
+<h2>Create a configuration</h2>
+<p>To create a new <code>Configuration</code>, just type the following code :</p>
+<pre class="prettyprint source lang-javascript"><code>    let astar = new Astar.Configuration(map)
+</code></pre>
+<p>If you want to specify options, you can pass a second argument to instanciation :</p>
 <pre class="prettyprint source lang-javascript"><code>    let graph = new Astar.Configuration(map, {
         order:&quot;yx&quot;, //Access order for 2D Array
         torus:false, //Tell if 2D Array is wrapped on itself
@@ -105,8 +136,13 @@
         heuristic:&quot;euclidian&quot;, //Heuristic function name
         cost(a, b) { return b == 1 ? null : 1 }, //Cost function definition
         thread:&quot;./bin/lowlight.astar.min.js&quot;, //If script's source is specified, multi-threading will be enabled
-    })</code></pre><p>If you want to reuse same map but with different option, just create instance with multiple <code>options</code> objects.</p>
-<pre class="prettyprint source lang-javascript"><code>    let graph = new Astar.Configuration(map, layer1, layer2, layer3)</code></pre><h3>Cost function</h3><p>Cost function takes will be called with two <code>Node</code> instances : source node and destination node.
+    })
+</code></pre>
+<p>If you want to reuse same map but with different option, just create instance with multiple <code>options</code> objects.</p>
+<pre class="prettyprint source lang-javascript"><code>    let graph = new Astar.Configuration(map, layer1, layer2, layer3)
+</code></pre>
+<h3>Cost function</h3>
+<p>Cost function takes will be called with two <code>Node</code> instances : source node and destination node.
 It must returns a number or <code>null</code>.</p>
 <p>While it's possible to use <code>Infinity</code> and negatives values, it isn't advised because it can leads to suspicious behaviours.</p>
 <p>Most of the time, you'll only need the second argument, but you may want to use the first one to detect transitions.
@@ -117,23 +153,42 @@ For example, going from plains to mountains may cost 2 whereas going from mounta
         if ((a === &quot;mountains&quot;)&&(b === &quot;mountains&quot;)) { return 1 }
         if ((a === &quot;plains&quot;)&&(b === &quot;mountains&quot;)) { return 2 }
         return null
-    }</code></pre><h3>Heuristic function</h3><p>By default, only two-dimensional heuristic functions are defined.</p>
+    }
+</code></pre>
+<h3>Heuristic function</h3>
+<p>By default, only two-dimensional heuristic functions are defined.</p>
 <p>To add a new one, just type the following code :</p>
 <pre class="prettyprint source lang-javascript"><code>    Astar.Heuristic[&quot;myHeuristic&quot;] = function (a, b, options) {
         return Math.abs(b.x - a.x) + Math.abs(b.y - a.y) + Math.abs(b.z - a.z)
-    }</code></pre><p>The first two arguments are source node and destination node (remember that you can store anything in a node instance).
+    }
+</code></pre>
+<p>The first two arguments are source node and destination node (remember that you can store anything in a node instance).
 The third one is optional and may be specified as <code>heuristicOptions</code> in <code>astar.path</code> method.</p>
-<h2>Computing a path</h2><p>To compute a path, you'll just need to pass a <strong>start</strong> node and a <strong>goal</strong> node.</p>
-<pre class="prettyprint source lang-javascript"><code>    let path = astar.path({x:0, y:0}, {x:2, y:2})</code></pre><p>If multi-threading option is enabled, you'll be need to specify a <strong>callback</strong> function.</p>
-<pre class="prettyprint source lang-javascript"><code>    astar.path({x:0, y:0}, {x:2, y:2}, {callback(path, scores) { path.map(n => console.log(n)) }})</code></pre><p>Note that if you're using a multiple layers graph, you may specify the layer you want to use, the default one being 0.</p>
-<pre class="prettyprint source lang-javascript"><code>    astar.path({x:0, y:0}, {x:2, y:2}, {layer:1})</code></pre><h3>Using Jump Search Point (JPS)</h3><p>A&ast; JPS is pruning rules to avoid node exploration expansion.
-This means that it's generally much faster than classic A&ast;, however, it comes with a major <strong>drawback</strong> : movement costs must be uniform.</p>
+<h2>Computing a path</h2>
+<p>To compute a path, you'll just need to pass a <strong>start</strong> node and a <strong>goal</strong> node.</p>
+<pre class="prettyprint source lang-javascript"><code>    let path = astar.path({x:0, y:0}, {x:2, y:2})
+</code></pre>
+<p>If multi-threading option is enabled, you'll be need to specify a <strong>callback</strong> function.</p>
+<pre class="prettyprint source lang-javascript"><code>    astar.path({x:0, y:0}, {x:2, y:2}, {callback(path, scores) { path.map(n => console.log(n)) }})
+</code></pre>
+<p>Note that if you're using a multiple layers graph, you may specify the layer you want to use, the default one being 0.</p>
+<pre class="prettyprint source lang-javascript"><code>    astar.path({x:0, y:0}, {x:2, y:2}, {layer:1})
+</code></pre>
+<h3>Using Jump Search Point (JPS)</h3>
+<p>A* JPS is pruning rules to avoid node exploration expansion.
+This means that it's generally much faster than classic A*, however, it comes with a major <strong>drawback</strong> : movement costs must be uniform.</p>
 <p>You may specify that you want to use jps in <em>options</em> when computing a path :</p>
-<pre class="prettyprint source lang-javascript"><code>    astar.path({x:0, y:0}, {x:2, y:2}, {jps:true})</code></pre><p><em>Nota Bene : This only works for two-dimensionals grid.</em></p>
-<h3>Using static graphs</h3><p>If your graph is static, you can set the <code>static</code> option to prevent useless computations.
+<pre class="prettyprint source lang-javascript"><code>    astar.path({x:0, y:0}, {x:2, y:2}, {jps:true})
+</code></pre>
+<p><em>Nota Bene : This only works for two-dimensionals grid.</em></p>
+<h3>Using static graphs</h3>
+<p>If your graph is static, you can set the <code>static</code> option to prevent useless computations.
 Before computing a path, it'll do a connectivity test to check if a path exists before computing one.</p>
-<pre class="prettyprint source lang-javascript"><code>    astar.path({x:0, y:0}, {x:2, y:2}, {static:true})</code></pre><p>You can also use it on dynamics graphs, but don't forget to rebuild connectivity by calling <code>graph.connectivity()</code> method each time you edit it.</p>
-<h2>Project content</h2><table>
+<pre class="prettyprint source lang-javascript"><code>    astar.path({x:0, y:0}, {x:2, y:2}, {static:true})
+</code></pre>
+<p>You can also use it on dynamics graphs, but don't forget to rebuild connectivity by calling <code>graph.connectivity()</code> method each time you edit it.</p>
+<h2>Project content</h2>
+<table>
 <thead>
 <tr>
 <th></th>
@@ -159,17 +214,25 @@ Before computing a path, it'll do a connectivity test to check if a path exists 
 </tr>
 </tbody>
 </table>
-<h2>Rebuild project and expanding the library</h2><p>You'll need to run the following command the first time to install dependencies.</p>
-<pre class="prettyprint source lang-shell"><code>npm install</code></pre><p>Then to rebuild project, just run the following command :</p>
-<pre class="prettyprint source lang-shell"><code>npm run build</code></pre><p>This will update <code>/bin</code> files with included <code>/src</code> files.
+<h2>Rebuild project and expanding the library</h2>
+<p>You'll need to run the following command the first time to install dependencies.</p>
+<pre class="prettyprint source lang-shell"><code>npm install
+</code></pre>
+<p>Then to rebuild project, just run the following command :</p>
+<pre class="prettyprint source lang-shell"><code>npm run build
+</code></pre>
+<p>This will update <code>/bin</code> files with included <code>/src</code> files.
 Although <code>package.json</code> (which contains <code>&quot;source&quot; and &quot;output&quot;</code> paths) are preconfigured, you may need to reconfigure them if you're planning to expand this library.</p>
 <p>To include a file just use the following syntax in the <code>&quot;source&quot;</code> file :</p>
-<pre class="prettyprint source lang-javascript"><code>    /* #include &lt;path/to/file.js> */</code></pre><ul>
+<pre class="prettyprint source lang-javascript"><code>    /* #include &lt;path/to/file.js> */
+</code></pre>
+<ul>
 <li>File minification is performed with <a href="https://github.com/babel/minify">Babel minify</a>.</li>
 <li>Documentation is generated with <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3</a>.</li>
 </ul>
 <p>Although <code>package.json</code> (which contains <code>&quot;jsdoc_source&quot;, &quot;jsdoc_output&quot;, &quot;jsdoc_config&quot; and &quot;jsdoc_readme&quot;</code>) and <code>docs/categories.json</code> are preconfigured, you may need to reconfigure them if you're planning to expand this library.</p>
-<h2>License</h2><p>This project is licensed under the MIT License.</p>
+<h2>License</h2>
+<p>This project is licensed under the MIT License.</p>
 <p>See <a href="https://github.com/lowlighter/astar/blob/master/LICENSE.md">LICENSE.md</a> file for details.</p>
         </div>
     </section>
@@ -178,7 +241,7 @@ Although <code>package.json</code> (which contains <code>&quot;source&quot; and 
 
         </section>
         <footer>
-            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon May 07 2018 20:58:26 GMT+0200 (Paris, Madrid (heure d’été))
+            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Jan 27 2020 00:53:07 GMT+0100 (GMT+01:00)
             <br />
             Embellished by <a href="https://github.com/lowlighter/jsdoc-spotlight">Spotlight</a> theme
         </footer>

@@ -1,176 +1,179 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>A* Pathfinding library</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/atom-one-dark.css">
-        <link rel="icon" type="image/png" href="/src/favicon.png" />
-        <link rel="icon" href="/src/icon.png" sizes="114x114">
-    </head>
-    <body>
-        <header>
-            <h1>A* Pathfinding library</h1>
-            <nav>
-                <a href="https://github.com/lowlighter/astar">GitHub</a>
-                <a href="https://lowlight.fr/astar/docs">Documentation</a>
-                <a href="https://lowlight.fr">lowlight.fr</a>
-            </nav>
-        </header>
-        <main class="container-full">
-            <div class="container">
-                <h3>What is it ?</h3>
-                <p>
-                    This is a live demo from this <a href="https://github.com/lowlighter/astar">library</a>.
-                </p>
-                <p>
-                    This library is another implementation in JavaScript of the famous A* algorithm.
-                    Special features are the support of toric maps (wrapped maps), JPS for uniform cost grids and multi-threading.
-                </p>
-                <p>
-                    See it on <a href="https://github.com/lowlighter/astar">GitHub</a> for more informations.
-                </p>
-                <p class="local-warning">
-                    It seems you're running this file from a local file system.<br />
-                    Cross origin requests may be supported only for protocol schemes on some browsers.
-                </p>
-            </div>
-            <div class="container app">
-                <div class="app-view">
-                </div>
-                <div class="app-controller">
-                    <table>
-                        <tr>
-                            <td>Diagonals</td>
-                            <td>
-                                <select name="diagonals">
-                                    <option value="1">Enabled</option>
-                                    <option value="0">Disabled</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Cutting</td>
-                            <td>
-                                <select name="cutting">
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                    <option value="strict">No (Strict)</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Toric map</td>
-                            <td>
-                                <select name="torus">
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Heuristic</td>
-                            <td>
-                                <select name="heuristic">
-                                    <option value="manhattan">Manhattan</option>
-                                    <option value="diagonal">Diagonal</option>
-                                    <option value="euclidian">Euclidian</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Profil</td>
-                            <td>
-                                <select name="profil">
-                                    <option value="0">Terrestrial</option>
-                                    <option value="1">Aquatic</option>
-                                    <option value="2">Amphibian</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Scores</td>
-                            <td>
-                                <select name="scores">
-                                    <option value="1">Show</option>
-                                    <option value="0">Hide</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jump Point Search</td>
-                            <td>
-                                <select name="jps">
-                                    <option value="1">Enabled</option>
-                                    <option value="0">Disabled</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Map</td>
-                            <td><button name="generate">Generate a new one</button></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </main>
-        <div class="container-full">
-            <pre>
-                <code class="code">
-        //Initialization
-            let map = [], X = <span class="code-X">0</span>, Y = <span class="code-Y">0</span>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/atom-one-dark.css">
+    <link rel="icon" type="image/png" href="/src/favicon.png" />
+    <link rel="icon" href="/src/icon.png" sizes="114x114">
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>{{ meta.name }}</h1>
+        <nav>
+          <a :href="meta.repo.link">GitHub</a>
+          <a :href="meta.docs.link">Documentation</a>
+          <a :href="meta.site.link">{{ meta.site.name }}</a>
+        </nav>
+      </header>
+    <main class="container-full">
+      <div class="container">
+        <p>
+          This is a live demo of <a :href="meta.repo.link">{{ meta.repo.name }}</a>.
+        </p>
+        <p>
+          This library is an implementation in JavaScript of the famous A* algorithm.
+          It contains additional features like support of toric maps (wrapped maps), JPS for uniform cost grids, graph maps and multi-threading.
+        </p>
+        <p>
+          See it on <a :href="meta.repo.link">GitHub</a> for more informations.
+        </p>
+        <p class="local-warning" v-if="meta.local">
+          <b>It seems you're running this file from a local file system.</b><br>
+          You may encounter several problems due to Cross-origin policies.<br>
+          Serve files over HTTP if you have issues.
+        </p>
+      </div>
+      <div class="container app">
+        <div class="app-view"></div>
+        <div class="app-controller">
 
-        //Map generation
-            for (let x = 0; x < X; x++) { map[x] = []
-                for (let y = 0; y < Y; y++) {
-                    //Returns a positive value for terrestrial biomes and negative for the aquatics ones
-                        map[x][y] = biome(x, y)
-                }
-            }
+          <div class="label-group">
+            <label>
+              Start
+              <input type="text" disabled :value="start.data ? start.data.x+' ; '+start.data.y : 'None'">
+            </label>
+            <label>
+              Goal
+              <input type="text" disabled :value="goal.data ? goal.data.x+' ; '+goal.data.y : 'None'">
+            </label>
+          </div>
 
-        //Options
-            let options = {
-                order:"xy",
-                diagonals:<span class="code-diagonals">true</span>,
-                cutting:<span class="code-cutting">false</span>,
-                torus:<span class="code-torus">false</span>,
-                heuristic:<span class="code-heuristic">"euclidian"</span>,
-                thread:false
-            }
+          <div class="label-group">
+            <label>
+              Diagonals
+              <select v-model.number="diagonals" @change="demo()">
+                <option value="1">Enabled</option>
+                <option value="0">Disabled</option>
+              </select>
+            </label>
+            <label>
+              Cutting
+              <select v-model.number="cutting" @change="demo()">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+                <option value="2">No (Strict)</option>
+              </select>
+            </label>
+          </div>
 
-        //Create configuration
-        //It's possible to define multiple layers with differents options/cost functions with a same map
-        //Cost function returns the cost to go from node n to node m
-            let astar = new Lowlight.Astar.Configuration(map,
-                $.extend({cost(n, m) { return m >= 0 ? m : null }}, options), //Terrestrial
-                $.extend({cost(n, m) { return m < 0 ? -m : null }}, options), //Aquatic
-                $.extend({cost(n, m) { return Math.abs(m) }}, options) //All biomes types
-            )
+          <div class="label-group">
+            <label>
+              Heuristic
+              <select v-model.trim="heuristic" @change="demo()">
+                <option value="manhattan">Manhattan</option>
+                <option value="diagonal">Diagonal</option>
+                <option value="euclidian">Euclidian</option>
+              </select>
+            </label>
+            <label>
+              Profil
+              <select v-model.number="profil">
+                <option value="0">Terrestrial</option>
+                <option value="1">Aquatic</option>
+                <option value="2">Amphibian</option>
+              </select>
+            </label>
+          </div>
 
-        //Path computing
-            astar.path({x:<span class="code-start-x">0</span>, y:<span class="code-start-y">0</span>}, {x:<span class="code-goal-x">0</span>, y:<span class="code-goal-y">0</span>}, {
-                callback(path, scores) { path.map(n => console.log(n)) },
-                layer:<span class="code-profil">0</span>, //<span class="code-profil-name">Terrestrial</span>
-                jps:<span class="code-jps">false</span>
-            })</code>
-            </pre>
+          <div class="label-group">
+            <label>
+              Jump Point Search
+              <select v-model.number="jps">
+                <option value="1">Enabled</option>
+                <option value="0">Disabled</option>
+              </select>
+            </label>
+            <label></label>
+          </div>
+
+          <div class="label-group">
+            <label>
+              Map
+              <button name="generate" @click="demo(true)">Generate a new one</button>
+            </label>
+            <label>
+              Toric map
+              <select v-model.number="torus" @change="demo()">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="label-group">
+            <label>
+              Path length
+              <input type="text" disabled :value="results ? results.length : ''">
+            </label>
+            <label>
+              Total cost
+              <input type="text" disabled :value="results ? results.cost.toFixed(1) : ''">
+            </label>
+          </div>
+
         </div>
+      </div>
+    </main>
+    <div class="container-full">
+      <pre>
+        <code class="code">
+  //Create map
+    const map = [], X = {{ X }}, Y = {{ Y }}
+    for (let x = 0; x &lt; X; x++) {
+      map[x] = []
+      for (let y = 0; y &lt; Y; y++)
+         map[x][y] = biome(x, y) //Returns a positive value for terrestrial biomes and negative for the aquatics ones
+    }
 
-        <div class="hidden">
-            <p class="text-no-path-found">No path found :(</p>
-            <p class="text-p1">Terrestrial</p>
-            <p class="text-p2">Aquatic</p>
-            <p class="text-p3">Amphibian</p>
-        </div>
+  //Create configuration, using different graphs on same map
+    const astar = new Lowlight.Astar.Configuration(map, {
+      //General options
+        order:"xy", //Read map as map[x][y]
+        diagonals:{{ ["false", "true"][diagonals] }}, //Diagonals are {{ ["disabled", "enabled"][diagonals] }}
+        cutting:{{ ["false", "true", "null"][cutting] }}, //Cutting with diagonals are {{ ["not authorized", "authorized", "authorized unless when traversing two blocking cells"][cutting] }}
+        torus:{{ ["false", "true"][torus] }}, //Map is {{ ["non-toric", "toric"][torus] }}
+        heuristic:Lowlight.Astar.Heuristics.{{ heuristic.toLowerCase() }}, //Heuritic function
+      //Layers
+        layers:[
+          {cost(n, m) { return m.data.v >= 0 ? m.data.v : NaN }}, //Terrestrial (positive cost are valid)
+          {cost(n, m) { return m.data.v &lt; 0 ? -m.data.v : NaN }}, //Aquatic (negative cost are valid)
+          {cost(n, m) { return Math.abs(m.data.v) }}, //All biomes types (all costs are valid)
+        ],
+    })
 
-        <script type="text/javascript" src="./js/jquery.js"></script>
-        <script type="text/javascript" src="./js/noise.js"></script>
-        <script type="text/javascript" src="./js/pixi.js"></script>
-        <script type="text/javascript" src="./../bin/lowlight.astar.min.js"></script>
-        <script type="text/javascript" src="./js/demo.js"></script>
-        <script type="text/javascript" src="./js/highlight.pack.js"></script>
-        <script type="text/javascript"></script>
-        <script>hljs.initHighlightingOnLoad()</script>
-        <script type="text/javascript">if (/file/.test(window.location.protocol)) { $(".local-warning").show() }</script>
-    </body>
+  //Path computing
+    const {path, scores} = await astar.path({data:{{ start.data ? "{x:"+start.data.x+", y:"+start.data.y+"}" : "null" }}}, {data:{{ goal.data ? "{x:"+goal.data.x+", y:"+goal.data.y+"}" : "null" }}}, {
+      layer:{{ profil }}, //Use layer "{{ ["Terrestrial", "Aquatic", "Amphibian"][profil] }}""
+      jps:{{ ["false", "true"][jps] }}, //{{ ["Do not use", "Use"][jps] }} Jump Point Search
+      thread:false, //Compute does not use a thread
+    })
+
+  //Display results
+    display(path, scores)
+        </code>
+      </pre>
+    </div>
+  </div>
+
+    <script type="text/javascript" src="./js/vue.js"></script>
+    <script type="text/javascript" src="./js/noise.js"></script>
+    <script type="text/javascript" src="./js/pixi.js"></script>
+    <script type="text/javascript" src="./../bin/lowlight.astar.js"></script>
+    <script type="text/javascript" src="./js/demo.js"></script>
+    <script type="text/javascript" src="./js/highlight.pack.js"></script>
+
+  </body>
 </html>

@@ -45,7 +45,7 @@
 //Scripts
     console.log("Scripts minification :")
     let min = out.replace(/js$/, "min.js")
-    exit += execute("Babel-minify", "../node_modules/.bin/babel-minify", [out, "-o", min])
+    exit += execute("Babel-minify", "../node_modules/.bin/babel", ["--config-file", "..\\.babelrc", out, "-o", min])
     try {
         let mcontent = fs.readFileSync(min).toString()
         let license = fs.readFileSync("./LICENSE.md").toString()
@@ -57,19 +57,6 @@
     console.log("Generating documentation :")
     let c = spawn("node", ["./docs/.spotlight/src/build.js"])
     if (!c.status) { console.log("    \x1b[32m%s\x1b[0m", "Success") } else { console.log("    \x1b[31m%s\x1b[0m", `Error : ${c.status} error${c.status > 1 ? "s" : ""} occured`); exit += c.status }
-
-//Generating demo
-    console.log("Generating demo :")
-    try {
-        let template = process.env.npm_package_config_demo_template, demo_out = process.env.npm_package_config_demo_output
-        let demo = fs.readFileSync(template).toString()
-            .replace(/\{{2}\s*TITLE\s*\}{2}/g, process.env.npm_package_config_project_name)
-            .replace(/\{{2}\s*REPO\s*\}{2}/g, process.env.npm_package_config_project_repo)
-            .replace(/\{{2}\s*DOCS\s*\}{2}/g, process.env.npm_package_config_project_docs)
-            .replace(/\{{2}\s*PAGE\s*\}{2}/g, process.env.npm_package_config_project_page)
-        fs.writeFileSync(demo_out, demo)
-        console.log("    \x1b[32m%s\x1b[0m", `${demo_out} was generated from ${template}`)
-    } catch (e) { console.log("    \x1b[31m%s\x1b[0m", e) ; exit++ }
 
 //Command execution
     function execute(name, bin, args) {

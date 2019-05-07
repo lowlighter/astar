@@ -2,32 +2,25 @@
  * Manahattan Heuristic.
  * @static
  * @memberof Heuristic
- * @param {Node} a - Node a
- * @param {Node} b - Node b
+ * @param {Vertex} a - Vertex a
+ * @param {Vertex} b - Vertex b
  * @param {Object} [options] - Options
  * @param {Number} [options.multiplier=1] - Base multiplier
+ * @param {Boolean} [options.torus=false] - Use Torus version
+ * @param {Number} [options.X=0] - Map size on X axis
+ * @param {Number} [options.Y=0] - Map size on Y axis
  * @return {Number} Heuristic value
  */
-    Heuristic.manhattan = function (a, b, options = {}) {
-        let dx = Math.abs(b.x - a.x), dy = Math.abs(b.y - a.y)
-        return (options.multiplier||1)*(dx + dy)
-    }
+  Heuristics.manhattan = function (a, b, {multiplier = 1, torus = false, X = 0, Y = 0} = {}) {
+    //Classic version
+      let dx = Math.abs(b.data.x - a.data.x)
+      let dy = Math.abs(b.data.y - a.data.y)
 
-/**
- * Manahattan Heuristic (Torus version).
- * @static
- * @memberof Heuristic
- * @param {Node} a - Node a
- * @param {Node} b - Node b
- * @param {Object} [options] - Options
- * @param {Number} [options.multiplier=1] - Base multiplier
- * @param {Number} [options.x=0] - Map size on X axis
- * @param {Number} [options.y=0] - Map size on Y axis
- * @return {Number} Heuristic value
- */
-    Heuristic.manhattanTorus = function (a, b, options = {}) {
-        let dx = Math.min(Math.abs(b.x - a.x), (b.x+(options.x||0)) - a.x, (a.x+(options.x||0)) - b.x)
-        let dy = Math.min(Math.abs(b.y - a.y), (b.y+(options.y||0)) - a.y, (a.y+(options.y||0)) - b.y)
-        return (options.multiplier||1)*(dx + dy)
-    }
-    
+    //Torus version
+      if (torus) {
+        dx = Math.min(dx, b.data.x - a.data.x + X, a.data.x - b.data.x + X)
+        dy = Math.min(dy, b.data.y - a.data.y + Y, a.data.y - b.data.y + Y)
+      }
+
+    return multiplier*(dx + dy)
+  }

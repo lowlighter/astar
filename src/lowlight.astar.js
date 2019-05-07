@@ -8,32 +8,35 @@
  */
 (function (global) {
     //Registering
-        if (typeof global.Lowlight === "undefined") { global.Lowlight = {} }
-        if ((typeof module === "object")&&(typeof module.exports === "object")) { module.exports = global.Lowlight }
+        if (typeof global.Lowlight === "undefined")
+            global.Lowlight = {}
+        if ((typeof module === "object")&&(typeof module.exports === "object"))
+            module.exports = global.Lowlight
 
     //Includes
         /* #include <structures/graph/Graph.js> */
         /* #include <structures/graph/Graph.fromArray.js> */
-        /* #include <structures/graph/Node.js> */
+        /* #include <structures/graph/Vertex.js> */
 
         /* #include <structures/heap/BinaryHeap.js> */
+
+        /* #include <structures/promises/ExternalPromise.js> */
 
         /**
          * Heuristics functions libraries.
          * @category astar
          * @class Heuristic
          */
-            let Heuristic = {}
+            const Heuristics = {}
 
         /* #include <astar/heuristics/manhattan.js> */
         /* #include <astar/heuristics/diagonal.js> */
         /* #include <astar/heuristics/euclidian.js> */
 
-        /* #include <astar/WorkerError.js> */
         /* #include <astar/Configuration.js> */
         /* #include <astar/variants/JumpSearchPoint.js> */
-        /* #include <astar/ThreadConfiguration.js> */
+        /* #include <astar/workers/Workers.js> */
 
-        global.Lowlight.Astar = {Graph, Node, BinaryHeap, Heuristic, Configuration, WorkerError}
+        global.Lowlight.Astar = {Graph, Vertex, BinaryHeap, Heuristics, Configuration}
 
 })(typeof window !== "undefined" ? window : this)

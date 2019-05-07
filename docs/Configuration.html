@@ -11,7 +11,7 @@
 <body>
 
     <aside>
-        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li id="menu-JPS"><a href="-_anonymous_-Configuration-Configuration.JPS.html">JPS</a></li><li id="menu-Node"><a href="Node.html">Node</a></li></ul>
+        <header><h1>A*</h1></header><ul><li><a href="index.html">Home page</a></li></ul><ul><li id="menu-BinaryHeap"><a href="BinaryHeap.html">BinaryHeap</a></li><li id="menu-Configuration"><a href="Configuration.html">Configuration</a></li><li id="menu-ExternalPromise"><a href="ExternalPromise.html">ExternalPromise</a></li><li id="menu-Graph"><a href="Graph.html">Graph</a></li><li id="menu-Heuristic"><a href="Heuristic.html">Heuristic</a></li><li id="menu-JPS"><a href="-_anonymous_-Configuration-Configuration.JPS.html">JPS</a></li><li id="menu-Vertex"><a href="Vertex.html">Vertex</a></li></ul>
     </aside>
 
     <main>
@@ -43,7 +43,7 @@
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 874)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 867)</a>
             </div>
         
 
@@ -62,7 +62,7 @@
 
     
     
-        <p><pre>Even is Graphs structures are really convenients, it can be quite costly to create them.That's why this library works with reusable configurations. It will create graphs adpated to the data you provided.Then, you'll just have to call the <span class="bold">path</span> method to compute a path. If you need to partially update your graphs, you can do it manually.If your graphs must be totally updated, it may be better to just create a new configuration.</pre><div class="alert info">Due to JavaScript being monothread, each time you compute a path, you'll need to wait until completition before the rest of your code is executed.When <span class="bold">options.thread</span> is enabled, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Workers</a> will be used to prevent paths calculations from blocking your main thread.It means that you'll be able to perform others tasks during calculations.However, it comes with certains constraints : none of the instance's members can be edited directly.</div></p>
+        <p>This library works with reusable configurations.Once data is initialized, just call the <span class="bold">path</span> method to compute a path.If you need to partially update your graphs, it is possible to do it manually.If your graphs need to be totally updated, it may be better to just create a new configuration.<div class="alert info">Use <span class="bold">options.worker</span> to relieve main thread from heavy computations and be able to perform others tasks during calculations.This options uses <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Workers</a>.Note however, that it comes with several constraints (such as the configuration cannot be edited directly, etc.).In most cases, the default usage (i.e. not using <span class="bold">options.worker</span> should be enough).</div></p>
     
 
     
@@ -132,7 +132,7 @@ Object
             heuristic
             
                 <br />
-                <span class="default-value">Default : "manhattan"</span>
+                <span class="default-value">Default : Heuristics.manhattan</span>
             
         </td>
     
@@ -271,6 +271,9 @@ Boolean
         <td>
             torus
             
+                <br />
+                <span class="default-value">Default : false</span>
+            
         </td>
     
         <td>
@@ -322,10 +325,10 @@ String
 <tr>
     
         <td>
-            thread
+            worker
             
                 <br />
-                <span class="default-value">Default : false</span>
+                <span class="default-value">Default : ""</span>
             
         </td>
     
@@ -381,7 +384,7 @@ String
         
         <li>
              <h3>Simple usage</h3> 
-            <pre><code class="javascript">//Define some variableslet map = [], X = 30, Y = 30//Define a biome function (optional)let biome = (x, y) => {     let e = noise(x, y) //Elevation     if (e <= 0.1) { return -1.0 } //Sea     if (e <= 0.2) { return  1.1 } //Beach     if (e <= 0.4) { return  1.0 } //Plains     if (e <= 0.5) { return  1.2 } //Forest     if (e <= 0.7) { return  1.4 } //Hills     if (e <= 0.9) { return  1.6 } //Mountains     if (e <= 1.0) { return  2.0 } //Snow mountains}//Create mapfor (let x = 0; x < X; x++) { map[x] = []     for (let y = 0; y < Y; y++) {         map[x][y] = biome(x, y)     }}//Define configurations optionslet options = {      order:"xy",      diagonals:<span class="code-diagonals">true</span>,      cutting:<span class="code-cutting">false</span>,      torus:<span class="code-torus">false</span>,      heuristic:<span class="code-heuristic">"euclidian"</span>}//Create a new configuration//You can define multiples layers with differents parameters and/or cost functions while using the same maplet astar = new Lowlight.Astar.Configuration(map,     $.extend({cost() { return m >= 0 ? m : null }}, options), //Only terrestrial fields accepted     $.extend({cost() { return m < 0 ? -m : null }}, options), //Only aquatic fields accepted     $.extend({cost() { return Math.abs(m) }}, options) //All fields types accepted)//Compute a pathastar.path({x:<span class="code-start-x">0</span>, y:<span class="code-start-y">0</span>}, {x:<span class="code-goal-x">0</span>, y:<span class="code-goal-y">0</span>}, {     callback(path, scores) { path.map(n => console.log(n)) },     layer:<span class="code-profil">0</span> //<span class="code-profil-name">Terrestrial</span>})</code></pre>
+            <pre><code class="javascript">//Define some variableslet map = [], X = 30, Y = 30//Define a biome function (optional)let biome = (x, y) => {   let e = noise(x, y) //Elevation   if (e <= 0.1) return -1.0 //Sea   if (e <= 0.2) return  1.1 //Beach   if (e <= 0.4) return  1.0 //Plains   if (e <= 0.5) return  1.2 //Forest   if (e <= 0.7) return  1.4 //Hills   if (e <= 0.9) return  1.6 //Mountains   if (e <= 1.0) return  2.0 //Snow mountains}//Create mapfor (let x = 0; x < X; x++) { map[x] = []   for (let y = 0; y < Y; y++) {       map[x][y] = biome(x, y)   }}//Define configurations optionslet options = {    order:"xy",    diagonals:<span class="code-diagonals">true</span>,    cutting:<span class="code-cutting">false</span>,    torus:<span class="code-torus">false</span>,    heuristic:<span class="code-heuristic">Lowlight.Astar.Heuristics.euclidian</span>}//Create a new configuration//You can define multiples layers with differents parameters and/or cost functions while using the same maplet astar = new Lowlight.Astar.Configuration(map,   {...options, cost() { return m >= 0 ? m : NaN }}, //Only terrestrial fields accepted   {...options, cost() { return m < 0 ? -m : NaN }}, //Only aquatic fields accepted   {...options, cost() { return Math.abs(m) }} //All fields types accepted)//Compute a pathastar.path({x:<span class="code-start-x">0</span>, y:<span class="code-start-y">0</span>}, {x:<span class="code-goal-x">0</span>, y:<span class="code-goal-y">0</span>}, {   callback(path, scores) { path.map(n => console.log(n)) },   layer:<span class="code-profil">0</span> //<span class="code-profil-name">Terrestrial</span>})</code></pre>
         </li>
         
     </ul>
@@ -428,7 +431,7 @@ String
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 882)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 881)</a>
             </div>
         
 
@@ -444,7 +447,7 @@ String
     
     
     
-        <p><pre>List of graphs used by this configuration.</pre></p>
+        <p>List of graphs used by this configuration.</p>
     
 
     
@@ -461,23 +464,23 @@ String
 </div>
  
 
-<div class="members" id="member-heuristic">
+<div class="members" id="member-isWorker">
     <header class="member">
         
         <h2 class="public">
-            heuristic<span class="signature"><span class="type-signature"> : String</span></span>
+            isWorker<span class="signature"><span class="type-signature"></span></span>
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 891)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 1095)</a>
             </div>
         
 
         
         <div class="properties">
-            
+            <label class="static">Static</label></label></label>
             
             
             <label class="public">Public</label>
@@ -487,7 +490,7 @@ String
     
     
     
-        <p><pre>Name of heuristic to be used.You can use custom heuristics by giving their names but heuristic function definition must be stored in Heuristics library.</pre></p>
+        <p>Tell if currently in a worker scope.</p>
     
 
     
@@ -504,33 +507,110 @@ String
 </div>
  
 
-<div class="members" id="member-heuristicOptions">
-    <header class="member">
+<div class="members" id="member-parse">
+    <header class="function">
         
         <h2 class="public">
-            heuristicOptions<span class="signature"><span class="type-signature"> : Object</span></span>
+            parse
+             <span class="signature"><span class="signature">(object)</span><span class="type-signature"> &rarr; {Object}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 899)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 1046)</a>
             </div>
         
 
         
         <div class="properties">
+            <label class="static">Static</label></label></label>
             
             
             
-            <label class="public">Public</label>
+            <label class="public">public</label>
         </div>
     </header>
 
     
     
+
     
-        <p><pre>Default heuristics options.</pre></p>
+    
+        <p>Parser for serialized object.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            object
+            
+        </td>
+    
+        <td>
+
+String
+</td>
+    
+        <td>
+            Object to deserialize
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>Deserialized object</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
     
 
     
@@ -552,19 +632,19 @@ String
         
         <h2 class="public">
             path
-             <span class="signature"><span class="signature">(start, goal, options)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Node.html">Node</a>>}</span></span> 
+             <span class="signature"><span class="signature">(start, goal, options)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="Vertex.html">Vertex</a>>>}</span></span> 
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 982)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 974)</a>
             </div>
         
 
         
         <div class="properties">
-            
+            <label class="async">Async</label></label></label>
             
             
             
@@ -577,7 +657,7 @@ String
 
     
     
-        <p><pre>Compute a path from start to end.The heuristic used by this method must be stored in <a href="Heuristic.html">Heuristic</a>.Values in scores are the sum of total cost from start to current node and heuristic cost from current node to goal. Scores aren't available when <span class="bold">options.thread</span> is enabled.</pre><div class="alert info">You must use an admissible heuristic function to find the shortest past.</div><div class="alert danger">When <span class="bold">options.jps</span> is enabled, movements cost should be uniform, as JPS makes assumptions on them to prevent nodes expansions.</div></p>
+        <p>Compute a path from start to end.The heuristic used by this method must be stored in <a href="Heuristic.html">Heuristic</a>.Values in scores are the sum of total cost from start to current node and heuristic cost from current node to goal.Scores aren't available when <span class="bold">options.worker</span> is enabled.<div class="alert info">You must use an admissible heuristic function to find the shortest past.</div><div class="alert danger">When <span class="bold">options.jps</span> is enabled, movements cost should be uniform, as JPS makes assumptions on them to prevent nodes expansions.</div></p>
     
 
     
@@ -608,7 +688,7 @@ Object
 </td>
     
         <td>
-            Start node id
+            Start vertex
             
         </td>
     
@@ -633,7 +713,7 @@ Object
 </td>
     
         <td>
-            Goal node id
+            Goal vertex
             
         </td>
     
@@ -682,7 +762,7 @@ Number
 </td>
     
         <td>
-            Layer to use (if multiple graphs are enabled)
+            Layer to use (if multiple graphs)
             
         </td>
     
@@ -699,40 +779,18 @@ Number
         <td>
             heuristic
             
+                <br />
+                <span class="default-value">Default : Heuristics.manhattan</span>
+            
         </td>
     
         <td>
 
-String
+function
 </td>
     
         <td>
-            Name of heuristic function to use (override default heuristic)
-            
-        </td>
-    
-        <td>
-            
-            
-            <label class='optional'>Optional</label>
-        </td>
-</tr>
-
-
-<tr>
-    
-        <td>
-            heuristicOptions
-            
-        </td>
-    
-        <td>
-
-Object
-</td>
-    
-        <td>
-            Options for heuristic options (override default heuristic options)
+            Heuristic function to use
             
         </td>
     
@@ -749,6 +807,9 @@ Object
         <td>
             jps
             
+                <br />
+                <span class="default-value">Default : false</span>
+            
         </td>
     
         <td>
@@ -757,7 +818,7 @@ Boolean
 </td>
     
         <td>
-            Execute A* JPS (Jump Point Search) to speed up computation
+            Execute A* JPS (Jump Point Search) to speed up computation (only work on uniform cost graphs)
             
         </td>
     
@@ -772,7 +833,10 @@ Boolean
 <tr>
     
         <td>
-            static
+            fail
+            
+                <br />
+                <span class="default-value">Default : false</span>
             
         </td>
     
@@ -782,7 +846,7 @@ Boolean
 </td>
     
         <td>
-            If enabled, a connectivity check will be performed before processing, thus avoiding useless computations if path doesn't exist.                                    <a href="Graph.html#connect">Graph.connect</a> must be called each time you're adding or removing edges in Graph.
+            Throw an error if no path was found
             
         </td>
     
@@ -797,17 +861,20 @@ Boolean
 <tr>
     
         <td>
-            callback
+            thread
+            
+                <br />
+                <span class="default-value">Default : false</span>
             
         </td>
     
         <td>
 
-function
+Boolean
 </td>
     
         <td>
-            Callback (will receive path and scores as arguments)
+            Use worker instead of main thread
             
         </td>
     
@@ -847,7 +914,7 @@ function
     
         <td>
 
-Array.&lt;<a href="Node.html">Node</a>>
+Promise.&lt;Array.&lt;<a href="Vertex.html">Vertex</a>>>
 </td>
     
         <td>Path</td>
@@ -877,17 +944,17 @@ Array.&lt;<a href="Node.html">Node</a>>
 </div>
  
 
-<div class="members" id="member-worker">
+<div class="members" id="member-raw">
     <header class="member">
         
         <h2 class="private">
-            worker<span class="signature"><span class="type-signature"> : Worker</span></span>
+            raw<span class="signature"><span class="type-signature"> : Array</span></span>
         </h2>
 
         
         
             <div class="sources">
-                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 930)</a>
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 874)</a>
             </div>
         
 
@@ -903,7 +970,325 @@ Array.&lt;<a href="Node.html">Node</a>>
     
     
     
-        <p><pre>WebWorker associated to current configuration.</pre><div class="alert info">This member is defined only when instance has been instanciated with <span class="bold">options.thread</span> set to true.<br></div><div class="alert warning">A <span class="bold">WorkerError</span> exception can be thrown if specified file path (i.e. lowlight.astar.js path) can't be opened.<br>Note that some browsers may not allow the usage of local WebWorkers, which will also results in a <span class="bold">WorkerError</span> exception.</div></p>
+        <p>Raw data used for instantiation.</p>
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-stringify">
+    <header class="function">
+        
+        <h2 class="public">
+            stringify
+             <span class="signature"><span class="signature">(object)</span><span class="type-signature"> &rarr; {String}</span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 1079)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="static">Static</label></label></label>
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Serializer for object.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            object
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Object to serialize
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+                <li>
+                    <h3>Returns</h3>
+                    <table class="returns">
+                         
+
+<tr>
+    
+        <td></td>
+    
+        <td>
+
+String
+</td>
+    
+        <td>Serialized object</td>
+    
+        <td></td>
+</tr>
+ 
+                    </table>
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-thread">
+    <header class="function">
+        
+        <h2 class="public">
+            thread
+             <span class="signature"><span class="signature">(options)</span><span class="type-signature"></span></span> 
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 943)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            <label class="async">Async</label></label></label>
+            
+            
+            
+            <label class="public">public</label>
+        </div>
+    </header>
+
+    
+    
+
+    
+    
+        <p>Send a request to worker.</p>
+    
+
+    
+    
+    <div class="card definition">
+        <ul>
+            
+            
+                <li>
+                    <h3>Arguments</h3>
+                    
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            options
+            
+        </td>
+    
+        <td>
+
+Object
+</td>
+    
+        <td>
+            Options
+            
+
+
+
+<table class="params">
+    
+
+<tr>
+    
+        <td>
+            method
+            
+        </td>
+    
+        <td>
+
+String
+</td>
+    
+        <td>
+            Name of method
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+
+<tr>
+    
+        <td>
+            input
+            
+        </td>
+    
+        <td>
+
+Array
+</td>
+    
+        <td>
+            Arguments
+            
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+</table>
+
+        </td>
+    
+        <td>
+            
+            
+            
+        </td>
+</tr>
+
+</table>
+
+                </li>
+            
+
+            
+            
+        </ul>
+    </div>
+    <br />
+    
+
+    
+    
+
+    
+    
+
+    
+        
+
+
+
+</div>
+ 
+
+<div class="members" id="member-worker">
+    <header class="member">
+        
+        <h2 class="public">
+            worker<span class="signature"><span class="type-signature"> : Worker</span></span>
+        </h2>
+
+        
+        
+            <div class="sources">
+                 <a href="lowlight.astar.js.html">lowlight.astar.js (line 899)</a>
+            </div>
+        
+
+        
+        <div class="properties">
+            
+            
+            
+            <label class="public">Public</label>
+        </div>
+    </header>
+
+    
+    
+    
+        <p>WebWorker associated to current configuration.<div class="alert warning">  An exception can be thrown if specified file path (i.e. lowlight.astar.js path) cannot be opened.<br>  Note that some browsers may not allow the usage of local WebWorkers, which will also results in an exception.</div></p>
     
 
     
@@ -932,7 +1317,7 @@ Array.&lt;<a href="Node.html">Node</a>>
 
         </section>
         <footer>
-            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon May 07 2018 18:46:26 GMT+0200 (Paris, Madrid (heure d’été))
+            Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Jan 27 2020 00:53:07 GMT+0100 (GMT+01:00)
             <br />
             Embellished by <a href="https://github.com/lowlighter/jsdoc-spotlight">Spotlight</a> theme
         </footer>

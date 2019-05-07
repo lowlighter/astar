@@ -1,209 +1,178 @@
 /**
- * Utilitary method to create graph and subgraph from 2D Arrays.
+ * Utilitary method to create graphs and subgraphs from 2D Arrays.
  * @param {Object[]} array - Array
- * @param {...Object} [options] - Options, specifying multiple options object will create subgraph with reused nodes
+ * @param {Object} [options] - Global options
  * @param {String} [options.order="yx"] - Array access order, accepted values are "xy" and "yx"
- * @param {Object} [options.cost=Graph.fromArray.cost] - Cost function
- * @param {Boolean} [options.torus=false] - If enabled, map will be treated as a torus
+ * @param {Object} [options.cost=Graph.fromArray.cost] - Cost function which takes as arguments vertex A data (source) and vertex B data (destination)
+ * @param {Boolean} [options.torus=false] - If enabled, map will be treated as a torus (wrapped map)
  * @param {Boolean} [options.diagonals=false] - If enabled, diagonals movements are allowed
- * @param {Boolean|String} [options.cutting=false] - If enabled, diagonals movements between two blocking cells are allowed. If set to "strict", diagonals movements with a blocking cell is not allowed.
+ * @param {Boolean|String} [options.cutting=false] - If enabled, diagonals movements between two blocking cells are allowed. If set to "null", diagonals movements with a blocking cell is not allowed.
+ * @param {Object[]} [options.layers] - An array of object which can override "cost", "diagonals" and "cutting" general options. Each object corresponds to one layer, vertices will be reused
  * @return {Graph} Graph generated from array
  * @see {Graph}
- * @author Lecoq Simon
- * @memberof Graph
  * @static
  * @example <caption>Creating a graph from an Array structure</caption>
- * // Assume with have this map
- * let map = [
- *      [0, 1, 0],
- *      [0, 2, 1],
- *      [0, 0, 0]
- * ]
+ * //Assume with have this map
+ *   const map = [
+ *     [0, 1, 0],
+ *     [0, 2, 1],
+ *     [0, 0, 0],
+ *   ]
  *
- * // Define options
- * let options = { }
+ * //Define options
+ *   const options = {
+ *     //To access a member of our array, we use following notation : map[y][x]
+ *       order:"yx",
  *
- * // To access a member of our array, we use following notation : map[y][x]
- * options.order = "yx"
+ *     //Define cost function (returns NaN to prevent links between two cells)
+ *       cost = (a, b) => {
+ *         return [0, 1].includes(b.data.v) ? 1 : NaN
+ *         //Usually, vertex B (destination) is the one you'll need the most
+ *         //However, you still have access to vertex A (source) if needed
+ *         //In this example, only "0" and "1" are valid destinations (and costs one to move) from source vertex A
+ *         //Note : by default, values of non-object array are stored in "v" member.
+ *       },
  *
- * // Define cost function
- * // Return null to prevent links between two squares
- * options.cost = (a, b) => { return b >= 0 ? b : null }
+ *     //Tell if map is torus (map wrapped on itself)
+ *       torus:true,
  *
- * // Tell if map is torus (map wrapper on itself)
- * options.torus = true
+ *     //Tell if cells must be linked diagonally
+ *       diagonals:true,
  *
- * // Tell if squares must be linked diagonally
- * options.diagonals = true
- * // Tell if squares must be linked diagonally between two blocking squares
- * options.cutting = false
+ *     //Tell if squares must be linked diagonally between two blocking squares
+ *       cutting:null,
  *
- * // Start by defining options
- * let graph = Graph.fromArray(map, options)
+ *     //Tell the numbers of layers to be created, and which options should be overriden
+ *     //Note that nodes are shared between layers, this means that editing data on a single nodes will affect all layers
+ *       layers: [
+ *         {}, //Use default options for layer 0
+ *         {diagonals:false}, // Override "diagonals" option value for layer 1
+ *         {cost(a, b) { return b.data.water ? 1 : NaN }} // Override "cost" option for layer 2
+ *       ]
+ *   }
+ *
+ * //Create graph
+ *   const graph = Graph.fromArray(map, options)
+ *
+ * @example <caption>Creating a graph from an Array structure</caption>
+ * //Assume with have this map
+ *   const map = [
+ *     [{type:"ground"}, {type:"water"}],
+ *     [{type:"ground"}, {type:"air"}],
+ *   ]
+ *
+ * //Define options
+ *   const options = {
+ *     //Define cost function (returns NaN to prevent links between two cells)
+ *       cost = (a, b) => {
+ *         if ((a.data.type === "ground")&&(b.data.type === "ground"))
+ *           return 1
+ *         if ((a.data.type === "water")&&(b.data.type === "ground"))
+ *           return 1
+ *        return NaN
+ *        //In this example, going from "ground" or "water" to "ground" is valid
+ *        //However, all other types of links are invalid
+ *       }
+ *   }
+ *
+ * //Create graph
+ *   const graph = Graph.fromArray(map, options)
+ *
  */
-    Graph.fromArray = function (array, options = {}) {
-                //Initialize
-                    let X = Graph.fromArray.X(array, options.order)
-                    let Y = Graph.fromArray.Y(array, options.order)
-                    let at = Graph.fromArray.at.bind(null, array, options.order)
-                    let graphs = []
-                    let nodes = null
+    Graph.fromArray = function (array, data = {}) {
+      //Order and layers
+        const {order = "yx", layers = [{}]} = data
+      //Size of map
+        const X = order === "xy" ? array.length : array[0].length
+        const Y = order === "xy" ? array[0].length : array.length
+      //Graphs
+        const graphs = []
+      //Accessor (coordinates)
+        const at = (x, y) => (order === "xy") ? array[x][y] : array[y][x]
 
-                //Create graphs
-                    for (let i = 1; i < Math.max(2, arguments.length); i++) {
-                        //Create graph
-                            let graph = new Graph()
-                            graphs.push(graph)
-                            options = arguments[i]||{}
-                        //Accessor, cost and linker
-                            let id = Graph.fromArray.id.bind(null, X, Y, options.torus)
-                            let cost = options.cost||Graph.fromArray.cost
-                            let edge = Graph.fromArray.edge.bind(null, graph, cost)
+      //Create graphs
+        for (let layer of layers) {
+          //Create graph
+            const options = {...data, ...layer}
+            const graph = new Graph()
+            graph.meta = {...options, X, Y, torus:options.torus}
+            graphs.push(graph)
 
-                        //Build graph
-                            for (let x = 0; x < X; x++) { for (let y = 0; y < Y; y++) {
-                                //New node
-                                    let node = graph.add(nodes ? nodes.get(id(x, y)) : new Node(id(x, y)) )
-                                    node.x = x ; node.y = y
-                                    node.graph.get(graph)._data = at(x, y)
-                                //Link neighbors
-                                    edge(node, graph.nodes.get(id(x-1, y)))
-                                    edge(node, graph.nodes.get(id(x+1, y)))
-                                    edge(node, graph.nodes.get(id(x, y-1)))
-                                    edge(node, graph.nodes.get(id(x, y+1)))
-                            } }
+          //Accessor (id), cost and linker
+            const id = (x, y) => Graph.fromArray.id(x, y, graph.meta)
+            const cost = options.cost||((a, b) => 1)
+            const edge = (a, b) => b ? graph.edge(a, b, {ab:cost(a, b), ba:cost(b, a)}) : null
 
-                        //Link diagonals (if enabled)
-                            if (options.diagonals) { for (let x = 0; x < X; x++) { for (let y = 0; y < Y; y++) {
-                                //Check nodes
-                                    let node = graph.nodes.get(id(x, y))
-                                    let lx = graph.adjacent(node, graph.nodes.get(id(x-1, y))), rx = graph.adjacent(node, graph.nodes.get(id(x+1, y)))
-                                    let oy = graph.adjacent(node, graph.nodes.get(id(x, y-1))), uy = graph.adjacent(node, graph.nodes.get(id(x, y+1)))
-                                //Link neighbors
-                                    if (options.cutting === "strict") {
-                                        if (lx && oy) { edge(node, graph.nodes.get(id(x-1, y-1))) }
-                                        if (lx && uy) { edge(node, graph.nodes.get(id(x-1, y+1))) }
-                                        if (rx && oy) { edge(node, graph.nodes.get(id(x+1, y-1))) }
-                                        if (rx && uy) { edge(node, graph.nodes.get(id(x+1, y+1))) }
-                                    } else {
-                                        if ((lx||oy)||(options.cutting)) { edge(node, graph.nodes.get(id(x-1, y-1))) }
-                                        if ((lx||uy)||(options.cutting)) { edge(node, graph.nodes.get(id(x-1, y+1))) }
-                                        if ((rx||oy)||(options.cutting)) { edge(node, graph.nodes.get(id(x+1, y-1))) }
-                                        if ((rx||uy)||(options.cutting)) { edge(node, graph.nodes.get(id(x+1, y+1))) }
-                                    }
-                            } } }
+          //Build graph
+            for (let x = 0; x < X; x++)
+              for (let y = 0; y < Y; y++) {
+                //Create vertex
+                  const data = typeof at(x, y) === "object" ? at(x, y) : {v:at(x, y)}
+                  const vertex = graph.add(graphs.length > 1 ? graphs[0].get(x, y) : new Vertex(id(x, y), {x, y, ...data})).get(id(x, y))
+                //Link direct neighbors
+                  edge(vertex, graph.get(id(x-1, y)))
+                  edge(vertex, graph.get(id(x+1, y)))
+                  edge(vertex, graph.get(id(x, y-1)))
+                  edge(vertex, graph.get(id(x, y+1)))
+              }
 
-                        //Connectivity computing and id overriding
-                            Object.defineProperty(graph, "id", {enumerable:false, configurable:false, writable:true, value(c) { return id(c.x, c.y) }})
-                            graph.connect()
-                            graph.X = X, graph.Y = Y, graph.TORUS = options.torus
-                            if (!nodes) { nodes = graph.nodes }
+          //Link diagonals (if enabled)
+            if (options.diagonals)
+              for (let x = 0; x < X; x++)
+                for (let y = 0; y < Y; y++) {
+                //Check adjacent vertices
+                  const vertex = graph.get(id(x, y))
+                  const lx = graph.adjacent(vertex, graph.get(id(x-1, y))), rx = graph.adjacent(vertex, graph.get(id(x+1, y)))
+                  const oy = graph.adjacent(vertex, graph.get(id(x, y-1))), uy = graph.adjacent(vertex, graph.get(id(x, y+1)))
+                //Link strict diagonals neighbors
+                  if (options.cutting === null) {
+                    if (lx && oy)
+                      edge(vertex, graph.get(id(x-1, y-1)))
+                    if (lx && uy)
+                      edge(vertex, graph.get(id(x-1, y+1)))
+                    if (rx && oy)
+                      edge(vertex, graph.get(id(x+1, y-1)))
+                    if (rx && uy)
+                      edge(vertex, graph.get(id(x+1, y+1)))
+                  }
+                //Link loose diagonals neighbors
+                  else {
+                    if ((lx||oy)||(options.cutting))
+                      edge(vertex, graph.get(id(x-1, y-1)))
+                    if ((lx||uy)||(options.cutting))
+                      edge(vertex, graph.get(id(x-1, y+1)))
+                    if ((rx||oy)||(options.cutting))
+                      edge(vertex, graph.get(id(x+1, y-1)))
+                    if ((rx||uy)||(options.cutting))
+                      edge(vertex, graph.get(id(x+1, y+1)))
+                  }
+                }
+
+          //Connectivity computing and id overriding
+            graph.connect()
+            graph.get = function (x, y) {
+              //Handle special cases
+                if (arguments.length === 1) {
+                  //Id
+                    if (typeof arguments[0] === "number") {
+                      const id = arguments[0]
+                      return this.vertices.get(id)||null
                     }
-                //Return
-                    return graphs.length > 1 ? graphs : graphs[0]
+                  //Vertex
+                    if (typeof arguments[0] === "object") {
+                      const node = arguments[0]
+                      return this.vertices.get(Graph.fromArray.id(node.data.x, node.data.y, this.meta))||null
+                    }
+                }
+              //Coordinates
+                return this.vertices.get(Graph.fromArray.id(x, y, this.meta))||null
             }
-
-/**
- * Give X size of an array.
- * @param {Object[]} array - Array
- * @param {String} [order="yx"] - Array access order
- * @return {Number} X size
- */
-    Graph.fromArray.X = function (array, order = "yx") {
-        switch (order) {
-            case "xy": return array.length
-            case "yx": return array[0].length
         }
-        return 0
-    },
 
-/**
- * Give Y size of an array.
- * @param {Object[]} array - Array
- * @param {String} [order="yx"] - Array access order
- * @return {Number} Y size
- */
-    Graph.fromArray.Y = function (array, order = "yx") {
-        switch (order) {
-            case "xy": return array[0].length
-            case "yx": return array.length
-        }
-        return 0
-    },
+    //Return
+      return (arguments[1] && ("layers" in arguments[1])) ? graphs : graphs[0]
+  }
 
-/**
- * Array accessor. <br>
- * This method shall have its first 2 arguments binded.
- * @param {Object[]} array - Array
- * @param {String} [order="yx"] - Array access order
- * @param {Number} x - X coordinate
- * @param {Number} y - Y coordinate
- * @return {Object} Object located at specified cell
- */
-    Graph.fromArray.at = function (array, order = "yx", x, y) {
-        return (order === "xy") ? array[x][y] : array[y][x]
-    },
-
-/**
- * Cell coordinate to node id. <br>
- * This method shall have its first 3 arguments binded.
- * @param {Number} [X=0] - X size
- * @param {Number} [Y=0] - Y size
- * @param {Boolean} [torus=false] - If enabled, map will be considered as a torus
- * @param {Number} x - X coordinate
- * @param {Number} y - Y coordinate
- * @return {Number} Node id
- */
-    Graph.fromArray.id = function (X = 0, Y = 0, torus = false, x, y) {
-        return torus ? ((y+Y)%Y)*X + (x+X)%X : (x>=0)&&(x<X)&&(y>=0)&&(y<Y) ? y*X + x : null
-    },
-
-/**
- * Evaluate cost between two nodes.
- * @param {Node} a - Node a
- * @param {Node} b - Node b
- * @return {Number} Cost between a and b
- */
-    Graph.fromArray.cost = function (a, b) {
-        return 1
-    },
-
-/**
- * Edge creator. <br>
- * This method shall have its first 2 arguments binded.
- * @param {Graph} graph - Graph
- * @param {Function} cost - Cost function
- * @param {Node} a - Node a
- * @param {Node} b - Node b
- */
-    Graph.fromArray.edge = function (graph, cost, a, b) {
-        if (b) { graph.edge(a, b, cost(graph.data(a), graph.data(b)), cost(graph.data(b), graph.data(a))) }
-    }
-
-/**
- * TODO
- * + Indiquer dans la doc que si l"array est un proxy, les couts dynamiques peuvent être automatiques
- * + Implémenter la méthode de vérification des arrêtes.
- */
-    Graph.fromArray.update = function (graphs, edge, x, y) {
-        console.warn("Graph.fromArray isn't implemented yet")
-        /*
-            let node = graph.node({x, y}, true)
-
-            edge(node, graph.node({x:x-1, y}, true))
-            edge(node, graph.node({x:x+1, y}, true))
-            edge(node, graph.node({x, y:y-1}, true))
-            edge(node, graph.node({x, y:y+1}, true))
-        //Link diagonals (if enabled)
-            if (options.diagonals) {
-                //Check nodes
-                    let lx = graph.adjacent(node, graph.node({x:x-1, y}), true), rx = graph.adjacent(node, graph.node({x:x+1, y}, true))
-                    let oy = graph.adjacent(node, graph.node({x, y:y-1}), true), uy = graph.adjacent(node, graph.node({x, y:y+1}, true))
-                //Link neighbors
-                    if ((lx||oy)||(options.cutting)) { edge(node, graph.node({x:x-1, y:y-1}, true)) }
-                    if ((lx||uy)||(options.cutting)) { edge(node, graph.node({x:x-1, y:y+1}, true)) }
-                    if ((rx||oy)||(options.cutting)) { edge(node, graph.node({x:x+1, y:y-1}, true)) }
-                    if ((rx||uy)||(options.cutting)) { edge(node, graph.node({x:x+1, y:y+1}, true)) }
-            }
-        */
-    }
+  Graph.fromArray.id = function (x, y, {X, Y, torus = false}) {
+    return torus ? ((y+Y)%Y)*X + (x+X)%X : (x>=0)&&(x<X)&&(y>=0)&&(y<Y) ? y*X + x : null
+  }

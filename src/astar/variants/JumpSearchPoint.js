@@ -1,230 +1,358 @@
 Configuration.JPS = class JPS {
-    /**
-     * <pre>
-     * Parts of Jump Point Search algorithm.
-     * These methods shouldn't be used other than by [Configuration.path]{@link Configuration#path}.
-     *
-     * Based on the work of Daniel Harabor and Alban Grastien.
-     * See [explanations]{@link http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf}.
-     * </pre>
-     * @category astar
-     * @abstract
-     * @private
-     */
-        constructor() {}
 
-    /**
-     * Tell if it's possible to access node b from node a.<br>
-     * First argument should be bound.
-     * @param {Graph} graph - Graph (bound)
-     * @param {Node} a - Departing node
-     * @param {Node} b - Destination node
-     * @param {Boolean} [convert] - Convert b to a node
-     * @return {Boolean} Access exists
-     * @private
-     */
-        static access(graph, a, b, convert) {
-            return (graph.adjacent(a, convert ? graph.node(b, true) : b))
-        }
+  /**
+   * Parts of Jump Point Search algorithm.
+   * These methods shouldn't be used other than by [Configuration.path]{@link Configuration#path}.
+   *
+   * Based on the work of Daniel Harabor and Alban Grastien.
+   * See [explanations]{@link http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf}.
+   * @category astar
+   * @abstract
+   * @private
+   */
+    constructor() {
+      throw new Error("Cannot instantiate abstract class Configuration.JPS")
+    }
 
-    /**
-     * Compute JPS neighbors.<br>
-     * First two arguments should be bound.
-     * @param {Function} access - Access method (bound)
-     * @param {Graph} graph - Graph (bound)
-     * @param {Map} scores - Scores (bound)
-     * @param {Node} n - Node
-     * @return {Node[]} List of JPS neighbors
-     * @private
-     */
-        static neighborhood(access, graph, scores, n) {
-            //Initialization
-                let neighbors = []
-                let parent = scores.get(n).from||null
+  /**
+   * Compute differential vertices.
+   * @param {Graph} graph - Graph
+   * @param {Vertex} vertex - Vertex
+   * @param {Object} d - Differential coordinates
+   * @return {Object} Differential vertices.
+   * @private
+   */
+    static around(graph, vertex, parent) {
+      const {x, y} = vertex.data
+      const d = {x:Math.sign(x-parent.data.x), y:Math.sign(y-parent.data.y)}
+      return {
+        //Vertex
+          vertex:graph.get(vertex),
+        //Differential X
+          x:d.x,
+        //Differential Y
+          y:d.y,
 
-            //Prune according to movement
-                if (parent !== null) {
-                    //Differential coordinates
-                        let d = {x:Math.sign(n.x-parent.x), y:Math.sign(n.y-parent.y)}
-                    //Diagonal pruning
-                        if ((d.x != 0)&&(d.y != 0)) {
-                            //Next linear nodes
-                                let n1 = access(n, {x:n.x+d.x, y:n.y}, true), n2 = access(n, {x:n.x, y:n.y+d.y}, true)
-                                if (n1 || n2) {
-                                    //Next node (diagonal)
-                                        neighbors.push(graph.node({x:n.x+d.x, y:n.y+d.y}, true))
-                                        if (n1) {
-                                            neighbors.push(graph.node({x:n.x+d.x, y:n.y}, true))
-                                            if (!access(n, {x:n.x, y:n.y-d.y}, true)) { neighbors.push(graph.node({x:n.x+d.x, y:n.y-d.y}, true)) }
-                                        }
-                                        if (n2) {
-                                            neighbors.push(graph.node({x:n.x, y:n.y+d.y}, true))
-                                            if (!access(n, {x:n.x-d.x, y:n.y}, true)) { neighbors.push(graph.node({x:n.x-d.x, y:n.y+d.y}, true)) }
-                                        }
-                                }
-                    //Linear pruning
-                        } else {
-                            if (access(n, {x:n.x+d.x, y:n.y+d.y}, true)) {
-                                //Next node
-                                    neighbors.push(graph.node({x:n.x+d.x, y:n.y+d.y}, true))
-                                //Horizontal pruning
-                                    if (d.x != 0) {
-                                        if (!access(n, {x:n.x, y:n.y-1}, true)) { neighbors.push(graph.node({x:n.x+d.x, y:n.y-1}, true)) }
-                                        if (!access(n, {x:n.x, y:n.y+1}, true)) { neighbors.push(graph.node({x:n.x+d.x, y:n.y+1}, true)) }
-                                    } else
-                                //Vertical pruning
-                                    if (d.y != 0) {
-                                        if (!access(n, {x:n.x-1, y:n.y}, true)) { neighbors.push(graph.node({x:n.x-1, y:n.y+d.y}, true)) }
-                                        if (!access(n, {x:n.x+1, y:n.y}, true)) { neighbors.push(graph.node({x:n.x+1, y:n.y+d.y}, true)) }
-                                    }
-                            }
-                        }
-                } else { return graph.neighbors(n) }
-                return neighbors.filter(n => n)
-        }
+        //Left
+          left:graph.get({data:{x:x-1, y}}),
+        //Right
+          right:graph.get({data:{x:x+1, y}}),
+        //Up
+          up:graph.get({data:{x, y:y-1}}),
+        //Down
+          down:graph.get({data:{x, y:y+1}}),
 
-    /**
-     * Main function to perform Jump Point Search.
-     * @param {Function} access - Access method (bound)
-     * @param {Graph} graph - Graph (bound)
-     * @param {Map} scores - Scores (bound)
-     * @param {Node} goal - Goal node (bound)
-     * @param {Node} n - Current node
-     * @param {Node} p - Parent node
-     * @return {?Node} Jump node
-     * @private
-     */
-        static jump(access, graph, scores, goal, n, p) {
-            //Jumping
-                while (1) {
-                    //Special cases (node isn't accessible or goal is reached)
-                        if (!access(p, n)) { return null } else if ((n.x === goal.x)&&(n.y === goal.y)) { return n }
-                        let d = {x:Math.sign(n.x-p.x), y:Math.sign(n.y-p.y)}
 
-                    //Diagonal forced neighbors
-                        if ((d.x != 0)&&(d.y != 0)) {
-                            if (((!access(n, {x:n.x-d.x, y:n.y}, true))&&(access(n, {x:n.x-d.x, y:n.y+d.y}, true)))||
-                                ((!access(n, {x:n.x, y:n.y-d.y}, true))&&(access(n, {x:n.x+d.x, y:n.y-d.y}, true))))
-                                { return n }
-                            let jump = Configuration.JPS.jump.bind(this, access, graph, scores, goal)
-                            if ((jump(graph.node({x:n.x+d.x, y:n.y}, true), n) !== null)||(jump(graph.node({x:n.x, y:n.y+d.y}, true), n) !== null)) { return n }
-                        }
-                    //Lateral forced neighbors
-                        else {
+        //Next vertices
+          next:{
+            //Projected on X
+              x:{
+                //Next vertex
+                  vertex:graph.get({data:{x:x+d.x, y}}),
+                //Next vertex's upward vertex,
+                  up:graph.get({data:{x:x+d.x, y:y-1}}),
+                //Next vertex's downward vertex
+                  down:graph.get({data:{x:x+d.x, y:y+1}}),
+                //Previous
+                  previous:{
+                    //Projected on Y
+                      y:{
+                        //Previous vertex
+                          vertex:graph.get({data:{x:x+d.x, y:y-d.y}}),
+                      }
+                  },
+              },
+            //Projected on Y
+              y:{
+                //Next vertex
+                  vertex:graph.get({data:{x, y:y+d.y}}),
+                //Next vertex's upward vertex,
+                  left:graph.get({data:{x:x-1, y:y+d.y}}),
+                //Next vertex's downward vertex
+                  right:graph.get({data:{x:x+1, y:y+d.y}}),
+                //Previous
+                  previous:{
+                    //Projected on X
+                      x:{
+                        //Previous vertex
+                          vertex:graph.get({data:{x:x-d.x, y:y+d.y}}),
+                      }
+                  }
+              },
+            //Vertex
+              vertex:graph.get({data:{x:x+d.x, y:y+d.y}}),
+          },
+        //Previous vertices
+          previous:{
+            //Projected on X
+              x:{
+                //Previous vertex
+                  vertex:graph.get({data:{x:x-d.x, y}}),
+                //Previous vertex's upward vertex,
+                  up:graph.get({data:{x:x-d.x, y:y-1}}),
+                //Previous vertex's downward vertex
+                  down:graph.get({data:{x:x-d.x, y:y+1}}),
+                //Next
+                  next:{
+                    //Projected on Y
+                      y:{
+                        //Next vertex
+                          vertex:graph.get({data:{x:x-d.x, y:y+d.y}}),
+                      }
+                  },
+              },
+            //Projected on Y
+              y:{
+                //Previous vertex
+                  vertex:graph.get({data:{x, y:y-d.y}}),
+                //Previous vertex's upward vertex,
+                  left:graph.get({data:{x:x-1, y:y-d.y}}),
+                //Previous vertex's downward vertex
+                  right:graph.get({data:{x:x+1, y:y-d.y}}),
+                //Next
+                  next:{
+                    //Projected on X
+                      x:{
+                        //Next vertex
+                          vertex:graph.get({data:{x:x+d.x, y:y-d.y}}),
+                      }
+                  },
+              },
+            //Previous vertex
+              vertex:graph.get({data:{x:x-d.x, y:y-d.y}}),
+          },
+      }
+    }
 
-                            //Horizontal
-                                if (d.x != 0) {
-                                    if (((!access(n, {x:n.x, y:n.y-1}, true))&&(access(n, {x:n.x+d.x, y:n.y-1}, true)))||
-                                        ((!access(n, {x:n.x, y:n.y+1}, true))&&(access(n, {x:n.x+d.x, y:n.y+1}, true))))
-                                        { return n }
-                                }
-                            //Vertical
-                                else if (d.y != 0) {
-                                    if (((!access(n, {x:n.x-1, y:n.y}, true))&&(access(n, {x:n.x-1, y:n.y+d.y}, true)))||
-                                        ((!access(n, {x:n.x+1, y:n.y}, true))&&(access(n, {x:n.x+1, y:n.y+d.y}, true))))
-                                        { return n }
-                                }
-                        }
+  /**
+   * Compute JPS neighbors.
+   * First two arguments should be bound.
+   * @param {Graph} graph - Graph
+   * @param {Map} scores - Scores
+   * @param {Vertex} vertex - Vertex
+   * @return {Vertex[]} List of JPS neighbors
+   * @private
+   */
+    static neighborhood(graph, scores, vertex) {
+      //Initialization
+        const neighbors = new Set()
+        const parent = scores.get(vertex).from||null
 
-                    //Next node
-                        p = n
-                        n = graph.node({x:n.x+d.x, y:n.y+d.y}, true)
+      //No pruning available (if no movements)
+        if (parent === null)
+          vertex.neighbors(graph).forEach(neighbor => neighbors.add(neighbor))
+      //Prune according to movement
+        else {
+          //Differential coordinates
+            const d = Configuration.JPS.around(graph, vertex, parent)
+          //Diagonal pruning
+            if ((d.x)&&(d.y)) {
+              //Check next linear nodes
+                const nx = graph.adjacent(d.vertex, d.next.x.vertex)
+                const ny = graph.adjacent(d.vertex, d.next.y.vertex)
+              //Add next diagonal node
+                if (((nx)||(ny))&&(d.next.vertex))
+                  neighbors.add(d.next.vertex)
+              //Add dx node
+                if (nx) {
+                  if (d.next.x.vertex)
+                    neighbors.add(d.next.x.vertex)
+                  if ((!graph.adjacent(d.vertex, d.previous.y.vertex))&&(d.next.x.previous.y.vertex))
+                    neighbors.add(d.next.x.previous.y.vertex)
                 }
-                return null
+              //Add dy node
+                if (ny) {
+                  if (d.next.y.vertex)
+                    neighbors.add(d.next.y.vertex)
+                  if ((!graph.adjacent(d.vertex, d.previous.x.vertex))&&(d.next.y.previous.x.vertex))
+                    neighbors.add(d.next.y.previous.x.vertex)
+                }
+            }
+          //Linear pruning
+            else if (graph.adjacent(d.vertex, d.next.vertex)) {
+              //Next node
+                if (d.next.vertex)
+                  neighbors.add(d.next.vertex)
+              //Horizontal pruning
+                if (d.x) {
+                  //Add next top node if accessible
+                    if ((!graph.adjacent(d.vertex, d.up))&&(d.next.x.up))
+                      neighbors.add(d.next.x.up)
+                  //Add next bottom node if accessible
+                    if ((!graph.adjacent(d.vertex, d.down))&&(d.next.x.down))
+                      neighbors.add(d.next.x.down)
+                }
+              //Vertical pruning
+                else if (d.y) {
+                  //Add next left node if accessible
+                    if ((!graph.adjacent(d.vertex, d.left))&&(d.next.y.left))
+                      neighbors.add(d.next.y.left)
+                  //Add next right node if accessible
+                    if ((!graph.adjacent(d.vertex, d.right))&&(d.next.y.right))
+                      neighbors.add(d.next.y.right)
+                }
+            }
         }
+      return [...neighbors]
+    }
+
+  /**
+   * Main function to perform Jump Point Search.
+   *
+   * @param {Graph} graph - Graph
+   * @param {Map} scores - Scores
+   * @param {Vertex} goal - Goal vertex
+   * @param {Vertex} vertex - Current vertex
+   * @param {Vertex} parent - Parent vertex
+   * @return {?Vertex} Jump vertex
+   * @private
+   */
+      static jump(graph, scores, goal, vertex, parent) {
+        //Jumping
+          while (1) {
+            //Special cases (node isn't accessible or goal is reached)
+              if (!graph.adjacent(parent, vertex))
+                return null
+              else if ((vertex.data.x === goal.data.x)&&(vertex.data.y === goal.data.y))
+                return vertex
+            //Differential coordinates
+              const d = Configuration.JPS.around(graph, vertex, parent)
+            //Diagonal forced neighbors
+              if ((d.x)&&(d.y)) {
+                //Check diagonals
+                  if (((!graph.adjacent(d.vertex, d.previous.x.vertex))&&(graph.adjacent(d.vertex, d.previous.x.next.y.vertex)))||((!graph.adjacent(d.vertex, d.previous.y.vertex))&&(graph.adjacent(d.vertex, d.previous.y.next.x.vertex))))
+                    return vertex
+                //Jump
+                  const jump = (a, b) => Configuration.JPS.jump(graph, scores, goal, a, b)
+                  if ((jump(d.next.x.vertex, d.vertex) !== null)||(jump(d.next.y.vertex, d.vertex) !== null))
+                    return vertex
+              }
+            //Lateral forced neighbors
+              else {
+                //Horizontal
+                  if (d.x) {
+                    if (((!graph.adjacent(d.vertex, d.up))&&(graph.adjacent(d.vertex, d.next.x.up)))||((!graph.adjacent(d.vertex, d.down))&&(graph.adjacent(d.vertex, d.next.x.down))))
+                      return vertex
+                  }
+                //Vertical
+                  else if (d.y) {
+                    if (((!graph.adjacent(d.vertex, d.left))&&(graph.adjacent(d.vertex, d.next.y.left)))||((!graph.adjacent(d.vertex, d.right))&&(graph.adjacent(d.vertex, d.next.y.right))))
+                      return vertex
+                  }
+              }
+
+            //Next node
+              parent = d.vertex
+              vertex = d.next.vertex
+          }
+        return null
+      }
+
+      static cost(graph, current, jumped) {
+        //
+          let cost = 0, next = null
+          const d = {x:Math.sign(jumped.data.x-current.data.x), y:Math.sign(jumped.data.y-current.data.y)}
+
+          while (((current.data.x !== jumped.data.x)&&(current.data.y !== jumped.data.y))||(next === null)) {
+            next = graph.get({data:{x:current.data.x+d.x, y:current.data.y+d.y}})
+            cost += graph.cost(current, next)
+            current = next
+          }
+          return cost
+      }
 }
 
 /**
-* <pre>
-* Compute a path from start to end.
-* The heuristic used by this method must be stored in {@link Heuristic}.
-* Values in scores are the sum of total cost from start to current node and heuristic cost from current node to goal. Scores aren't available when <span class="bold">options.thread</span> is enabled.
-* </pre>
-* <div class="alert info">
-* You must use an admissible heuristic function to find the shortest past.
-* </div>
-* @param {Object} start - Start node id
-* @param {Object} goal - Goal node id
-* @param {Object} [options] - Options
-* @param {Number} [options.layer=0] - Layer to use (if multiple graphs are enabled)
-* @param {String} [options.heuristic] - Name of heuristic function to use (override default heuristic)
-* @param {Object} [options.heuristicOptions] - Options for heuristic options (override default heuristic options)
-* @param {Function} [options.callback] - Callback (will receive path and scores as arguments)
-* @param {Boolean} [options.static] - If enabled, a connectivity check will be performed before processing, thus avoiding useless computations if path doesn't exist.
-*                                     [Graph.connect]{@link Graph#connect} must be called each time you're adding or removing edges in Graph.
-* @return {Node[]} Path
-*/
-Configuration.prototype.jps = function (start, goal, options = {}) {
-    //TODO========================================
-        if (this.graphs[options.layer||0].TORUS) {
-            console.warn("Torus map aren't yet supported by JPS")
-            if (options.callback) { options.callback([], new Map()) }
-            return []
-        }
-    //============================================
+ * <pre>
+ * Compute a path from start to end.
+ * The heuristic used by this method must be stored in {@link Heuristic}.
+ * Values in scores are the sum of total cost from start to current node and heuristic cost from current node to goal. Scores aren't available when <span class="bold">options.thread</span> is enabled.
+ * </pre>
+ * <div class="alert info">
+ * You must use an admissible heuristic function to find the shortest past.
+ * </div>
+ * @param {Object} start - Start vertex
+ * @param {Object} goal - Goal vertex
+ * @param {Object} [options] - Options
+ * @param {Number} [options.layer=0] - Layer to use (if multiple graphs)
+ * @param {Function} [options.heuristic=Heuristics.manhattan] - Heuristic function to use
+ * @param {Boolean} [options.fail=false] - Throw an error if no path was found
+ * @return {Promise<Vertex[]>} Path
+ */
+  Configuration.prototype.jps = function (start, goal, {heuristic = Heuristics.manhattan, fail = false, layer = 0}) {
+    //Promise
+      return new Promise((solve, reject) => {
+        //Discovered nodes and total scores
+          const open = new BinaryHeap(node => node.estimated)
+          const scores = new Map()
+          const graph = this.graphs[layer]
+          const heuristics = {estimate:heuristic, options:graph.meta}
 
-    //Discovered nodes and total scores
-        let open = new BinaryHeap((node) => { return node.estimated; })
-        let scores = new Map()
-        let graph = this.graphs[options.layer||0]
+        //TODO : Implement torus support
+          if (graph.meta.torus)
+            throw new Error("JPS does not support torus map for now")
 
-    //Initialization
-        let jumped = null
-        start = graph.node(start, true)
-        goal = graph.node(goal, true)
-        open.add({node:start, estimated:0})
-        scores.set(start, {score:0, from:null})
+        //Initialization
+          let jumped = null
+          start = graph.get(start)
+          goal = graph.get(goal)
+          open.add({vertex:start, estimated:0})
+          scores.set(start, {score:0, from:null})
 
-    //Sub-functions
-        let access = Configuration.JPS.access.bind(this, graph)
-        let neighborhood = Configuration.JPS.neighborhood.bind(this, access, graph, scores)
-        let jump = Configuration.JPS.jump.bind(this, access, graph, scores, goal)
+        //Sub-functions
+          const neighborhood = (vertex) => Configuration.JPS.neighborhood(graph, scores, vertex)
+          const jump = (vertex, parent) => Configuration.JPS.jump(graph, scores, goal, vertex, parent)
+          const cost = (current, jumped) => Configuration.JPS.cost(graph, current, jumped)
 
-    //Computing path (check if nodes are connected before computing)
-        if ((!options.static)||(graph.connected(start, goal))) {
+        //Computing path
+          if (graph.connected(start, goal)) {
             while (open.size) {
-                //Current node
-                    let current = open.pop().node
-                    if (current === goal) { break }
-                //Retrieving neighbors nodes
-                    neighborhood(current).map(node => {
-                        if ((jumped = jump(node, current)) !== null) {
-                            //Calculating new score
-                                let score = (scores.has(current) ? scores.get(current).score : 0) + graph.cost(current, jumped)
+              //Current node
+                const current = open.pop().vertex
+                if ((current.data.x === goal.data.x)&&(current.data.y === goal.data.y))
+                  break
 
-                            //Saving new score if it's a better path and adding it to discovered nodes
-                                if (score < (scores.has(jumped) ? scores.get(jumped).score : Infinity)) {
-                                    scores.set(jumped, {score, from:current, jumped:true})
-                                    open.set({node:jumped, estimated:(score + Heuristic[options.heuristic||this.heuristic](jumped, goal, options.heuristicOptions||this.heuristicOptions))})
-                                }
-                        }
-                    })
-                //Setting current node as evaluated
-                    open.delete(current)
+              //Retrieve neighbors
+                neighborhood(current).map(vertex => {
+                  if ((jumped = jump(vertex, current)) !== null) {
+                    //Compute new score
+                      const score = (scores.has(current) ? scores.get(current).score : 0) + cost(current, jumped)
+
+                    //Save new score if it's better, and add it to discovered vertices
+                      if (score < (scores.has(jumped) ? scores.get(jumped).score : Infinity)) {
+                        scores.set(jumped, {score, from:current, jumped:true})
+                        open.update({vertex:jumped, estimated:(score + heuristics.estimate(jumped, goal, heuristics.options))})
+                      }
+                  }
+                })
+
+              //Set current vertex as evaluated
+                open.delete(current)
             }
-        }
+          }
 
-    //If path was found
-        let path = []
-        if (scores.has(goal)) {
-            //Rebuilding path
-                let current = goal
-            //Filling gap between jumps points
-                while ((current.x != start.x)||(current.y != start.y)) {
-                    let parent = scores.get(current).from
-                    while ((current.x != parent.x)||(current.y != parent.y)) {
-                        path.push(current)
-                        current = graph.node({
-                            x:current.x + Math.sign(parent.x - current.x),
-                            y:current.y + Math.sign(parent.y - current.y)
-                        }, true)
-                    }
+        //Check if path found
+          let path = []
+          if (scores.has(goal)) {
+            //Rebuild path
+              let current = goal
+            //Fill gap between jumps points
+              while ((current.data.x != start.data.x)||(current.data.y != start.data.y)) {
+                const parent = scores.get(current).from
+                while ((current.data.x != parent.data.x)||(current.data.y != parent.data.y)) {
+                  path.push(current)
+                  current = graph.get({data:{x:current.data.x + Math.sign(parent.data.x - current.data.x), y:current.data.y + Math.sign(parent.data.y - current.data.y)}})
                 }
-            //Reverse
-                path.push(current)
-                path.reverse()
-        }
-    //Callback and return
-        if (options.callback) { options.callback(path, scores) }
-        return path
-}
+              }
+            //Reverse path
+              path.push(current)
+              path.reverse()
+          }
+
+        //Resolve promise
+          if ((!path.length)&&(fail))
+            reject("No path found")
+          else
+            solve({path, scores})
+      })
+  }
